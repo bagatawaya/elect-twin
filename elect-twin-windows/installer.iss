@@ -1,10 +1,10 @@
-; Inno Setup 6 Script for Elect Twin 0.3.0 (x64)
-; Produces: Elect-Twin-Setup-0.3.0-x64.exe
+; Inno Setup 6 Script for Elect Twin 0.4.0 (x64)
+; Produces: Elect-Twin-Setup-0.4.0-x64.exe
 
 #define MyAppName "Elect Twin"
-#define MyAppVersion "0.3.0"
+#define MyAppVersion "0.4.0"
 #define MyAppPublisher "Electri"
-#define MyAppURL "https://github.com/electri-ai/elect-twin"
+#define MyAppURL "https://github.com/bagatawaya/elect-twin"
 #define MyAppExeName "ElectTwin.exe"
 
 [Setup]
@@ -20,7 +20,7 @@ DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
 LicenseFile=..\elect-twin-mac\LICENSE
 OutputDir=dist
-OutputBaseFilename=Elect-Twin-Setup-0.3.0-x64
+OutputBaseFilename=Elect-Twin-Setup-0.4.0-x64
 Compression=lzma2/ultra64
 SolidCompression=yes
 ArchitecturesInstallIn64BitMode=x64compatible

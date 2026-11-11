@@ -8,8 +8,8 @@
   <key>CFBundleName</key><string>Elect Twin</string>
   <key>CFBundleDisplayName</key><string>Elect Twin</string>
   <key>CFBundlePackageType</key><string>APPL</string>
-  <key>CFBundleShortVersionString</key><string>0.3.0</string>
-  <key>CFBundleVersion</key><string>20261111</string>
+  <key>CFBundleShortVersionString</key><string>0.4.0</string>
+  <key>CFBundleVersion</key><string>2026111104</string>
   <key>LSMinimumSystemVersion</key><string>14.0</string>
   <key>NSHighResolutionCapable</key><true/>
   <key>NSHumanReadableCopyright</key><string>2026 Elect Twin contributors. Internal test build.</string>

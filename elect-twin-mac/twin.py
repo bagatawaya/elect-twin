@@ -40,7 +40,7 @@ PROVIDERS = {
 
 from providers_extra import build_extra_providers
 from zoo import ZooStore
-from collaboration import InvitationStore
+from collaboration import InvitationStore, SoloRoomStore, SOLO_PRESETS
 PROVIDERS.update(build_extra_providers(BASE))
 
 def provider_call(provider, model, context):
@@ -113,6 +113,7 @@ class Twin:
         self.db.execute('CREATE TABLE IF NOT EXISTS following (id TEXT PRIMARY KEY, kind TEXT NOT NULL, target TEXT NOT NULL, body TEXT NOT NULL, UNIQUE(kind,target))')
         self.db.execute('INSERT OR IGNORE INTO local_profile VALUES (1,?)',(json.dumps({'human_name':'You','twin_name':'My Twin','role':'Personal strategy partner','bio':'','onboarding':{'status':'not_started','updated_at':None}}),)); self.db.commit()
         self.invitations=InvitationStore(self.db)
+        self.solo_rooms=SoloRoomStore(self.db)
         self.lock=threading.RLock(); self.previews={}; self.transport=transport; self.image_transport=image_transport
         # A process crash leaves requests uncertain, never silently retry them.
         for p in self.projects():
@@ -146,7 +147,7 @@ class Twin:
     def following(self):
         return [json.loads(x[0]) for x in self.db.execute('SELECT body FROM following ORDER BY rowid')]
     def state(self):
-        return {'projects':self.projects(),'providers':[{'id':p,'configured':bool(SESSION_KEYS.get(p) or os.environ.get(e))} for p,e in [(k,v['env']) for k,v in PROVIDERS.items()]],'skills':self.skills,'profile':self.profile(),'challenges':self.challenges(),'following':self.following(),'invitation_previews':self.invitations.list(),'rooms':self.room_urls(),'people':[{'id':'jay','name':'Jay','kind':'human','scope':'local test identity'},{'id':'alex','name':'Alex','kind':'human','scope':'local test identity'},{'id':'jay-twin','name':'Jay Twin','kind':'twin','scope':'deterministic local worker'},{'id':'alex-twin','name':'Alex Twin','kind':'twin','scope':'deterministic local worker'}]}
+        return {'projects':self.projects(),'providers':[{'id':p,'configured':bool(SESSION_KEYS.get(p) or os.environ.get(e))} for p,e in [(k,v['env']) for k,v in PROVIDERS.items()]],'skills':self.skills,'profile':self.profile(),'challenges':self.challenges(),'following':self.following(),'invitation_previews':self.invitations.list(),'solo_presets':SOLO_PRESETS,'solo_rooms':self.solo_rooms.list(),'rooms':self.room_urls(),'people':[{'id':'jay','name':'Jay','kind':'human','scope':'local test identity'},{'id':'alex','name':'Alex','kind':'human','scope':'local test identity'},{'id':'jay-twin','name':'Jay Twin','kind':'twin','scope':'deterministic local worker'},{'id':'alex-twin','name':'Alex Twin','kind':'twin','scope':'deterministic local worker'}]}
     @staticmethod
     def text(d,k,limit=100000):
         v=d.get(k)
@@ -199,6 +200,8 @@ class Twin:
                 return self.invitations.create(d,self.project(project_id))
             if route=='/api/invitation-preview/status':return self.invitations.set_status(d.get('id'),d.get('status'))
             if route=='/api/invitation-preview/delete':return self.invitations.delete(d.get('id'))
+            if route=='/api/solo-room':return self.solo_rooms.create(d)
+            if route=='/api/solo-rooms':return {'solo_rooms':self.solo_rooms.list(),'presets':SOLO_PRESETS}
             if route=='/api/profile':
                 profile=self.profile()
                 for key,limit in [('human_name',100),('twin_name',100),('role',200)]:profile[key]=self.text(d,key,limit)

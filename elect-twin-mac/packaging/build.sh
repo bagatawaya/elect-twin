@@ -22,7 +22,7 @@ cp LICENSE README.md docs/SUPPORT-MATRIX.md docs/INSTALL.md "$APP/Contents/Resou
 /usr/bin/codesign --deep --force --sign - --timestamp=none "$APP"
 /usr/bin/codesign --verify --deep --strict --verbose=2 "$APP"
 ln -sfn /Applications packaging/dmg/Applications
-DMG="$ROOT/packaging/dist/Elect-Twin-0.3.0-arm64-internal.dmg"
+DMG="$ROOT/packaging/dist/Elect-Twin-0.4.0-arm64-internal.dmg"
 if [[ -e "$DMG" ]]; then
   echo "Refusing to overwrite existing DMG: $DMG" >&2
   exit 1

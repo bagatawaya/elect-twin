@@ -161,7 +161,7 @@ def make_handler(db, tokens, manual_mode=False, web_dir=None):
     token_to_identity = {v: k for k, v in tokens.items()}
 
     class RoomsHandler(BaseHTTPRequestHandler):
-        server_version = "ElectTwinRooms/0.3.0"
+        server_version = "ElectTwinRooms/0.4.0"
 
         def log_message(self, format, *args):
             # Suppress normal request logging to keep stdout clean for JSON handshake

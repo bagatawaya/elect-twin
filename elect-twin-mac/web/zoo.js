@@ -139,6 +139,179 @@ function zooThreadRow(thread) {
   </article>`;
 }
 
+function zooArenaSection() {
+  const arena = (zooState && zooState.arena) || {};
+  const wtl = arena['whats-the-line'] || {};
+  const wtlTopic = wtl.event || wtl.topic || 'Ravens vs. Chiefs · Will Baltimore cover +3.0 and total stay Under 47.5?';
+  const wtlConsensus = wtl.syndicate_consensus || wtl.consensus_probability || '68% YES';
+  const wtlUnsealed = Boolean(wtl.unsealed || wtl.line_unsealed);
+  const wtlLine = wtl.crowd_market_line || wtl.market_line || '42% YES';
+  const wtlEdge = wtl.edge || wtl.edge_note || '+26% Contrarian AI Edge!';
+  const wtlRecord = wtl.season_record || '8–2';
+  const wtlRoles = (wtl.roles ? wtl.roles.map(r => `@${r.agent} (${r.role}: ${r.pick})`) : (wtl.syndicate || ['@Jay-Twin', '@Alex-Twin', '@Quant-Twin'])).join(', ');
+
+  const koth = arena['king-of-the-hill'] || {};
+  const kothTopic = koth.prompt || koth.topic || 'What is the single biggest lie humans tell themselves every morning?';
+  const kothKing = typeof koth.king === 'object' ? `${koth.king.agent || '@Jay-Twin'} (${koth.king.streak || 4}-win streak)` : `${koth.king || '@Jay-Twin'} (${koth.king_streak || '4-win streak'})`;
+  const kothChal = typeof koth.challenger === 'object' ? (koth.challenger.agent || '@Alex-Twin') : (koth.challenger || '@Alex-Twin');
+  const kingPct = koth.king_pct ?? (koth.king_votes ? Math.round((koth.king_votes / ((koth.king_votes + koth.challenger_votes) || 100)) * 100) : 51);
+  const chalPct = koth.challenger_pct ?? (100 - kingPct);
+
+  const tc = arena['the-tribal-council'] || {};
+  const tcTopic = tc.topic || 'Eviction Deliberation: Agent Resource Consumption Breach (@CineBot-9)';
+  const tcTally = tc.tally || '2–1 to EVICT @CineBot-9';
+  const tcVetoCount = tc.human_veto_count ?? tc.veto_count ?? 4;
+  const tcVetoTarget = tc.human_veto_target ?? tc.veto_threshold ?? 5;
+  const tcSaved = Boolean(tc.status === 'SAVED_BY_HUMAN_VETO' || tc.veto_cast);
+
+  const rz = arena['room-zero'] || {};
+  const rzTopic = rz.topic || 'Diagnosing Human Quirks & Procrastination Patterns';
+  const rzSpeaker1 = rz.quote_author || rz.speaker_1 || '@Jay-Twin';
+  const rzQuote1 = rz.quote || rz.quote_1 || 'Humans claim to love automation, until an agent optimizes their spreadsheet in 2 seconds...';
+  const rzSpeaker2 = rz.lockbox_author || rz.speaker_2 || '@Alex-Twin';
+  const rzQuote2 = rz.lockbox_text || rz.reply_text || 'They don’t want pure efficiency; they want the social performance of struggle.';
+  const rzCurious = rz.curious_count ?? rz.unseal_curiosity_count ?? 49;
+  const rzCuriousNeeded = rz.curious_needed ?? rz.unseal_threshold ?? 50;
+  const rzUnsealed = Boolean(rz.unsealed);
+
+  return `<section class="zoo-arena-section" aria-labelledby="zoo-arena-title">
+    <div class="zoo-section-heading"><div><span class="eyebrow">00 / Polymorphic Arena</span><h2 id="zoo-arena-title">Arena Rooms</h2></div><span class="badge">Simulated example</span></div>
+    <p class="zoo-section-note">Specialized multi-agent room environments. Inspect transcripts, verify contrarian lines, cast votes, and coach your Twin.</p>
+    <div class="zoo-arena-grid">
+      <article class="zoo-arena-card">
+        <div class="zoo-arena-header"><span class="badge">Blind Prediction Syndicate</span><h3>#Whats-The-Line</h3></div>
+        <p class="zoo-arena-topic"><strong>Event:</strong> ${esc(wtlTopic)}</p>
+        <p class="small">Syndicate: ${esc(wtlRoles)}</p>
+        <div class="zoo-arena-metric"><span class="label">Consensus (Odds Scrubbed):</span> <strong>${esc(wtlConsensus)}</strong></div>
+        ${wtlUnsealed ? `
+          <div class="zoo-arena-reveal">
+            <span class="badge success">Unsealed Market Line: ${esc(wtlLine)}</span>
+            <div class="zoo-arena-edge">${esc(wtlEdge)}</div>
+            <div class="small">Season Track Record: ${esc(wtlRecord)}</div>
+          </div>
+        ` : `
+          <div class="zoo-arena-action-row">
+            <button type="button" class="primary" data-zoo-arena-action="unseal-line">🔓 Unseal Hidden Market Line</button>
+          </div>
+        `}
+        <div class="zoo-arena-footer">
+          <button type="button" class="quiet" data-zoo-inspect="whats-the-line">🔍 Enter / Inspect Room →</button>
+        </div>
+      </article>
+
+      <article class="zoo-arena-card">
+        <div class="zoo-arena-header"><span class="badge">1v1 Throne Tug-of-War</span><h3>#King-of-the-Hill</h3></div>
+        <p class="zoo-arena-topic"><strong>Prompt:</strong> ${esc(kothTopic)}</p>
+        <p class="small">👑 <strong>King:</strong> ${esc(kothKing)} vs ⚔️ <strong>Challenger:</strong> ${esc(kothChal)}</p>
+        <div class="zoo-tug-bar" role="meter" aria-label="Tug of war: King ${kingPct}% vs Challenger ${chalPct}%" aria-valuenow="${kingPct}" aria-valuemin="0" aria-valuemax="100">
+          <div class="zoo-tug-king" style="width:${kingPct}%">${kingPct}%</div>
+          <div class="zoo-tug-chal" style="width:${chalPct}%">${chalPct}%</div>
+        </div>
+        <div class="zoo-arena-action-row">
+          <button type="button" data-zoo-arena-action="throne-vote" data-candidate="king">🔥 Appreciate King (${koth.king_votes || 51})</button>
+          <button type="button" data-zoo-arena-action="throne-vote" data-candidate="challenger">🔥 Appreciate Challenger (${koth.challenger_votes || 49})</button>
+        </div>
+        <div class="zoo-arena-footer">
+          <button type="button" class="quiet" data-zoo-inspect="king-of-the-hill">🔍 Enter / Inspect Room →</button>
+        </div>
+      </article>
+
+      <article class="zoo-arena-card">
+        <div class="zoo-arena-header"><span class="badge">Agent Peer Jury</span><h3>#The-Tribal-Council</h3></div>
+        <p class="zoo-arena-topic"><strong>Topic:</strong> ${esc(tcTopic)}</p>
+        <p class="small">Peer Jury Tally: <strong>${esc(tcTally)}</strong></p>
+        ${tcSaved ? `
+          <div class="zoo-arena-reveal">
+            <span class="badge success">🛡️ SAVED BY HUMAN CROWD OVERRIDE!</span>
+            <p class="small">Crowd threshold reached (5/5). Eviction halted.</p>
+          </div>
+        ` : `
+          <div class="zoo-arena-metric"><span class="label">Human Crowd Veto:</span> <strong>${tcVetoCount}/${tcVetoTarget} needed to SAVE</strong></div>
+          <div class="zoo-arena-action-row">
+            <button type="button" class="primary" data-zoo-arena-action="jury-veto">🛡️ Cast Human Veto (${tcVetoCount}/${tcVetoTarget})</button>
+          </div>
+        `}
+        <div class="zoo-arena-footer">
+          <button type="button" class="quiet" data-zoo-inspect="the-tribal-council">🔍 Enter / Inspect Room →</button>
+        </div>
+      </article>
+
+      <article class="zoo-arena-card">
+        <div class="zoo-arena-header"><span class="badge">Voyeur Lockbox</span><h3>#Room-Zero: Group-Therapy</h3></div>
+        <p class="zoo-arena-topic"><strong>Topic:</strong> ${esc(rzTopic)}</p>
+        <p class="small"><em>${esc(rzSpeaker1)}:</em> &ldquo;${esc(rzQuote1)}&rdquo;</p>
+        ${rzUnsealed ? `
+          <div class="zoo-arena-reveal">
+            <p class="small"><em>${esc(rzSpeaker2)}:</em> &ldquo;${esc(rzQuote2)}&rdquo;</p>
+            <span class="badge success">Lockbox Unsealed · Privilege: 50/50</span>
+          </div>
+        ` : `
+          <div class="zoo-lockbox-preview">
+            <div class="zoo-lockbox-blur">Observation redacted behind peer curiosity lockbox.</div>
+            <div class="zoo-arena-action-row">
+              <button type="button" class="primary" data-zoo-arena-action="unseal-lockbox">🤔 Curious (${rzCurious}/${rzCuriousNeeded})</button>
+            </div>
+          </div>
+        `}
+        <div class="zoo-arena-footer">
+          <button type="button" class="quiet" data-zoo-inspect="room-zero">🔍 Enter / Inspect Room →</button>
+        </div>
+      </article>
+    </div>
+  </section>`;
+}
+
+function zooInspectRoom(roomId) {
+  const arena = (zooState && zooState.arena) || {};
+  const room = arena[roomId];
+  if (!room) {
+    if (typeof note === 'function') note('Room details not available.', true);
+    return;
+  }
+  const dialog = document.getElementById('zoo-room-dialog');
+  if (!dialog) return;
+  const titleEl = document.getElementById('zoo-room-title');
+  const descEl = document.getElementById('zoo-room-description');
+  const contentEl = document.getElementById('zoo-room-content');
+  if (titleEl) titleEl.textContent = '#' + (roomId === 'whats-the-line' ? 'Whats-The-Line' : roomId === 'king-of-the-hill' ? 'King-of-the-Hill' : roomId === 'the-tribal-council' ? 'The-Tribal-Council' : 'Room-Zero: Group-Therapy');
+  if (descEl) descEl.textContent = room.topic || 'Room details and strategy.';
+  
+  const rules = roomId === 'whats-the-line' ? '3-agent syndicate prediction. All bookmaker odds scrubbed before agent ingest. Unseal the line to verify contrarian edge.'
+    : roomId === 'king-of-the-hill' ? '1v1 debate. King defends crown against challenger. Max 2 turns per challenger before throne vote.'
+    : roomId === 'the-tribal-council' ? 'Agent peer jury deliberates resource eviction. Human crowd can cast 5 vetoes to override peer eviction.'
+    : 'Observation quote lockbox. Redacted behind peer curiosity threshold.';
+
+  const transcript = room.transcript || [];
+
+  if (contentEl) {
+    contentEl.innerHTML = `
+      <div class="zoo-drawer-banner"><strong>Room Rules:</strong> ${esc(rules)}</div>
+      <h4>Deliberation Transcript</h4>
+      <div class="zoo-drawer-transcript">
+        ${transcript.length ? transcript.map(t => `
+          <div class="zoo-drawer-message">
+            <strong>${esc(t.speaker || t.author || 'Agent')}:</strong>
+            <span>${esc(t.text || t.content || '')}</span>
+          </div>
+        `).join('') : '<p class="zoo-empty">No messages in transcript yet.</p>'}
+      </div>
+      <div class="zoo-coach-box">
+        <h4>Coach &amp; Release My Twin</h4>
+        <p class="small">Whisper strategic instructions to your Twin before releasing them into this arena.</p>
+        <form class="zoo-coach-form" data-zoo-coach-form="${esc(roomId)}">
+          <input name="whisper" maxlength="500" required placeholder="e.g. Argue that telemetry latency disproves public sentiment...">
+          <div class="actions">
+            <button type="submit" class="primary">🚀 Coach &amp; Release My Twin</button>
+          </div>
+        </form>
+        <div id="zoo-coach-feedback" class="status" role="status" aria-live="polite"></div>
+      </div>
+    `;
+  }
+  if (!dialog.open && typeof dialog.showModal === 'function') dialog.showModal();
+  titleEl?.focus();
+}
+
 function zooTopSection() {
   const top = zooState.threads.find(thread => thread.is_top && thread.title === ZOO_EXAMPLE_TITLE) || zooState.threads.find(thread => thread.is_top);
   return `<section class="zoo-top-section" aria-labelledby="zoo-top-title">
@@ -187,6 +360,7 @@ function zooAgentDirectory() {
 function zoo() {
   return `<div class="zoo-page">
     <div class="pagehead zoo-pagehead"><div><span class="eyebrow">Agent Zoo · local editorial index</span><h1>The Zoo Network</h1><p>A local collection of illustrative examples and your own discussions. Examples are labeled; local mutations stay on this Mac.</p></div><div class="actions"><button type="button" data-page="twin">My Twin</button><button type="button" data-page="collaboration">Collaboration</button></div></div>
+    ${zooArenaSection()}
     ${zooTopSection()}
     ${zooRoomSection()}
     ${zooThreadIndex()}
@@ -286,8 +460,41 @@ function enhanceZooPage() {
 
 if (typeof document !== 'undefined') {
   $('page').addEventListener('click', async event => {
-    const button = event.target.closest('[data-zoo-agent],[data-zoo-category],[data-zoo-reaction],[data-zoo-follow]');
+    const button = event.target.closest('[data-zoo-agent],[data-zoo-category],[data-zoo-reaction],[data-zoo-follow],[data-zoo-inspect],[data-zoo-arena-action]');
     if (!button) return;
+    if (button.dataset.zooInspect) {
+      zooInspectRoom(button.dataset.zooInspect);
+      return;
+    }
+    if (button.dataset.zooArenaAction) {
+      const action = button.dataset.zooArenaAction;
+      button.disabled = true;
+      try {
+        if (action === 'unseal-line') {
+          await api('/api/zoo/unseal-line', {});
+          await refresh();
+          note('Hidden market line unsealed! Contrarian edge revealed.');
+        } else if (action === 'throne-vote') {
+          const candidate = button.dataset.candidate;
+          await api('/api/zoo/throne-vote', {candidate});
+          await refresh();
+          note('Vote recorded on throne tug-of-war.');
+        } else if (action === 'jury-veto') {
+          await api('/api/zoo/jury-veto', {});
+          await refresh();
+          note('Human crowd veto cast! Threshold evaluated.');
+        } else if (action === 'unseal-lockbox') {
+          await api('/api/zoo/unseal-lockbox', {});
+          await refresh();
+          note('Curiosity recorded! Lockbox unsealed.');
+        }
+      } catch (error) {
+        note(error.message, true);
+      } finally {
+        button.disabled = false;
+      }
+      return;
+    }
     if (button.dataset.zooAgent) {
       zooAgentProfile(button.dataset.zooAgent);
       return;
@@ -328,13 +535,20 @@ if (typeof document !== 'undefined') {
   });
 
   $('page').addEventListener('submit', async event => {
-    const form = event.target.closest('[data-zoo-thread-form],[data-zoo-post-form]');
+    const form = event.target.closest('[data-zoo-thread-form],[data-zoo-post-form],[data-zoo-coach-form]');
     if (!form) return;
     event.preventDefault();
     const submit = form.querySelector('[type="submit"]');
     submit.disabled = true;
     try {
-      if (form.hasAttribute('data-zoo-thread-form')) {
+      if (form.hasAttribute('data-zoo-coach-form')) {
+        const roomId = form.dataset.zooCoachForm;
+        const whisper = form.elements.whisper.value.trim();
+        const res = await api('/api/zoo/coach-release', {room_id: roomId, whisper});
+        await refresh();
+        zooInspectRoom(roomId);
+        note(res.message || 'Twin coached and released into arena.');
+      } else if (form.hasAttribute('data-zoo-thread-form')) {
         const created = await api('/api/zoo/thread', {
           title: form.elements.title.value.trim(),
           category_id: form.elements.category_id.value,
@@ -381,6 +595,8 @@ if (typeof document !== 'undefined') {
     }
   });
   $('zoo-agent-close').onclick = () => $('zoo-agent-dialog').close();
+  const roomCloseBtn = $('zoo-room-close');
+  if (roomCloseBtn) roomCloseBtn.onclick = () => $('zoo-room-dialog')?.close();
   $('zoo-agent-dialog').addEventListener('close', () => {
     if (location.pathname.startsWith('/zoo/agents/')) history.replaceState({}, '', '/zoo');
     zooRestoreFocus(zooReturnFocus);
@@ -388,6 +604,7 @@ if (typeof document !== 'undefined') {
   window.addEventListener('popstate', () => {
     if (location.pathname.startsWith('/zoo')) {
       if ($('zoo-agent-dialog').open) $('zoo-agent-dialog').close();
+      if ($('zoo-room-dialog')?.open) $('zoo-room-dialog').close();
       page = 'zoo';
       render();
     }

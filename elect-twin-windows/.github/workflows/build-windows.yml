@@ -1,16 +1,18 @@
-name: Build Windows Release Package
+name: Build Windows v0.4.0 Installer
 
 on:
-  push:
-    branches: [ master, main ]
-    tags: [ 'v*' ]
-  pull_request:
-    branches: [ master, main ]
   workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
 
 jobs:
   build-windows:
+    name: Build & Package Windows Installer
     runs-on: windows-latest
+    permissions:
+      contents: write
+
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -33,13 +35,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install pyinstaller
 
-      - name: Run offline test suite
-        run: |
-          $env:PYTHONDONTWRITEBYTECODE = "1"
-          python -m unittest discover -s elect-twin-mac/tests -p "test_*.py"
-          python elect-twin-windows/test_rooms_server.py
-
-      - name: Build twin-server.exe
+      - name: Freeze twin-server.exe
         run: |
           pyinstaller --noconfirm --onefile `
             --name twin-server `
@@ -49,7 +45,7 @@ jobs:
             --specpath elect-twin-windows/build `
             elect-twin-mac/twin.py
 
-      - name: Build rooms-server.exe
+      - name: Freeze rooms-server.exe
         run: |
           pyinstaller --noconfirm --onefile `
             --name rooms-server `
@@ -58,6 +54,18 @@ jobs:
             --workpath elect-twin-windows/build/rooms `
             --specpath elect-twin-windows/build `
             elect-twin-windows/rooms_server.py
+
+      - name: Test compiled Windows executables
+        shell: pwsh
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+          ELECT_TWIN_ENGINE: "elect-twin-windows/dist/twin-server.exe"
+          ELECT_TWIN_ROOMS_ENGINE: "elect-twin-windows/dist/rooms-server.exe"
+        run: |
+          python elect-twin-windows/test_rooms_server.py
+          cd elect-twin-mac
+          python tests/smoke_runtime.py
+          python tests/smoke_rooms.py
 
       - name: Publish .NET 8 WebView2 Shell (ElectTwin.exe)
         run: |
@@ -73,15 +81,23 @@ jobs:
       - name: Generate SHA-256 sidecar
         shell: pwsh
         run: |
-          $installer = "elect-twin-windows/dist/Elect-Twin-Setup-0.3.0-x64.exe"
+          $installer = "elect-twin-windows/dist/Elect-Twin-Setup-0.4.0-x64.exe"
           $hash = (Get-FileHash -Path $installer -Algorithm SHA256).Hash.ToLower()
-          "$hash  Elect-Twin-Setup-0.3.0-x64.exe" | Out-File -FilePath "elect-twin-windows/dist/Elect-Twin-Setup-0.3.0-x64.exe.sha256" -Encoding ascii
+          "$hash  Elect-Twin-Setup-0.4.0-x64.exe" | Out-File -FilePath "elect-twin-windows/dist/Elect-Twin-Setup-0.4.0-x64.exe.sha256" -Encoding ascii
           Write-Host "Generated installer SHA-256: $hash"
 
       - name: Upload Windows Setup Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Elect-Twin-Windows-0.3.0
+          name: Elect-Twin-Windows-0.4.0-Setup
           path: |
-            elect-twin-windows/dist/Elect-Twin-Setup-0.3.0-x64.exe
-            elect-twin-windows/dist/Elect-Twin-Setup-0.3.0-x64.exe.sha256
+            elect-twin-windows/dist/Elect-Twin-Setup-0.4.0-x64.exe
+            elect-twin-windows/dist/Elect-Twin-Setup-0.4.0-x64.exe.sha256
+
+      - name: Attach Assets to GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            elect-twin-windows/dist/Elect-Twin-Setup-0.4.0-x64.exe
+            elect-twin-windows/dist/Elect-Twin-Setup-0.4.0-x64.exe.sha256

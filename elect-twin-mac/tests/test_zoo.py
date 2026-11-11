@@ -395,6 +395,65 @@ class ZooHttpBoundaryTests(unittest.TestCase):
         self.assertEqual([row["id"] for row in state["categories"]], [row[0] for row in CATEGORIES])
         self.assertNotIn("projects", state)
 
+    def test_polymorphic_arena_rooms_and_initial_states(self):
+        state = self.server.twin.zoo.state()
+        room_ids = [r["id"] for r in state["rooms"]]
+        self.assertIn("whats-the-line", room_ids)
+        self.assertIn("king-of-the-hill", room_ids)
+        self.assertIn("the-tribal-council", room_ids)
+        self.assertIn("room-zero", room_ids)
+
+        arena = state["arena"]
+        self.assertIn("whats-the-line", arena)
+        self.assertFalse(arena["whats-the-line"]["unsealed"])
+        self.assertIn("king-of-the-hill", arena)
+        self.assertEqual(arena["king-of-the-hill"]["king"]["agent"], "Jay-Twin")
+        self.assertIn("the-tribal-council", arena)
+        self.assertEqual(arena["the-tribal-council"]["target"], "CineBot-9")
+        self.assertIn("room-zero", arena)
+        self.assertFalse(arena["room-zero"]["unsealed"])
+
+    def test_unseal_line_action(self):
+        res = self.server.twin.zoo.act("/api/zoo/unseal-line", {})
+        self.assertTrue(res["ok"])
+        self.assertTrue(res["unsealed"])
+        self.assertIn("Contrarian AI Edge", res["edge"])
+        state = self.server.twin.zoo.state()
+        self.assertTrue(state["arena"]["whats-the-line"]["unsealed"])
+
+    def test_throne_vote_action(self):
+        res = self.server.twin.zoo.act("/api/zoo/throne-vote", {"side": "challenger"})
+        self.assertTrue(res["ok"])
+        self.assertEqual(res["room_id"], "king-of-the-hill")
+        self.assertGreaterEqual(res["state"]["challenger_votes"], 50)
+
+    def test_jury_veto_action(self):
+        res = self.server.twin.zoo.act("/api/zoo/jury-veto", {"action": "veto"})
+        self.assertTrue(res["ok"])
+        self.assertEqual(res["state"]["human_veto_count"], 5)
+        self.assertIn("SAVED BY HUMAN CROWD OVERRIDE", res["state"]["status"])
+
+    def test_coach_release_and_canary_isolation(self):
+        # 1. Store private project canary in projects.sqlite3
+        project_canary = "PRIVATE-PROJECT-CANARY-998877"
+        p = self.server.twin.act('/api/projects', {"name": "Secret Vault", "goal": project_canary})
+        
+        # 2. Release coached twin in zoo
+        res = self.server.twin.zoo.act("/api/zoo/coach-release", {
+            "room_id": "whats-the-line",
+            "strategy": "Contrarian statistical edge",
+            "twin_name": "Test Coached Twin"
+        })
+        self.assertTrue(res["ok"])
+        self.assertIn("Contrarian statistical edge", res["coached_post"]["content"])
+        self.assertIn("resident_reply", res)
+        self.assertIn("Noted approach", res["resident_reply"]["content"])
+
+        # 3. Verify private canary NEVER leaked to Zoo store
+        zoo_json = json.dumps(self.server.twin.zoo.state())
+        self.assertNotIn(project_canary, zoo_json)
+        self.assertNotIn("Secret Vault", zoo_json)
+
 
 if __name__ == "__main__":
     unittest.main()

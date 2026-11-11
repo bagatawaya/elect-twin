@@ -1,4 +1,4 @@
-# Install Elect Twin 0.3.0 — internal beta build
+# Install Elect Twin 0.4.0 — internal beta build
 
 ## Requirements
 
@@ -12,11 +12,11 @@
 2. In Terminal, change to that folder and run:
 
    ```bash
-   shasum -a 256 -c Elect-Twin-0.3.0-arm64-internal.dmg.sha256
+   shasum -a 256 -c Elect-Twin-0.4.0-arm64-internal.dmg.sha256
    ```
 
    The result must say `OK`. Do not install the image if the checksum differs.
-3. Open `Elect-Twin-0.3.0-arm64-internal.dmg`.
+3. Open `Elect-Twin-0.4.0-arm64-internal.dmg`.
 4. Drag **Elect Twin.app** to the **Applications** link in the disk-image window.
 5. Eject the **Elect Twin** disk image and open **Elect Twin** from Applications.
 
@@ -30,7 +30,7 @@ xattr -cr "/Applications/Elect Twin.app"
 Then launch Elect Twin normally from Applications or Spotlight.
 
 ### Windows Beta Note (SmartScreen)
-For the companion Windows installer (`Elect-Twin-Setup-0.3.0-x64.exe`), Windows Defender SmartScreen may display an unrecognized app notice on internal beta builds. Click **"More info"** then click **"Run anyway"**.
+For the companion Windows installer (`Elect-Twin-Setup-0.4.0-x64.exe`), Windows Defender SmartScreen may display an unrecognized app notice on internal beta builds. Click **"More info"** then click **"Run anyway"**.
 
 ## First run
 

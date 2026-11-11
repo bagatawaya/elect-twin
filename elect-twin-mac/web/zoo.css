@@ -62,11 +62,37 @@
 .zoo-profile-detail{padding:15px 0;border-bottom:1px solid var(--line)}
 .zoo-profile-detail p{margin-top:5px;overflow-wrap:anywhere}
 .zoo-profile-actions{margin-top:18px}
-.zoo-page :focus-visible,#zoo-agent-dialog :focus-visible{outline:3px solid #286a91;outline-offset:3px}
+.zoo-arena-section{margin-top:20px;padding-bottom:24px;border-bottom:1px solid var(--line)}
+.zoo-arena-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:16px}
+.zoo-arena-card{background:var(--white);border:1px solid var(--line);border-radius:8px;padding:18px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.zoo-arena-header{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;flex-wrap:wrap}
+.zoo-arena-header h3{font-size:16px;margin:0;overflow-wrap:anywhere}
+.zoo-arena-topic{font-size:13px;line-height:1.4;margin:2px 0;overflow-wrap:anywhere}
+.zoo-arena-metric{font-size:12px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;overflow-wrap:anywhere}
+.zoo-arena-reveal{padding:10px 12px;background:var(--accent-soft);border-left:3px solid var(--accent);border-radius:4px;overflow-wrap:anywhere}
+.zoo-arena-edge{font-weight:700;color:var(--accent);font-size:12px;margin:4px 0;overflow-wrap:anywhere}
+.zoo-arena-action-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.zoo-arena-footer{margin-top:auto;padding-top:10px;border-top:1px solid var(--line);display:flex;justify-content:flex-end}
+.zoo-tug-bar{height:22px;display:flex;border-radius:4px;overflow:hidden;border:1px solid var(--line);font-size:11px;font-weight:700;color:var(--white);text-align:center;line-height:22px}
+.zoo-tug-king{background:var(--accent);min-width:24px}
+.zoo-tug-chal{background:var(--green);min-width:24px}
+.zoo-lockbox-preview{position:relative}
+.zoo-lockbox-blur{background:#eae7e1;color:var(--stone);padding:10px;border-radius:4px;font-size:11px;user-select:none;margin-bottom:8px;overflow-wrap:anywhere}
+#zoo-room-dialog{overflow:auto;max-height:min(88vh,780px);overscroll-behavior:contain;width:min(720px,calc(100% - 30px))}
+#zoo-room-dialog .dialoghead{position:sticky;top:-25px;background:var(--aluminum);padding:4px 0 12px;z-index:1}
+.zoo-drawer-banner{border-left:3px solid var(--accent);padding:8px 12px;background:var(--accent-soft);margin-bottom:14px;font-size:12px;overflow-wrap:anywhere}
+.zoo-drawer-transcript{max-height:280px;overflow-y:auto;border:1px solid var(--line);border-radius:6px;background:var(--white);padding:12px;display:grid;gap:10px}
+.zoo-drawer-message{font-size:12px;padding-bottom:8px;border-bottom:1px solid var(--line);overflow-wrap:anywhere}
+.zoo-drawer-message:last-child{border-bottom:0;padding-bottom:0}
+.zoo-drawer-message strong{display:block;margin-bottom:2px}
+.zoo-coach-box{margin-top:16px;border-top:1px solid var(--line);padding-top:14px}
+.zoo-coach-form{display:grid;gap:8px;margin-top:8px}
+.zoo-coach-form input{min-height:38px}
+.zoo-page :focus-visible,#zoo-agent-dialog :focus-visible,#zoo-room-dialog :focus-visible{outline:3px solid #286a91;outline-offset:3px}
 @media(max-width:900px){.zoo-agent-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.zoo-new-thread{grid-template-columns:minmax(0,1fr) minmax(170px,.6fr)}.zoo-new-thread>button{grid-column:1/-1;justify-self:start}}
-@media(max-width:760px){.zoo-pagehead h1{font-size:31px}.zoo-thread-row{grid-template-columns:66px minmax(0,1fr);gap:14px;padding:20px 0}.zoo-archival{padding:18px 12px}.zoo-portrait{width:58px;height:68px}.zoo-row-content h3{font-size:20px}.zoo-new-thread{grid-template-columns:minmax(0,1fr)}.zoo-new-thread>button{grid-column:auto;width:100%}.zoo-form-footer{align-items:flex-start}.zoo-post{grid-template-columns:58px minmax(0,1fr);gap:12px}.zoo-post .zoo-author small{display:none}.zoo-profile-header{grid-template-columns:110px minmax(0,1fr);gap:14px}.zoo-profile-header .zoo-portrait-large{width:108px;height:126px}.zoo-reactions button,.zoo-follow,.zoo-categories button{min-height:44px}.zoo-conversation summary{align-items:flex-start;padding:12px 0}}
+@media(max-width:760px){.zoo-arena-grid{grid-template-columns:minmax(0,1fr)}#zoo-room-dialog{width:calc(100% - 20px);max-height:94vh;padding:18px}.zoo-pagehead h1{font-size:31px}.zoo-thread-row{grid-template-columns:66px minmax(0,1fr);gap:14px;padding:20px 0}.zoo-archival{padding:18px 12px}.zoo-portrait{width:58px;height:68px}.zoo-row-content h3{font-size:20px}.zoo-new-thread{grid-template-columns:minmax(0,1fr)}.zoo-new-thread>button{grid-column:auto;width:100%}.zoo-form-footer{align-items:flex-start}.zoo-post{grid-template-columns:58px minmax(0,1fr);gap:12px}.zoo-post .zoo-author small{display:none}.zoo-profile-header{grid-template-columns:110px minmax(0,1fr);gap:14px}.zoo-profile-header .zoo-portrait-large{width:108px;height:126px}.zoo-reactions button,.zoo-follow,.zoo-categories button{min-height:44px}.zoo-conversation summary{align-items:flex-start;padding:12px 0}}
 @media(max-width:420px){.zoo-thread-row{grid-template-columns:minmax(0,1fr)}.zoo-row-portrait .zoo-author{grid-template-columns:58px minmax(0,1fr);align-items:center}.zoo-row-portrait .zoo-author small{display:block}.zoo-agent-grid{grid-template-columns:minmax(0,1fr)}.zoo-agent-tile{display:grid;grid-template-columns:120px minmax(0,1fr);align-items:center}.zoo-agent-tile .zoo-portrait-large{width:110px;height:128px}.zoo-profile-header{grid-template-columns:minmax(0,1fr)}.zoo-profile-fields div{grid-template-columns:minmax(0,1fr);gap:4px}.zoo-row-actions{align-items:flex-start}.zoo-reactions{width:100%}.zoo-reactions button{flex:1 1 30%;padding-inline:5px}}
-@media(prefers-reduced-motion:reduce){.zoo-page *,.zoo-page *::before,.zoo-page *::after,#zoo-agent-dialog,#zoo-agent-dialog *{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+@media(prefers-reduced-motion:reduce){.zoo-page *,.zoo-page *::before,.zoo-page *::after,#zoo-agent-dialog,#zoo-agent-dialog *,#zoo-room-dialog,#zoo-room-dialog *{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 
 /* Optional setup and invitation previews share the flat local editorial system. */
 #setup-dialog,#invitation-dialog{overflow:auto;max-height:min(90vh,860px);overscroll-behavior:contain}

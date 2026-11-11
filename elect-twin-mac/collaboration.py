@@ -1,7 +1,98 @@
-"""Persistent, local-only onboarding collaboration preview records."""
+"""Persistent, local-only onboarding collaboration preview records and Solo 2-AI Goal Rooms."""
 import json
 import time
 import uuid
+
+SOLO_PRESETS = [
+    {
+        "id": "visionary-skeptic",
+        "title": "🎯 Visionary + Skeptic",
+        "tag": "Strategy",
+        "desc": "Strategy Designer proposes the plan; Adversarial Challenger stress-tests blind spots and costs.",
+        "ai1": {"role": "Strategy Designer", "focus": "Growth, market positioning, high-conviction roadmap"},
+        "ai2": {"role": "Adversarial Challenger", "focus": "Unit economics, regulatory pitfalls, failure modes"}
+    },
+    {
+        "id": "writer-showrunner",
+        "title": "🎬 Writer + Showrunner",
+        "tag": "Creative & Copy",
+        "desc": "AI #1 drafts high-converting scripts/hooks; AI #2 ruthlessly edits for retention and pacing.",
+        "ai1": {"role": "Script & Copywriter", "focus": "Hook generation, narrative tension, persuasive copy"},
+        "ai2": {"role": "Showrunner Editor", "focus": "Cuts fluff, tightens rhythm, punchlines"}
+    },
+    {
+        "id": "architect-redteam",
+        "title": "💻 Architect + Red-Teamer",
+        "tag": "Code & Specs",
+        "desc": "System Architect designs clean implementations; Red-Teamer audits for race conditions and vulnerabilities.",
+        "ai1": {"role": "System Architect", "focus": "Modular design, API contracts, schema layout"},
+        "ai2": {"role": "Security Red-Teamer", "focus": "Edge cases, race conditions, injection flaws"}
+    },
+    {
+        "id": "sparring-coach",
+        "title": "🥊 Sparring Partner + Corner Coach",
+        "tag": "Negotiation Prep",
+        "desc": "Tough Counterpart roleplays the hardline client; Corner Coach whispers tactical concessions in real-time.",
+        "ai1": {"role": "Tough Counterpart", "focus": "Roleplay unyielding investor, customer, or vendor"},
+        "ai2": {"role": "Corner Coach", "focus": "Tactical reframing, walk-away boundaries, leverage"}
+    }
+]
+
+
+class SoloRoomStore:
+    def __init__(self, db):
+        self.db = db
+        self.db.execute(
+            "CREATE TABLE IF NOT EXISTS solo_rooms "
+            "(id TEXT PRIMARY KEY, preset_id TEXT NOT NULL, goal TEXT, body TEXT NOT NULL)"
+        )
+        self.db.commit()
+
+    def list(self):
+        return [
+            json.loads(row[0])
+            for row in self.db.execute("SELECT body FROM solo_rooms ORDER BY rowid DESC")
+        ]
+
+    def create(self, data):
+        preset_id = data.get("preset_id")
+        preset = next((p for p in SOLO_PRESETS if p["id"] == preset_id), None)
+        if not preset:
+            raise ValueError("Unknown solo preset")
+        goal = (data.get("goal") or "").strip() or f"Execute {preset['title']}"
+        now = time.time()
+        room_id = f"solo-{uuid.uuid4().hex[:8]}"
+        item = {
+            "id": room_id,
+            "preset_id": preset["id"],
+            "title": preset["title"],
+            "tag": preset["tag"],
+            "goal": goal,
+            "ai1": preset["ai1"],
+            "ai2": preset["ai2"],
+            "created_at": now,
+            "status": "active",
+            "messages": [
+                {
+                    "author": preset["ai1"]["role"],
+                    "kind": "agent",
+                    "text": f"Ready to lead {preset['tag']} design for: '{goal}'. Awaiting user prompt or initial thesis.",
+                    "time": now
+                },
+                {
+                    "author": preset["ai2"]["role"],
+                    "kind": "agent",
+                    "text": f"Armed to audit and pressure-test {preset['tag']}. Send your assumptions when ready.",
+                    "time": now + 0.1
+                }
+            ]
+        }
+        self.db.execute(
+            "INSERT INTO solo_rooms VALUES (?,?,?,?)",
+            (room_id, preset["id"], goal, json.dumps(item))
+        )
+        self.db.commit()
+        return item
 
 
 class InvitationStore:

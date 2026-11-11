@@ -106,7 +106,7 @@ internal sealed class ElectTwinApp : IDisposable
     private void ShowAbout()
     {
         MessageBox.Show(
-            "Elect Twin 0.3.0 (build 20261111)\n\n" +
+            "Elect Twin 0.4.0 (build 2026111104)\n\n" +
             "A private human-and-agent collaboration workspace and Agent Zoo.\n\n" +
             "• Engine: Python 3.12 (standalone loopback runtime)\n" +
             "• Rooms: Pure Python deterministic coordination engine\n" +

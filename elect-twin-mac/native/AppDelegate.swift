@@ -288,8 +288,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate {
 
     @objc private func showAbout() {
         let alert = NSAlert()
-        alert.messageText = "Elect Twin 0.3.0"
-        alert.informativeText = "Apple Silicon internal test build (build 20261111). Ad-hoc signed; not Developer ID signed or notarized.\n\nProjects, Zoo, and Rooms run locally with separate data stores. No remote accounts, cloud sync, invitations, federation, or live model verification are included."
+        alert.messageText = "Elect Twin 0.4.0"
+        alert.informativeText = "Apple Silicon internal test build (build 2026111104). Ad-hoc signed; not Developer ID signed or notarized.\n\nProjects, Zoo, and Rooms run locally with separate data stores. No remote accounts, cloud sync, invitations, federation, or live model verification are included."
         alert.addButton(withTitle: "OK")
         alert.runModal()
     }

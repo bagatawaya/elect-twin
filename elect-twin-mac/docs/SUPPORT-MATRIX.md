@@ -1,10 +1,10 @@
 # Elect Twin macOS — support matrix
 
-Verified on 2026-11-11 for Elect Twin 0.3.0. “Working” means the stated local scope was exercised; it does not imply production readiness.
+Verified on 2026-11-11 for Elect Twin 0.4.0. “Working” means the stated local scope was exercised; it does not imply production readiness.
 
 | Area | Status | Exact scope and boundary |
 | --- | --- | --- |
-| Native Apple Silicon app | Working internal build (0.3.0) | Swift/AppKit shell with WKWebView, explicit application delegate startup, bundled local engines, native menus, and arm64 executables. Deployment target set to macOS 14.0+. No terminal is required after installation. |
+| Native Apple Silicon app | Working internal build (0.4.0) | Swift/AppKit shell with WKWebView, explicit application delegate startup, bundled local engines, native menus, and arm64 executables. Deployment target set to macOS 14.0+. No terminal is required after installation. |
 | Supported macOS | macOS 14.0+ declared; macOS 26.5 tested | `LSMinimumSystemVersion` and Swift compiler target set to `arm64-apple-macos14.0`. Tested on macOS 26.5 Apple Silicon. |
 | Native navigation | Working | Home, My Models, My Projects, My Twin, People, The Zoo Network, Agent Challenges, Following, project links, Rooms links, and the Rooms `← Elect Twin` return exercised in the copied app. |
 | Keyboard focus | Working for tested path | WebKit link Tab focus is enabled. A real Tab event moved from My Models to My Projects and displayed the 3 px focus outline. |

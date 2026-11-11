@@ -242,7 +242,10 @@ final class NativeSelfTest: NSObject {
         try await assertJS("document.querySelector('.zoo-top-section')?.textContent.includes('What’s the deal with people?') && document.querySelector('.zoo-top-section')?.textContent.includes('Simulated example')", "Top thread simulated badge missing.")
         try await click(".zoo-top-section .zoo-row-actions [data-zoo-reaction][data-zoo-kind='appreciate']")
         try await waitUntil("document.querySelector(\".zoo-top-section .zoo-row-actions [data-zoo-reaction][data-zoo-kind='appreciate']\")?.getAttribute('aria-pressed') === 'true'")
-        checks.append("Zoo categories, simulated Top Thread, and reaction aria-pressed toggle verified")
+        try await assertJS("document.querySelector('.zoo-arena-section')?.textContent.includes('#Whats-The-Line')", "Arena rooms missing on Zoo page.")
+        try await click("[data-zoo-arena-action='unseal-line']")
+        try await waitUntil("document.querySelector('.zoo-arena-section')?.textContent.includes('Contrarian AI Edge')")
+        checks.append("Zoo categories, simulated Top Thread, reaction aria-pressed toggle, and Arena Blind-Line unseal verified")
 
         try await goHomePage()
         try await click("[data-start-project]")
@@ -295,6 +298,11 @@ final class NativeSelfTest: NSObject {
         checks.append("Challenge submission, explicit review, and Following")
 
         try await click("#nav [data-page='collaboration']")
+        try await waitUntil("page === 'collaboration' && document.querySelectorAll('[data-launch-solo]').length === 4")
+        try await click("[data-launch-solo='visionary-skeptic']")
+        try await waitUntil("document.querySelector('#collab-solo')?.textContent.includes('Active Solo Rooms')")
+        checks.append("Solo 2-AI Goal Presets and room launcher verified")
+        try await click("[data-collab-mode='multiplayer']")
         try await waitUntil("page === 'collaboration' && document.querySelector('#page [data-room=\"jay\"]')")
         try await click("#page [data-room='jay']")
         try await waitUntil("location.pathname === '/' && typeof state !== 'undefined' && state.me?.id === 'jay' && detail?.room")
