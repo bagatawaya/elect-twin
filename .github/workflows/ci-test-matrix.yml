@@ -11,6 +11,9 @@ jobs:
   test-matrix:
     name: Test on ${{ matrix.os }} (Python ${{ matrix.python-version }})
     runs-on: ${{ matrix.os }}
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+      PYTHONUTF8: "1"
     strategy:
       fail-fast: false
       matrix:

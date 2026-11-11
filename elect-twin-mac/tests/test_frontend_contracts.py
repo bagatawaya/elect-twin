@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def read_source(relative):
     try:
-        return (ROOT / relative).read_text()
+        return (ROOT / relative).read_text(encoding="utf-8")
     except FileNotFoundError:
         return ""
 
@@ -197,7 +197,8 @@ if (!rendered.includes('Stored on this Mac · not published')) throw new Error('
             script.write_text(
                 "const FIXTURE = " + json.dumps(fixture, ensure_ascii=False) + ";\n"
                 "const esc = value => String(value ?? '').replace(/[&<>\"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',\"'\":'&#39;'}[c]));\n"
-                + program
+                + program,
+                encoding="utf-8"
             )
             result = subprocess.run(["node", str(script)], text=True, capture_output=True)
         self.assertEqual(result.returncode, 0, result.stderr or result.stdout)
@@ -331,7 +332,7 @@ function assert(condition, message) { if (!condition) throw new Error(message); 
 """
         with tempfile.TemporaryDirectory(dir=ROOT / "tests") as directory:
             script = Path(directory) / "zoo-interaction.js"
-            script.write_text(harness + "\n" + self.zoo_js + "\n" + scenario)
+            script.write_text(harness + "\n" + self.zoo_js + "\n" + scenario, encoding="utf-8")
             result = subprocess.run(["node", str(script)], text=True, capture_output=True)
         self.assertEqual(result.returncode, 0, result.stderr or result.stdout)
 
@@ -735,7 +736,7 @@ function localInvitation() {
 """
         with tempfile.TemporaryDirectory(dir=ROOT / "tests") as directory:
             script = Path(directory) / "onboarding-interaction.js"
-            script.write_text(harness + "\n" + self.onboarding + "\n" + scenario)
+            script.write_text(harness + "\n" + self.onboarding + "\n" + scenario, encoding="utf-8")
             result = subprocess.run(["node", str(script)], text=True, capture_output=True)
         self.assertEqual(result.returncode, 0, result.stderr or result.stdout)
 

@@ -9,9 +9,21 @@ from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parents[1]
 
+def _normalize_engine_path(raw):
+    p = Path(raw)
+    if not p.is_absolute():
+        if (Path.cwd() / p).exists():
+            return str((Path.cwd() / p).resolve())
+        if (ROOT / p).exists():
+            return str((ROOT / p).resolve())
+        if (ROOT.parent / p).exists():
+            return str((ROOT.parent / p).resolve())
+    return raw
+
 def resolve_twin_cmd():
     custom = os.environ.get("ELECT_TWIN_ENGINE")
     if custom:
+        custom = _normalize_engine_path(custom)
         if custom.endswith(".py"):
             return [sys.executable, custom]
         return [custom]
@@ -26,6 +38,7 @@ def resolve_twin_cmd():
 def resolve_rooms_cmd():
     custom = os.environ.get("ELECT_TWIN_ROOMS_ENGINE")
     if custom:
+        custom = _normalize_engine_path(custom)
         if custom.endswith(".py"):
             return [sys.executable, custom]
         return [custom]
@@ -53,6 +66,7 @@ with tempfile.TemporaryDirectory(dir=ROOT / "tests") as directory:
     root = Path(directory)
     rooms_environment = dict(os.environ)
     rooms_environment["HOME"] = str(root / "rooms-home")
+    rooms_environment["LOCALAPPDATA"] = str(root / "rooms-home" / "AppData" / "Local")
     rooms = subprocess.Popen(resolve_rooms_cmd(), stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, env=rooms_environment)
     twin = None
     try:

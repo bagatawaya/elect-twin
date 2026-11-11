@@ -78,7 +78,7 @@ def image_call(provider,model,prompt):
 
 def load_catalog(path):
     """Read existing Skills Pilot metadata in place; never download/execute packages."""
-    raw=json.loads(Path(path).read_text())
+    raw=json.loads(Path(path).read_text(encoding='utf-8'))
     if not isinstance(raw,list):raise ValueError('Skills Pilot catalog must be a JSON array')
     result=[]
     for row in raw:
@@ -328,7 +328,7 @@ class Twin:
 
 def index_html(development_token=None,page='projects'):
     name='shell.html' if page=='shell' else 'index.html'
-    html=(Path(__file__).parent/'web'/name).read_text()
+    html=(Path(__file__).parent/'web'/name).read_text(encoding='utf-8')
     if development_token:
         html=html.replace("||'';","||'"+development_token+"';",1)
     return html

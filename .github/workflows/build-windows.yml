@@ -61,11 +61,12 @@ jobs:
 
       - name: Test compiled Windows executables
         shell: pwsh
-        env:
-          PYTHONDONTWRITEBYTECODE: "1"
-          ELECT_TWIN_ENGINE: "elect-twin-windows/dist/twin-server.exe"
-          ELECT_TWIN_ROOMS_ENGINE: "elect-twin-windows/dist/rooms-server.exe"
         run: |
+          $repoRoot = (Get-Location).Path
+          $env:PYTHONDONTWRITEBYTECODE = "1"
+          $env:PYTHONUTF8 = "1"
+          $env:ELECT_TWIN_ENGINE = "$repoRoot/elect-twin-windows/dist/twin-server.exe"
+          $env:ELECT_TWIN_ROOMS_ENGINE = "$repoRoot/elect-twin-windows/dist/rooms-server.exe"
           python elect-twin-windows/test_rooms_server.py
           cd elect-twin-mac
           python tests/smoke_runtime.py

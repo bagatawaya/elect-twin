@@ -20,12 +20,16 @@ DOCUMENTS = [
 
 with tempfile.TemporaryDirectory(dir=ROOT / "tests") as directory:
     for index, document in enumerate(DOCUMENTS):
-        source = document.read_text()
+        source = document.read_text(encoding="utf-8")
         scripts = [source] if document.suffix == ".js" else re.findall(r"<script(?:\s[^>]*)?>(.*?)</script>", source, re.S)
         if not scripts:
             raise SystemExit(f"No JavaScript found in {document}")
         for script_index, script in enumerate(scripts):
             target = Path(directory) / f"script-{index}-{script_index}.js"
-            target.write_text(script)
+            target.write_text(script, encoding="utf-8")
             subprocess.run(["node", "--check", str(target)], check=True)
-        print(f"JavaScript syntax passed: {document.relative_to(ROOT)}")
+        try:
+            display_name = document.relative_to(ROOT.parent)
+        except ValueError:
+            display_name = document.name
+        print(f"JavaScript syntax passed: {display_name}")

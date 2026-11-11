@@ -12,9 +12,21 @@ ROOT = Path(__file__).resolve().parents[1]
 CANDIDATE_APP = ROOT / "rooms-reference" / "Elect Twin Rooms.app" / "Contents" / "Resources" / "server" / "rooms-server"
 CANDIDATE_PY = ROOT.parent / "elect-twin-windows" / "rooms_server.py"
 
+def _normalize_engine_path(raw):
+    p = Path(raw)
+    if not p.is_absolute():
+        if (Path.cwd() / p).exists():
+            return str((Path.cwd() / p).resolve())
+        if (ROOT / p).exists():
+            return str((ROOT / p).resolve())
+        if (ROOT.parent / p).exists():
+            return str((ROOT.parent / p).resolve())
+    return raw
+
 def get_engine_cmd():
     custom = os.environ.get("ELECT_TWIN_ROOMS_ENGINE")
     if custom:
+        custom = _normalize_engine_path(custom)
         if custom.endswith(".py"):
             return [sys.executable, custom]
         return [custom]
@@ -27,6 +39,7 @@ def get_engine_cmd():
 def start(home):
     environment = dict(os.environ)
     environment["HOME"] = str(home)
+    environment["LOCALAPPDATA"] = str(home / "AppData" / "Local")
     cmd = get_engine_cmd()
     process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, env=environment)
     value = json.loads(process.stdout.readline())

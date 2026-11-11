@@ -10,11 +10,26 @@ from urllib.request import Request, urlopen
 
 SERVER_SCRIPT = Path(__file__).resolve().parent / "rooms_server.py"
 
+def get_engine_cmd():
+    custom = os.environ.get("ELECT_TWIN_ROOMS_ENGINE")
+    if custom:
+        p = Path(custom)
+        if not p.is_absolute():
+            if (Path.cwd() / p).exists():
+                p = (Path.cwd() / p).resolve()
+            elif (SERVER_SCRIPT.parent.parent / p).exists():
+                p = (SERVER_SCRIPT.parent.parent / p).resolve()
+        if str(p).endswith(".py"):
+            return [sys.executable, str(p), "--port", "0"]
+        return [str(p), "--port", "0"]
+    return [sys.executable, str(SERVER_SCRIPT), "--port", "0"]
+
 def start(home):
     environment = dict(os.environ)
     environment["HOME"] = str(home)
+    environment["LOCALAPPDATA"] = str(home / "AppData" / "Local")
     process = subprocess.Popen(
-        [sys.executable, str(SERVER_SCRIPT), "--port", "0"],
+        get_engine_cmd(),
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         text=True,
@@ -107,7 +122,12 @@ def main():
             assert any("packaging check" in event.get("text", "") for event in detail["events"]), "Event not persisted"
             assert jay("private")["text"] == "Jay-only native smoke secret", "Private note not persisted"
 
-            database = home / "Library" / "Application Support" / "Elect Twin Rooms" / "rooms.sqlite3"
+            if sys.platform == "win32":
+                database = home / "AppData" / "Local" / "ElectTwinRooms" / "rooms.sqlite3"
+            elif sys.platform == "darwin":
+                database = home / "Library" / "Application Support" / "Elect Twin Rooms" / "rooms.sqlite3"
+            else:
+                database = home / ".electri-rooms" / "rooms.sqlite3"
             assert database.exists(), f"Database not found at {database}"
 
             print(json.dumps({
