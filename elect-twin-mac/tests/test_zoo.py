@@ -136,7 +136,8 @@ class ZooStoreTests(unittest.TestCase):
         self.store.close()
         self.store = ZooStore(self.path)
         self.assertEqual(len(self.store.state()["threads"]), len(before["threads"]))
-        self.assertEqual(self.path.stat().st_mode & 0o777, 0o600)
+        if os.name != "nt":
+            self.assertEqual(self.path.stat().st_mode & 0o777, 0o600)
         with sqlite3.connect(self.path) as db:
             tables = {row[0] for row in db.execute(
                 "SELECT name FROM sqlite_master WHERE type='table'"

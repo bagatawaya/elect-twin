@@ -23,18 +23,33 @@ def _normalize_engine_path(raw):
             return str((ROOT.parent / p).resolve())
     return raw
 
+def kill_process(proc):
+    if proc is None:
+        return
+    try:
+        if sys.platform == "win32":
+            subprocess.run(["taskkill", "/F", "/T", "/PID", str(proc.pid)], capture_output=True)
+        else:
+            proc.terminate()
+            proc.wait(timeout=5)
+    except Exception:
+        try:
+            proc.kill()
+        except Exception:
+            pass
+
 def get_engine_cmd():
     custom = os.environ.get("ELECT_TWIN_ROOMS_ENGINE")
     if custom:
         custom = _normalize_engine_path(custom)
         if custom.endswith(".py"):
-            return [sys.executable, custom]
-        return [custom]
+            return [sys.executable, custom, "--port", "0"]
+        return [custom, "--port", "0"]
     if CANDIDATE_APP.exists():
-        return [str(CANDIDATE_APP)]
+        return [str(CANDIDATE_APP), "--port", "0"]
     if CANDIDATE_PY.exists():
-        return [sys.executable, str(CANDIDATE_PY)]
-    return [str(CANDIDATE_APP)]
+        return [sys.executable, str(CANDIDATE_PY), "--port", "0"]
+    return [str(CANDIDATE_APP), "--port", "0"]
 
 def start(home):
     environment = dict(os.environ)
@@ -55,7 +70,9 @@ def client(url):
             return json.load(response)
     return call
 
-with tempfile.TemporaryDirectory(dir=ROOT / "tests") as directory:
+temp_dir_obj = tempfile.TemporaryDirectory(dir=ROOT / "tests")
+try:
+    directory = temp_dir_obj.name
     home = Path(directory) / "rooms-home"
     process, urls = start(home)
     try:
@@ -79,8 +96,7 @@ with tempfile.TemporaryDirectory(dir=ROOT / "tests") as directory:
         assert "Jay-only native smoke secret" not in json.dumps(alex_state)
         print(json.dumps({"rooms_permission_and_job": "passed", "private_note_isolation": "passed", "llm_calls": 0}, indent=2))
     finally:
-        process.terminate()
-        process.wait(timeout=10)
+        kill_process(process)
 
     process, urls = start(home)
     try:
@@ -90,9 +106,18 @@ with tempfile.TemporaryDirectory(dir=ROOT / "tests") as directory:
         detail = jay("room?id=" + room)
         assert any("packaging check" in event.get("text", "") for event in detail["events"])
         assert jay("private")["text"] == "Jay-only native smoke secret"
-        database = home / "Library" / "Application Support" / "Elect Twin Rooms" / "rooms.sqlite3"
+        if sys.platform == "win32":
+            database = home / "AppData" / "Local" / "ElectTwinRooms" / "rooms.sqlite3"
+        elif sys.platform == "darwin":
+            database = home / "Library" / "Application Support" / "Elect Twin Rooms" / "rooms.sqlite3"
+        else:
+            database = home / ".electri-rooms" / "rooms.sqlite3"
         assert database.exists()
         print(json.dumps({"rooms_restart_persistence": "passed", "isolated_database": str(database.relative_to(home))}, indent=2))
     finally:
-        process.terminate()
-        process.wait(timeout=10)
+        kill_process(process)
+finally:
+    try:
+        temp_dir_obj.cleanup()
+    except Exception:
+        pass

@@ -35,7 +35,8 @@ class TwinTests(unittest.TestCase):
         self.t.act('/api/decision',{'project_id':self.p['id'],'text':'Keep private'})
         self.t.db.close();self.t=Twin(self.path)
         self.assertEqual(self.t.project(self.p['id'])['decisions'][0]['text'],'Keep private')
-        self.assertEqual(self.path.stat().st_mode & 0o777,0o600)
+        if os.name != "nt":
+            self.assertEqual(self.path.stat().st_mode & 0o777,0o600)
     def test_consent_required(self):
         p=self.preview()
         for consent in (False,None,'true',1):

@@ -53,10 +53,26 @@ def client(url):
             return json.load(response)
     return call
 
+def kill_process(proc):
+    if proc is None:
+        return
+    try:
+        if sys.platform == "win32":
+            subprocess.run(["taskkill", "/F", "/T", "/PID", str(proc.pid)], capture_output=True)
+        else:
+            proc.terminate()
+            proc.wait(timeout=5)
+    except Exception:
+        try:
+            proc.kill()
+        except Exception:
+            pass
+
 def main():
     print("Testing pure-Python rooms_server.py...")
-    with tempfile.TemporaryDirectory() as temp_dir:
-        home = Path(temp_dir) / "rooms-home"
+    temp_dir_obj = tempfile.TemporaryDirectory()
+    try:
+        home = Path(temp_dir_obj.name) / "rooms-home"
         process, urls = start(home)
         try:
             jay = client(urls["jay"])
@@ -108,8 +124,7 @@ def main():
                 "llm_calls": 0
             }, indent=2))
         finally:
-            process.terminate()
-            process.wait(timeout=10)
+            kill_process(process)
 
         # Persistence check across restart
         process, urls = start(home)
@@ -135,8 +150,12 @@ def main():
                 "isolated_database": str(database.relative_to(home))
             }, indent=2))
         finally:
-            process.terminate()
-            process.wait(timeout=10)
+            kill_process(process)
+    finally:
+        try:
+            temp_dir_obj.cleanup()
+        except Exception:
+            pass
 
     print("ALL ROOMS SERVER CONTRACTS PASSED CLEANLY!")
 

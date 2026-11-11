@@ -35,23 +35,38 @@ def resolve_twin_cmd():
         return [str(bin_candidate)]
     return [sys.executable, str(ROOT / "twin.py")]
 
+def kill_process(proc):
+    if proc is None:
+        return
+    try:
+        if sys.platform == "win32":
+            subprocess.run(["taskkill", "/F", "/T", "/PID", str(proc.pid)], capture_output=True)
+        else:
+            proc.terminate()
+            proc.wait(timeout=5)
+    except Exception:
+        try:
+            proc.kill()
+        except Exception:
+            pass
+
 def resolve_rooms_cmd():
     custom = os.environ.get("ELECT_TWIN_ROOMS_ENGINE")
     if custom:
         custom = _normalize_engine_path(custom)
         if custom.endswith(".py"):
-            return [sys.executable, custom]
-        return [custom]
+            return [sys.executable, custom, "--port", "0"]
+        return [custom, "--port", "0"]
     app_candidate = ROOT / "rooms-reference" / "Elect Twin Rooms.app" / "Contents" / "Resources" / "server" / "rooms-server"
     if app_candidate.exists():
-        return [str(app_candidate)]
+        return [str(app_candidate), "--port", "0"]
     exe_candidate = ROOT.parent / "elect-twin-windows" / "dist" / "rooms-server.exe"
     if exe_candidate.exists():
-        return [str(exe_candidate)]
+        return [str(exe_candidate), "--port", "0"]
     py_candidate = ROOT.parent / "elect-twin-windows" / "rooms_server.py"
     if py_candidate.exists():
-        return [sys.executable, str(py_candidate)]
-    return [str(app_candidate)]
+        return [sys.executable, str(py_candidate), "--port", "0"]
+    return [str(app_candidate), "--port", "0"]
 
 def ready(process):
     line = process.stdout.readline()
@@ -62,7 +77,9 @@ def ready(process):
         raise RuntimeError("Engine did not become ready")
     return value
 
-with tempfile.TemporaryDirectory(dir=ROOT / "tests") as directory:
+temp_dir_obj = tempfile.TemporaryDirectory(dir=ROOT / "tests")
+try:
+    directory = temp_dir_obj.name
     root = Path(directory)
     rooms_environment = dict(os.environ)
     rooms_environment["HOME"] = str(root / "rooms-home")
@@ -106,11 +123,14 @@ with tempfile.TemporaryDirectory(dir=ROOT / "tests") as directory:
         assert state["projects"][0]["name"] == "Packaging smoke"
         assert state["challenges"][0]["status"] == "reviewed"
         assert len(state["following"]) == 1
-        assert not (root / "rooms-home" / "Library" / "Application Support" / "Elect Twin Rooms" / "rooms.sqlite3").read_bytes() == (root / "projects.db").read_bytes()
+        rooms_db_file = next((root / "rooms-home").rglob("rooms.sqlite3"))
+        assert not rooms_db_file.read_bytes() == (root / "projects.db").read_bytes()
         print(json.dumps({"bundled_runtime_cold_start": "passed", "project_write": "passed", "challenge_review": "passed", "following": "passed", "rooms_links": "passed", "provider_calls": 0}, indent=2))
     finally:
-        if twin is not None:
-            twin.terminate()
-            twin.wait(timeout=10)
-        rooms.terminate()
-        rooms.wait(timeout=10)
+        kill_process(twin)
+        kill_process(rooms)
+finally:
+    try:
+        temp_dir_obj.cleanup()
+    except Exception:
+        pass

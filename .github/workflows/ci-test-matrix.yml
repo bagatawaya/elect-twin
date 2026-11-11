@@ -38,6 +38,7 @@ jobs:
         shell: bash
         env:
           PYTHONDONTWRITEBYTECODE: "1"
+          PYTHONUTF8: "1"
         run: |
           cd elect-twin-mac
           python -m unittest \
