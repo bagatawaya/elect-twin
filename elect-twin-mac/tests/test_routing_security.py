@@ -252,10 +252,13 @@ class NativeSourceSecurityTests(unittest.TestCase):
     def setUpClass(cls):
         root = Path(__file__).resolve().parents[1]
         cls.native = (root / "native" / "AppDelegate.swift").read_text()
-        cls.rooms = (
+        rooms_ref = (
             root / "rooms-reference" / "Elect Twin Rooms.app" / "Contents" /
             "Resources" / "server" / "_internal" / "web" / "index.html"
-        ).read_text()
+        )
+        if not rooms_ref.exists():
+            rooms_ref = root.parent / "elect-twin-windows" / "web" / "index.html"
+        cls.rooms = rooms_ref.read_text()
 
     def test_rooms_provider_environment_is_scrubbed_before_launch(self):
         for key in (

@@ -36,20 +36,24 @@ jobs:
           pip install pyinstaller
 
       - name: Freeze twin-server.exe
+        shell: pwsh
         run: |
+          $repoRoot = (Get-Location).Path
           pyinstaller --noconfirm --onefile `
             --name twin-server `
-            --add-data "elect-twin-mac/web;web" `
+            --add-data "$repoRoot/elect-twin-mac/web;web" `
             --distpath elect-twin-windows/dist `
             --workpath elect-twin-windows/build/twin `
             --specpath elect-twin-windows/build `
             elect-twin-mac/twin.py
 
       - name: Freeze rooms-server.exe
+        shell: pwsh
         run: |
+          $repoRoot = (Get-Location).Path
           pyinstaller --noconfirm --onefile `
             --name rooms-server `
-            --add-data "elect-twin-windows/web;web" `
+            --add-data "$repoRoot/elect-twin-windows/web;web" `
             --distpath elect-twin-windows/dist `
             --workpath elect-twin-windows/build/rooms `
             --specpath elect-twin-windows/build `
