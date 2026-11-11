@@ -1,0 +1,28 @@
+{
+  "checks" : [
+    "Actual app cold start and first-run multi-provider setup wizard",
+    "Multi-provider setup step with 5 independent provider forms",
+    "Dismissed setup wizard without entering keys or provider calls",
+    "Native navigation: My Models",
+    "Native navigation: My Projects",
+    "Native navigation: My Twin",
+    "Native navigation: People",
+    "Native navigation: Collaboration",
+    "Native navigation: Agent Challenges",
+    "Native navigation: Following",
+    "Native navigation: The Zoo Network",
+    "WebKit Tab navigation and keyboard-focus indicator",
+    "People invitation preview consent dialog verified",
+    "Zoo categories, simulated Top Thread, and reaction aria-pressed toggle verified",
+    "Created project, decision, and Markdown document through native WebKit",
+    "Participant tap details",
+    "Challenge submission, explicit review, and Following",
+    "Rooms owner authorization, real deterministic worker completion, and screenshot",
+    "Rooms to Twin custom-scheme return with project context intact"
+  ],
+  "error" : null,
+  "mode" : "native_first_launch",
+  "provider_calls" : 0,
+  "screenshots_are_wkwebview_snapshots" : true,
+  "success" : true
+}

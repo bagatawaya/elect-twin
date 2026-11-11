@@ -1,0 +1,68 @@
+name: Cross-Platform Test Matrix
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+  workflow_dispatch:
+
+jobs:
+  test-matrix:
+    name: Test on ${{ matrix.os }} (Python ${{ matrix.python-version }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-14, ubuntu-latest, windows-latest]
+        python-version: ['3.12']
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Set up Node.js for JS validation
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run 124-test offline suite
+        shell: bash
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          cd elect-twin-mac
+          python -m unittest \
+            test_twin.py \
+            test_extra.py \
+            test_images.py \
+            test_control.py \
+            tests/test_native_features.py \
+            tests/test_zoo.py \
+            tests/test_onboarding_invitations.py \
+            tests/test_routing_security.py \
+            tests/test_frontend_contracts.py
+
+      - name: Validate JavaScript syntax across frontend files
+        shell: bash
+        run: |
+          cd elect-twin-mac
+          python tests/check_js.py
+
+      - name: Test OS-independent pure-Python Rooms engine
+        shell: bash
+        run: |
+          python elect-twin-windows/test_rooms_server.py
+
+      - name: Test smoke_rooms with pure-Python engine
+        shell: bash
+        env:
+          ELECT_TWIN_ROOMS_ENGINE: "../elect-twin-windows/rooms_server.py"
+        run: |
+          cd elect-twin-mac
+          python tests/smoke_rooms.py

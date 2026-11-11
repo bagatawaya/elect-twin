@@ -1,0 +1,23 @@
+pageType: content
+background: {type: solid, color: "$aluminum"}
+elements:
+  - {elementId: kicker, elementType: text, bounds: [64, 42, 700, 20], content: {style: "$label", text: "ELECT TWIN / IDENTITY STUDY 01"}}
+  - {elementId: recommended, elementType: text, bounds: [990, 42, 224, 20], content: {fontFamily: Arial, fontSize: 11, bold: true, color: "$accent", align: [right, top], text: "RECOMMENDED"}}
+  - {elementId: stage, elementType: shape, bounds: [64, 100, 704, 470], shapeName: rect, fill: {type: solid, color: "$white"}}
+  - {elementId: human, elementType: shape, bounds: [198, 186, 126, 264], shapeName: roundRect, adjustments: [50000], fill: {type: solid, color: "$ink"}}
+  - {elementId: twin, elementType: shape, bounds: [346, 186, 126, 264], shapeName: roundRect, adjustments: [50000], fill: {type: solid, color: "$accent"}}
+  - {elementId: human-eye, elementType: shape, bounds: [244, 254, 22, 22], shapeName: ellipse, fill: {type: solid, color: "$white"}}
+  - {elementId: twin-eye, elementType: shape, bounds: [392, 254, 22, 22], shapeName: ellipse, fill: {type: solid, color: "$white"}}
+  - {elementId: human-mouth, elementType: shape, bounds: [239, 338, 32, 5], shapeName: roundRect, adjustments: [50000], fill: {type: solid, color: "$white"}}
+  - {elementId: twin-mouth, elementType: shape, bounds: [387, 338, 32, 5], shapeName: roundRect, adjustments: [50000], fill: {type: solid, color: "$white"}}
+  - {elementId: wordmark, elementType: text, bounds: [192, 477, 470, 64], content: {fontFamily: Arial, fontSize: 48, bold: true, letterSpacing: -2, color: "$ink", align: [left, middle], wrap: false, text: "<p>Elect <span style=\"color:$accent\">Twin</span></p>"}}
+  - {elementId: title, elementType: text, bounds: [832, 116, 382, 58], content: {style: "$title", text: "Counterpart"}}
+  - {elementId: summary, elementType: text, bounds: [832, 196, 354, 100], content: {style: "$body", text: "Two equal figures, one shared baseline. The human and Twin remain distinct, with a small face making the partnership approachable at app scale."}}
+  - {elementId: rule, elementType: shape, bounds: [832, 324, 354, 1], shapeName: rect, fill: {type: solid, color: "#dfddd8"}}
+  - {elementId: rationale-label, elementType: text, bounds: [832, 348, 350, 18], content: {style: "$label", text: "WHY THIS DIRECTION"}}
+  - {elementId: rationale, elementType: text, bounds: [832, 382, 354, 116], content: {style: "$body", text: "A clear two-part silhouette survives at 16–32 px. Deep brown gives the human figure warmth; clay orange distinguishes the Twin without suggesting a robot or a copied assistant brand."}}
+  - {elementId: small-1, elementType: shape, bounds: [837, 521, 15, 30], shapeName: roundRect, adjustments: [50000], fill: {type: solid, color: "$ink"}}
+  - {elementId: small-2, elementType: shape, bounds: [856, 521, 15, 30], shapeName: roundRect, adjustments: [50000], fill: {type: solid, color: "$accent"}}
+  - {elementId: small-note, elementType: text, bounds: [892, 522, 250, 36], content: {fontFamily: Arial, fontSize: 13, color: "$clay", text: "Simple enough for sidebar and favicon use."}}
+  - {elementId: footer-rule, elementType: shape, bounds: [64, 628, 1150, 1], shapeName: rect, fill: {type: solid, color: "#dfddd8"}}
+  - {elementId: footer, elementType: text, bounds: [64, 650, 1150, 24], content: {style: "$label", text: "MODULAR GEOMETRY / TWO DISTINCT PARTNERS / ONE LOCAL WORKSPACE"}}

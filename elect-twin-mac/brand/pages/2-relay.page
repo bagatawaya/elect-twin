@@ -1,0 +1,18 @@
+pageType: content
+background: {type: solid, color: "$aluminum"}
+elements:
+  - {elementId: kicker, elementType: text, bounds: [64, 42, 700, 20], content: {style: "$label", text: "ELECT TWIN / IDENTITY STUDY 02"}}
+  - {elementId: stage, elementType: shape, bounds: [64, 100, 704, 470], shapeName: rect, fill: {type: solid, color: "$white"}}
+  - {elementId: relay-human, elementType: shape, bounds: [184, 197, 220, 104], shapeName: custom, viewBox: [220, 104], path: "M0,0 H158 Q220,0 220,52 Q220,104 158,104 H0 Z M52,28 V76 H148 Q176,76 176,52 Q176,28 148,28 H52 Z", fill: {type: solid, color: "$ink"}}
+  - {elementId: relay-twin, elementType: shape, bounds: [270, 323, 220, 104], shapeName: custom, viewBox: [220, 104], path: "M220,0 H62 Q0,0 0,52 Q0,104 62,104 H220 Z M168,28 V76 H72 Q44,76 44,52 Q44,28 72,28 H168 Z", fill: {type: solid, color: "$accent"}}
+  - {elementId: wordmark, elementType: text, bounds: [190, 477, 470, 64], content: {fontFamily: Arial, fontSize: 47, bold: true, letterSpacing: -1, color: "$ink", align: [left, middle], wrap: false, text: "<p>elec<span style=\"color:$accent\">TWIN</span></p>"}}
+  - {elementId: title, elementType: text, bounds: [832, 116, 382, 58], content: {style: "$title", text: "Relay"}}
+  - {elementId: summary, elementType: text, bounds: [832, 196, 354, 100], content: {style: "$body", text: "Two open paths hand work back and forth. The opposing curves suggest continuity between a person’s intent and a Twin’s contribution."}}
+  - {elementId: rule, elementType: shape, bounds: [832, 324, 354, 1], shapeName: rect, fill: {type: solid, color: "#dfddd8"}}
+  - {elementId: rationale-label, elementType: text, bounds: [832, 348, 350, 18], content: {style: "$label", text: "DESIGN TRADE-OFF"}}
+  - {elementId: rationale, elementType: text, bounds: [832, 382, 354, 116], content: {style: "$body", text: "More abstract and motion-oriented than Counterpart. The alternating wordmark offers elecTWIN as an option, while the symbol keeps its own silhouette without relying on letters."}}
+  - {elementId: mono-1, elementType: shape, bounds: [838, 520, 66, 30], shapeName: roundRect, adjustments: [50000], fill: {type: solid, color: "$ink"}}
+  - {elementId: mono-2, elementType: shape, bounds: [868, 540, 66, 30], shapeName: roundRect, adjustments: [50000], fill: {type: solid, color: "$ink"}}
+  - {elementId: small-note, elementType: text, bounds: [962, 522, 220, 42], content: {fontFamily: Arial, fontSize: 13, color: "$clay", text: "Strong horizontal gesture; less human at very small sizes."}}
+  - {elementId: footer-rule, elementType: shape, bounds: [64, 628, 1150, 1], shapeName: rect, fill: {type: solid, color: "#dfddd8"}}
+  - {elementId: footer, elementType: text, bounds: [64, 650, 1150, 24], content: {style: "$label", text: "OPPOSING PATHS / REVIEWED HANDOFFS / EDITABLE VECTOR GEOMETRY"}}

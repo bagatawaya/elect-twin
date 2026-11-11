@@ -1,0 +1,13 @@
+{
+  "checks" : [
+    "Native restart restored project, reviewed challenge, and Following",
+    "Native restart restored Zoo reaction state",
+    "Native restart restored the decision and Markdown document",
+    "Native restart restored Rooms human and deterministic agent events"
+  ],
+  "error" : null,
+  "mode" : "native_reopen",
+  "provider_calls" : 0,
+  "screenshots_are_wkwebview_snapshots" : true,
+  "success" : true
+}

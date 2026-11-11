@@ -1,0 +1,10 @@
+{
+  "name": "elect-twin-local-preview",
+  "version": "0.3.0",
+  "private": true,
+  "description": "Development preview launcher for the dependency-free Elect Twin Python app",
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "test": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest test_twin.py test_extra.py test_images.py test_control.py"
+  }
+}

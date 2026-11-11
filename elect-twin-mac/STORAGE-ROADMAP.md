@@ -1,0 +1,11 @@
+# Storage choices and cross-device context
+
+## Working now: local
+All projects, text documents, human decisions, conversation history, exact approved context and generated PNG assets live in the selected SQLite database. Choose its location with `--data /path/projects.sqlite3`. Credentials are not included. The library is private to the operating-system user, but is not encrypted at rest. Back up the complete database while Elect Twin is stopped. Do not run multiple Twin servers against a cloud-synced live SQLite file.
+
+## Planned: connected Google Drive (not integrated)
+A storage interface should support local and remote implementations without changing the context compiler or provider adapters. Drive setup must use a registered OAuth client, user sign-in and explicit limited file access (prefer drive.file for Twin-created/user-selected files), with refresh tokens in OS keychain. No credentials in Drive or project exports. Show account, selected folder, synchronization status and disconnect/revoke controls. The user must select which projects may sync; default local-only. Sending project data to a model remains a separate approval, even after Drive is connected.
+
+Use immutable versioned project manifests plus content-addressed document/asset objects rather than synchronizing a live SQLite file. Each revision identifies parent revision, device, timestamp and content hashes. Compare remote version/ETag before writing. Never silently last-write-wins on decisions or goals: concurrent updates become explicit branches, with a human review/merge UI and a preserved original. Offline edits queue locally and reconcile on reconnect. Deleted items need tombstones, recoverable retention and a user-visible final deletion workflow.
+
+Personal and company projects require separate namespaces and permissions. A company connection must never silently upload personal history. Encryption option should encrypt payloads client-side with user-owned keys; account revocation alone cannot erase offline copies. Document search indexing must respect chosen encryption and device boundaries. Remote restore rehearsal, token expiration, offline conflict, account switch, partial upload and schema migration tests are release requirements before calling cross-device memory working.

@@ -1,0 +1,50 @@
+# Operating System files
+.DS_Store
+Thumbs.db
+desktop.ini
+.git_backup/
+*.git_backup/
+
+# Environment and sensitive data
+.env
+*.env
+*.sqlite3
+*.sqlite3-journal
+.local-data/
+*.db
+/tmp/
+
+# Python caches and virtual environments
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.venv/
+venv/
+packaging/build-venv/
+
+# Build outputs and distribution binaries
+dist/
+build/
+bin/
+obj/
+packaging/build/
+packaging/dmg/
+packaging/dist/*.dmg
+packaging/dist/*.sha256
+packaging/dist/twin-server
+packaging/superseded/
+packaging/install-test*/
+packaging/native-test-data*/
+
+# Prebuilt binary reference (23MB+; replaced by pure-Python rooms_server.py)
+rooms-reference/
+
+# Legacy / non-repository workspace directories
+rollback/
+reference/
+elect-twin/
+.native-validation/
+*.zip
+*.diff
+Continue-the-existing.txt

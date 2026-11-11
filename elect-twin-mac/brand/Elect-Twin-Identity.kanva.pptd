@@ -1,0 +1,40 @@
+version: v2
+title: Elect Twin — Original identity concepts
+size: [1280, 720]
+theme:
+  colors:
+    aluminum: "#f6f6f6"
+    light: "#eeeeee"
+    white: "#ffffff"
+    ink: "#2b1703"
+    clay: "#66615a"
+    stone: "#85827e"
+    accent: "#b84a1b"
+    soft: "#f6e7df"
+  textStyles:
+    title:
+      fontFamily: Arial
+      fontSize: 42
+      color: "$ink"
+      bold: true
+      letterSpacing: -1
+    subtitle:
+      fontFamily: Arial
+      fontSize: 24
+      color: "$ink"
+      bold: true
+    body:
+      fontFamily: Arial
+      fontSize: 16
+      color: "$clay"
+      lineHeight: 1.45
+    label:
+      fontFamily: Arial
+      fontSize: 11
+      color: "$stone"
+      letterSpacing: 1.4
+pages:
+  - pages/1-counterpart.page
+  - pages/2-relay.page
+  - pages/3-common-ground.page
+  - pages/4-selected-system.page

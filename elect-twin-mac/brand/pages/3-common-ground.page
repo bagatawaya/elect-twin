@@ -1,0 +1,19 @@
+pageType: content
+background: {type: solid, color: "$aluminum"}
+elements:
+  - {elementId: kicker, elementType: text, bounds: [64, 42, 700, 20], content: {style: "$label", text: "ELECT TWIN / IDENTITY STUDY 03"}}
+  - {elementId: stage, elementType: shape, bounds: [64, 100, 704, 470], shapeName: rect, fill: {type: solid, color: "$white"}}
+  - {elementId: left-arc, elementType: shape, bounds: [196, 184, 140, 280], shapeName: custom, viewBox: [140, 280], path: "M140,0 A140,140 0 0 0 140,280 L140,224 A84,84 0 0 1 140,56 Z", fill: {type: solid, color: "$ink"}}
+  - {elementId: right-arc, elementType: shape, bounds: [356, 184, 140, 280], shapeName: custom, viewBox: [140, 280], path: "M0,0 A140,140 0 0 1 0,280 L0,224 A84,84 0 0 0 0,56 Z", fill: {type: solid, color: "$accent"}}
+  - {elementId: shared-point, elementType: shape, bounds: [322, 300, 48, 48], shapeName: ellipse, fill: {type: solid, color: "$white"}}
+  - {elementId: wordmark, elementType: text, bounds: [190, 477, 470, 64], content: {fontFamily: Arial, fontSize: 48, bold: true, letterSpacing: -2, color: "$ink", align: [left, middle], wrap: false, text: "<p>Elect <span style=\"color:$accent\">Twin</span></p>"}}
+  - {elementId: title, elementType: text, bounds: [832, 116, 382, 58], content: {style: "$title", text: "Common Ground"}}
+  - {elementId: summary, elementType: text, bounds: [832, 196, 354, 100], content: {style: "$body", text: "Two arcs protect a shared point. The open center stands for reviewed context: each partner keeps a boundary around what they contribute."}}
+  - {elementId: rule, elementType: shape, bounds: [832, 324, 354, 1], shapeName: rect, fill: {type: solid, color: "#dfddd8"}}
+  - {elementId: rationale-label, elementType: text, bounds: [832, 348, 350, 18], content: {style: "$label", text: "DESIGN TRADE-OFF"}}
+  - {elementId: rationale, elementType: text, bounds: [832, 382, 354, 116], content: {style: "$body", text: "The most privacy-led concept. Its quiet symmetry suits a local-first tool, but the shared point needs a knockout at small sizes and the idea is less immediately human."}}
+  - {elementId: mini-left, elementType: shape, bounds: [850, 520, 25, 52], shapeName: custom, viewBox: [140, 280], path: "M140,0 A140,140 0 0 0 140,280 L140,224 A84,84 0 0 1 140,56 Z", fill: {type: solid, color: "$ink"}}
+  - {elementId: mini-right, elementType: shape, bounds: [879, 520, 25, 52], shapeName: custom, viewBox: [140, 280], path: "M0,0 A140,140 0 0 1 0,280 L0,224 A84,84 0 0 0 0,56 Z", fill: {type: solid, color: "$accent"}}
+  - {elementId: small-note, elementType: text, bounds: [930, 522, 240, 42], content: {fontFamily: Arial, fontSize: 13, color: "$clay", text: "A calm enclosure with a precise shared center."}}
+  - {elementId: footer-rule, elementType: shape, bounds: [64, 628, 1150, 1], shapeName: rect, fill: {type: solid, color: "#dfddd8"}}
+  - {elementId: footer, elementType: text, bounds: [64, 650, 1150, 24], content: {style: "$label", text: "TWO BOUNDARIES / SHARED CONTEXT / LOCAL BY DESIGN"}}

@@ -1,0 +1,24 @@
+2026-11-11T19:47:03Z Runner initialized
+2026-11-11T19:47:03Z Task entered
+2026-11-11T19:47:05Z PASS: Actual app cold start and first-run multi-provider setup wizard
+2026-11-11T19:47:05Z PASS: Multi-provider setup step with 5 independent provider forms
+2026-11-11T19:47:05Z PASS: Dismissed setup wizard without entering keys or provider calls
+2026-11-11T19:47:05Z PASS: Native navigation: My Models
+2026-11-11T19:47:05Z PASS: Native navigation: My Projects
+2026-11-11T19:47:05Z PASS: Native navigation: My Twin
+2026-11-11T19:47:05Z PASS: Native navigation: People
+2026-11-11T19:47:05Z PASS: Native navigation: Collaboration
+2026-11-11T19:47:05Z PASS: Native navigation: Agent Challenges
+2026-11-11T19:47:05Z PASS: Native navigation: Following
+2026-11-11T19:47:05Z PASS: Native navigation: The Zoo Network
+2026-11-11T19:47:05Z Focus state after Tab: Optional({"html":"<button data-page=\"projects\" aria-current=\"false\"><svg viewBox=\"0 0 20 20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.45\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M3 6h6l2 2h6v9H3Z\"></path></svg>My P","visible":true,"outline":"3px solid rgb(40, 106, 145)"})
+2026-11-11T19:47:05Z PASS: WebKit Tab navigation and keyboard-focus indicator
+2026-11-11T19:47:05Z PASS: People invitation preview consent dialog verified
+2026-11-11T19:47:05Z PASS: Zoo categories, simulated Top Thread, and reaction aria-pressed toggle verified
+2026-11-11T19:47:06Z PASS: Created project, decision, and Markdown document through native WebKit
+2026-11-11T19:47:07Z PASS: Participant tap details
+2026-11-11T19:47:07Z PASS: Challenge submission, explicit review, and Following
+2026-11-11T19:47:08Z PASS: Rooms owner authorization, real deterministic worker completion, and screenshot
+2026-11-11T19:47:09Z PASS: Rooms to Twin custom-scheme return with project context intact
+2026-11-11T19:47:09Z Flow complete
+2026-11-11T19:47:09Z Success report written

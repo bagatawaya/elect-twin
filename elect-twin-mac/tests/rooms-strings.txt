@@ -1,0 +1,326 @@
+Failed to extract %s: failed to open archive file!
+fseek
+Failed to extract %s: failed to seek to the entry's data!
+malloc
+Failed to extract %s: failed to allocate data buffer (%u bytes)!
+Failed to create symbolic link %s!
+fopen
+Failed to extract %s: failed to open target file!
+Failed to seek to cookie position!
+fread
+Failed to read cookie!
+calloc
+Could not allocate memory for archive structure!
+Could not allocate buffer for TOC!
+Could not read full TOC!
+Error on file.
+1.3.2
+Failed to extract %s: inflateInit() failed with return code %d!
+Failed to extract %s: decompression resulted in return code %d!
+Failed to extract %s: failed to read data chunk!
+fwrite
+Failed to extract %s: failed to write data chunk!
+Could not allocate memory for DYLIB_PYTHON structure.
+%s/%s
+Path of Python shared library (%s) and its name (%s) exceed buffer size (%d).
+Failed to load Python shared library '%s': %s
+Py_DecRef
+Failed to import symbol %s from Python shared library: %s
+Py_DecodeLocale
+Py_Finalize
+Py_IsInitialized
+Py_PreInitialize
+PyInitConfig_Create
+PyInitConfig_Free
+PyInitConfig_SetInt
+PyInitConfig_SetStr
+PyInitConfig_SetStrList
+PyInitConfig_GetError
+Py_InitializeFromInitConfig
+PyConfig_Clear
+PyConfig_InitIsolatedConfig
+PyConfig_Read
+PyConfig_SetBytesString
+PyConfig_SetString
+PyConfig_SetWideStringList
+Py_InitializeFromConfig
+Py_ExitStatusException
+PyErr_Clear
+PyErr_Fetch
+PyErr_NormalizeException
+PyErr_Occurred
+PyErr_Print
+PyErr_Restore
+PyEval_EvalCode
+PyImport_AddModule
+PyImport_ExecCodeModule
+PyImport_ImportModule
+PyList_Append
+PyMarshal_ReadObjectFromString
+PyMem_RawFree
+PyModule_GetDict
+PyObject_CallFunction
+PyObject_CallFunctionObjArgs
+PyObject_GetAttrString
+PyObject_SetAttrString
+PyObject_Str
+PyPreConfig_InitIsolatedConfig
+PyRun_SimpleStringFlags
+PyStatus_Exception
+PySys_GetObject
+PySys_SetObject
+PyUnicode_AsUTF8
+PyUnicode_Decode
+PyUnicode_DecodeFSDefault
+PyUnicode_FromFormat
+PyUnicode_FromString
+PyUnicode_Join
+PyUnicode_Replace
+Could not allocate memory for DYLIB_TCLTK structure.
+Failed to load Tcl shared library '%s': %s
+Failed to load Tk shared library '%s': %s
+Tcl_GetVersion
+Failed to import symbol %s from Tcl shared library: %s
+Tcl_Init
+Tcl_CreateInterp
+Tcl_FindExecutable
+Tcl_DoOneEvent
+Tcl_Finalize
+Tcl_FinalizeThread
+Tcl_DeleteInterp
+Tcl_CreateThread
+Tcl_GetCurrentThread
+Tcl_JoinThread
+Tcl_MutexLock
+Tcl_MutexUnlock
+Tcl_MutexFinalize
+Tcl_ConditionFinalize
+Tcl_ConditionNotify
+Tcl_ConditionWait
+Tcl_ThreadQueueEvent
+Tcl_ThreadAlert
+Tcl_GetVar2
+Tcl_SetVar2
+Tcl_UnsetVar2
+Tcl_CreateObjCommand
+Tcl_GetString
+Tcl_NewStringObj
+Tcl_NewByteArrayObj
+Tcl_SetVar2Ex
+Tcl_GetObjResult
+Tcl_SetObjResult
+Tcl_EvalFile
+Tcl_EvalEx
+Tcl_EvalObjv
+Tcl_Alloc
+Tcl_Free
+TclZipfs_Mount
+Tk_Init
+Failed to import symbol %s from Tk shared library: %s
+Tk_GetNumMainWindows
+WARNING
+ERROR
+[PYI-%d:ERROR] 
+%s: %s
+[PYI-%d:%s] 
+%s%c%s
+Extraction path length exceeds maximum path length!
+File already exists but should not: %s
+Failed to create parent directory structure.
+Failed to extract entry: %s.
+__main__
+Could not get __main__ module.
+Could not get __main__ module's dict.
+Failed to extract script from archive!
+%s%c%s.py
+Absolute path to script exceeds PYI_PATH_MAX
+__file__
+Failed to unmarshal code object for %s
+_pyi_main_co
+Failed to execute script '%s' due to unhandled exception!
+Security validation failure: could not stat() the executable!
+PYINSTALLER_SUPPRESS_SPLASH_SCREEN
+PYINSTALLER_RESET_ENVIRONMENT
+_PYI_ARCHIVE_FILE
+_PYI_APPLICATION_HOME_DIR
+_PYI_PARENT_PROCESS_LEVEL
+_PYI_SPLASH_IPC
+Invalid value in _PYI_PARENT_PROCESS_LEVEL: %s
+Invalid parent process level: %d
+Failed to set _PYI_PARENT_PROCESS_LEVEL environment variable!
+PYINSTALLER_STRICT_UNPACK_MODE
+Could not create temporary directory!
+Failed to set application home directory via environment variable!
+_PYI_APPLICATION_HOME_DIR environment variable is not defined!
+Path exceeds PYI_PATH_MAX limit.
+Security validation failure: unexpected PID found in the name of application's home directory!
+.app/Contents/MacOS
+Frameworks
+Failed to remove temporary directory: %s
+pyi-python-flag
+Py_GIL_DISABLED
+pyi-runtime-tmpdir
+pyi-contents-directory
+pyi-bootloader-ignore-signals
+pyi-enable-onefile-parent-verification
+Failed to load splash screen resources!
+Failed to unpack splash screen dependencies from PKG archive!
+Failed to load Tcl/Tk shared libraries for splash screen!
+Failed to start splash screen!
+Failed to obtain executable path via _NSGetExecutablePath!
+Could not load PyInstaller's embedded PKG archive from the executable (%s)
+%s.pkg
+Could not side-load PyInstaller's PKG archive from external file (%s)
+%s%c%s%c%s%c%s
+%s%c%s%c%s
+Failed to copy file %s from %s!
+%s%c%s.pkg
+%s%c%s.exe
+Referenced dependency archive %s not found.
+Failed to open referenced dependency archive %s.
+Dependency %s not found in the referenced dependency archive.
+Failed to extract %s from referenced dependency archive %s.
+Maximum archive pool size reached!
+Failed to open archive %s!
+pyi-
+verbose
+unbuffered
+optimize
+hash_seed
+utf8
+%s/base_library.zip
+%s/python%d.%d/lib-dynload
+Failed to convert executable filename to UTF-8.
+program_name
+Failed to set program name: %s
+Failed to convert application home directory to UTF-8.
+home
+Failed to set python home path: %s
+Failed to convert path to application home directory to UTF-8!
+Failed to construct path to base_library.zip - path is too long!
+Failed to construct path to lib-dynload directory - path is too long!
+module_search_paths
+Failed to set module search paths: %s
+argv
+Failed to set sys.argv: %s
+site_import
+Failed to set 'site_import': %s
+write_bytecode
+Failed to set 'write_bytecode': %s
+configure_c_stdio
+Failed to set 'configure_c_stdio': %s
+optimization_level
+Failed to set 'optimization_level': %s
+buffered_stdio
+Failed to set 'buffered_stdio': %s
+Failed to set 'verbose': %s
+use_hash_seed
+Failed to set 'use_hash_seed': %s
+Failed to set 'hash_seed': %s
+dev_mode
+Failed to set 'dev_mode': %s
+install_signal_handlers
+Failed to set 'install_signal_handlers': %s
+warnoptions
+Failed to set 'warnoptions': %s
+xoptions
+Failed to set 'xoptions': %s
+Failed to parse run-time options!
+Failed to pre-initialize embedded python interpreter!
+Failed to allocate PyInitConfig structure!
+Failed to set program name!
+Failed to set python home path!
+Failed to set module search paths!
+Failed to set sys.argv!
+Failed to set run-time options!
+Failed to allocate PyConfig structure! Unsupported python version?
+Failed to start embedded python interpreter: %s
+Failed to start embedded python interpreter!
+Failed to get _MEIPASS as PyObject.
+_MEIPASS
+Failed to unmarshal code object for module %s!
+Module object for %s is NULL!
+_pyinstaller_pyz
+PYZ archive entry not found in the TOC!
+%U?%llu
+Failed to format PYZ archive path and offset
+Failed to store path to PYZ archive into sys.%s!
+import sys; sys.stdout.flush();         (sys.__stdout__.flush if sys.__stdout__         is not sys.stdout else (lambda: None))()
+import sys; sys.stderr.flush();         (sys.__stderr__.flush if sys.__stderr__         is not sys.stderr else (lambda: None))()
+Security validation failure: invalid originating onefile parent process (different PID)!
+Security validation failure: invalid originating onefile parent process (PID not found)!
+Security validation failure: failed to obtain name of application's home directory!
+Security validation failure: unexpected name of application's home directory!
+_MEI%08x
+stat
+Security validation failure: could not stat() the application's home directory!
+Security validation failure: owner ID of application's home directory (%d) does not match the effective user ID (%d)!
+Security validation failure: application's home directory has invalid permissions (0%o)!
+Security validation failure: could not stat() the executable file
+Security validation failure: owner ID of application's home directory (%d) does not match owner ID of the executable (%d)!
+Security validation failure: group ID of application's home directory (%d) does not match group ID of the executable (%d)!
+Security validation failure: maximum process tree depth exceeded!
+Security validation failure: could not look up ancestor process info!
+Security validation failure: invalid originating onefile parent process (different executable)!
+SPLASH: length of Tcl shared library path exceeds maximum path length!
+SPLASH: length of Tk shared library path exceeds maximum path length!
+SPLASH: length of Tcl module directory path exceeds maximum path length!
+SPLASH: length of Tk module directory path exceeds maximum path length!
+Could not allocate memory for splash screen resources.
+SPLASH: Tcl is not threaded. Only threaded Tcl is supported.
+SPLASH: could not find requirement %s in archive.
+SPLASH: extraction path length exceeds maximum path length!
+SPLASH: file already exists but should not: %s
+SPLASH: failed to create parent directory structure.
+SPLASH: could not extract requirement %s.
+SPLASH: failed to load Tcl/Tk shared libraries!
+Could not allocate memory for SPLASH_CONTEXT.
+//zipfs:/
+status_text
+//zipfs:/lib/tcl
+//zipfs:/lib/tk
+tclInit
+tcl_findLibrary
+exit
+rename ::source ::_source
+source
+_image_data
+tcl_library
+tcl_pkgPath
+auto_path
+%s/init.tcl
+path to init.tcl exceeds maximum buffer size
+init.tcl
+tk.tcl
+%s/tk.tcl
+path to tk.tcl exceeds maximum buffer size
+tk_library
+attempted to source file outside of top-level application directory
+_source
+PYINSTALLER_SPLASH_SCREEN_CENTER
+%s%c
+%.*s
+TMPDIR
+TEMP
+/tmp
+/var/tmp
+/usr/tmp
+Failed to create or resolve runtime_tmpdir from given path: %s
+Length of resolved runtime_tmpdir exceeds maximum path length!
+semctl
+Failed to initialize sync semaphore!
+LOADER: failed to fork child process: %s
+semop
+Failed to wait on sync semaphore!
+LOADER: application is started by systemd socket, but we cannot set proper LISTEN_PID on it.
+LOADER: failed to allocate argv array for execvp!
+LOADER: failed to start child process: %s
+LOADER: failed start child process: %s
+Failed to signal the sync semaphore!
+LOADER: failed to wait for child process: %s
+LOADER: failed to destroy sync semaphore (errno %d)!
+LOADER: failed to allocate pyi_argv: %s
+LOADER: failed to strdup argv[%d]: %s
+LOADER: length of runtime-tmpdir exceeds maximum path length!
+%s_MEI%08xXXXXXX
+LISTEN_PID

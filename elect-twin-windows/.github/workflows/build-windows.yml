@@ -1,0 +1,87 @@
+name: Build Windows Release Package
+
+on:
+  push:
+    branches: [ master, main ]
+    tags: [ 'v*' ]
+  pull_request:
+    branches: [ master, main ]
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Set up .NET 8 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Install Inno Setup
+        run: choco install innosetup --no-progress
+
+      - name: Install Python build tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyinstaller
+
+      - name: Run offline test suite
+        run: |
+          $env:PYTHONDONTWRITEBYTECODE = "1"
+          python -m unittest discover -s elect-twin-mac/tests -p "test_*.py"
+          python elect-twin-windows/test_rooms_server.py
+
+      - name: Build twin-server.exe
+        run: |
+          pyinstaller --noconfirm --onefile `
+            --name twin-server `
+            --add-data "elect-twin-mac/web;web" `
+            --distpath elect-twin-windows/dist `
+            --workpath elect-twin-windows/build/twin `
+            --specpath elect-twin-windows/build `
+            elect-twin-mac/twin.py
+
+      - name: Build rooms-server.exe
+        run: |
+          pyinstaller --noconfirm --onefile `
+            --name rooms-server `
+            --add-data "elect-twin-windows/web;web" `
+            --distpath elect-twin-windows/dist `
+            --workpath elect-twin-windows/build/rooms `
+            --specpath elect-twin-windows/build `
+            elect-twin-windows/rooms_server.py
+
+      - name: Publish .NET 8 WebView2 Shell (ElectTwin.exe)
+        run: |
+          dotnet publish elect-twin-windows/ElectTwinWin/ElectTwinWin.csproj `
+            -c Release `
+            -r win-x64 `
+            --self-contained false
+
+      - name: Compile Inno Setup Installer
+        run: |
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" elect-twin-windows/installer.iss
+
+      - name: Generate SHA-256 sidecar
+        shell: pwsh
+        run: |
+          $installer = "elect-twin-windows/dist/Elect-Twin-Setup-0.3.0-x64.exe"
+          $hash = (Get-FileHash -Path $installer -Algorithm SHA256).Hash.ToLower()
+          "$hash  Elect-Twin-Setup-0.3.0-x64.exe" | Out-File -FilePath "elect-twin-windows/dist/Elect-Twin-Setup-0.3.0-x64.exe.sha256" -Encoding ascii
+          Write-Host "Generated installer SHA-256: $hash"
+
+      - name: Upload Windows Setup Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Elect-Twin-Windows-0.3.0
+          path: |
+            elect-twin-windows/dist/Elect-Twin-Setup-0.3.0-x64.exe
+            elect-twin-windows/dist/Elect-Twin-Setup-0.3.0-x64.exe.sha256

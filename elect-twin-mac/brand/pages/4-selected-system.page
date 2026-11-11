@@ -1,0 +1,34 @@
+pageType: final
+background: {type: solid, color: "$aluminum"}
+elements:
+  - {elementId: kicker, elementType: text, bounds: [64, 42, 700, 20], content: {style: "$label", text: "ELECT TWIN / SELECTED IDENTITY"}}
+  - {elementId: title, elementType: text, bounds: [64, 92, 650, 58], content: {style: "$title", text: "Counterpart, built to stay clear."}}
+  - {elementId: summary, elementType: text, bounds: [64, 165, 700, 56], content: {style: "$body", text: "Use the symbol and wordmark separately or together. Keep the two figures equal in height; do not merge them, add effects, or rely on color alone to explain the partnership."}}
+  - {elementId: app-bg, elementType: shape, bounds: [80, 258, 196, 196], shapeName: roundRect, adjustments: [22000], fill: {type: solid, color: "$white"}, border: {width: 1, color: "#dfddd8"}}
+  - {elementId: app-human, elementType: shape, bounds: [126, 290, 44, 132], shapeName: roundRect, adjustments: [50000], fill: {type: solid, color: "$ink"}}
+  - {elementId: app-twin, elementType: shape, bounds: [182, 290, 44, 132], shapeName: roundRect, adjustments: [50000], fill: {type: solid, color: "$accent"}}
+  - {elementId: app-eye1, elementType: shape, bounds: [143, 323, 10, 10], shapeName: ellipse, fill: {type: solid, color: "$white"}}
+  - {elementId: app-eye2, elementType: shape, bounds: [199, 323, 10, 10], shapeName: ellipse, fill: {type: solid, color: "$white"}}
+  - {elementId: app-caption, elementType: text, bounds: [80, 474, 196, 40], content: {style: "$label", align: [center, top], text: "APP ICON / 1024 PX MASTER"}}
+  - {elementId: lock-human, elementType: shape, bounds: [370, 305, 30, 76], shapeName: roundRect, adjustments: [50000], fill: {type: solid, color: "$ink"}}
+  - {elementId: lock-twin, elementType: shape, bounds: [406, 305, 30, 76], shapeName: roundRect, adjustments: [50000], fill: {type: solid, color: "$accent"}}
+  - {elementId: lock-eye1, elementType: shape, bounds: [381, 326, 7, 7], shapeName: ellipse, fill: {type: solid, color: "$white"}}
+  - {elementId: lock-eye2, elementType: shape, bounds: [417, 326, 7, 7], shapeName: ellipse, fill: {type: solid, color: "$white"}}
+  - {elementId: lock-word, elementType: text, bounds: [462, 304, 280, 78], content: {fontFamily: Arial, fontSize: 45, bold: true, letterSpacing: -2, color: "$ink", wrap: false, text: "<p>Elect <span style=\"color:$accent\">Twin</span></p>"}}
+  - {elementId: lock-caption, elementType: text, bounds: [370, 414, 350, 24], content: {style: "$label", text: "PRIMARY HORIZONTAL LOCKUP"}}
+  - {elementId: clearspace, elementType: text, bounds: [370, 468, 360, 54], content: {fontFamily: Arial, fontSize: 14, color: "$clay", text: "Clear space: at least half the width of one figure on every side. Minimum digital symbol width: 16 px."}}
+  - {elementId: palette-label, elementType: text, bounds: [832, 104, 350, 20], content: {style: "$label", text: "CORE PALETTE"}}
+  - {elementId: swatch1, elementType: shape, bounds: [832, 150, 90, 90], shapeName: rect, fill: {type: solid, color: "$ink"}}
+  - {elementId: swatch2, elementType: shape, bounds: [938, 150, 90, 90], shapeName: rect, fill: {type: solid, color: "$accent"}}
+  - {elementId: swatch3, elementType: shape, bounds: [1044, 150, 90, 90], shapeName: rect, fill: {type: solid, color: "$light"}, border: {width: 1, color: "#dfddd8"}}
+  - {elementId: swatch1text, elementType: text, bounds: [832, 254, 94, 46], content: {fontFamily: Arial, fontSize: 12, color: "$clay", text: "Deep brown\n#2b1703"}}
+  - {elementId: swatch2text, elementType: text, bounds: [938, 254, 94, 46], content: {fontFamily: Arial, fontSize: 12, color: "$clay", text: "Clay orange\n#b84a1b"}}
+  - {elementId: swatch3text, elementType: text, bounds: [1044, 254, 100, 46], content: {fontFamily: Arial, fontSize: 12, color: "$clay", text: "Light gray\n#eeeeee"}}
+  - {elementId: mono-label, elementType: text, bounds: [832, 340, 350, 20], content: {style: "$label", text: "ONE-COLOR CHECK"}}
+  - {elementId: mono-human, elementType: shape, bounds: [840, 390, 40, 96], shapeName: roundRect, adjustments: [50000], fill: {type: solid, color: "$ink"}}
+  - {elementId: mono-twin, elementType: shape, bounds: [892, 390, 40, 96], shapeName: roundRect, adjustments: [50000], fill: {type: solid, color: "$ink"}}
+  - {elementId: mono-eye1, elementType: shape, bounds: [855, 416, 9, 9], shapeName: ellipse, fill: {type: solid, color: "$aluminum"}}
+  - {elementId: mono-eye2, elementType: shape, bounds: [907, 416, 9, 9], shapeName: ellipse, fill: {type: solid, color: "$aluminum"}}
+  - {elementId: mono-note, elementType: text, bounds: [970, 391, 200, 80], content: {fontFamily: Arial, fontSize: 14, color: "$clay", text: "The silhouette remains paired and legible without orange. Faces may disappear below 24 px."}}
+  - {elementId: footer-rule, elementType: shape, bounds: [64, 628, 1150, 1], shapeName: rect, fill: {type: solid, color: "#dfddd8"}}
+  - {elementId: footer, elementType: text, bounds: [64, 650, 1150, 24], content: {style: "$label", text: "FLAT COLOR / NO GRADIENTS / NO DECORATIVE SHADOWS / ORIGINAL VECTOR ASSETS"}}
