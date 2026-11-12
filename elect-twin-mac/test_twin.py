@@ -20,7 +20,7 @@ class TwinTests(unittest.TestCase):
             return 'Reviewed by '+provider,{'output_tokens':12}
         self.t=Twin(self.path,transport=fake)
         self.p=self.t.act('/api/projects',{'name':'Project A','goal':'Choose a plan'})
-    def tearDown(self):self.t.db.close();self.tmp.cleanup();SESSION_KEYS.clear()
+    def tearDown(self):self.t.zoo.close();self.t.db.close();self.tmp.cleanup();SESSION_KEYS.clear()
     def preview(self,**overrides):
         d={'project_id':self.p['id'],'provider':'openai','model':'test-model','prompt':'Draft a plan'};d.update(overrides)
         return self.t.act('/api/preview',d)
