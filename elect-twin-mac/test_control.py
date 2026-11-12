@@ -28,7 +28,7 @@ class Response:
 class DataControlTests(unittest.TestCase):
     def setUp(self):
         twin.SESSION_KEYS.clear()
-        self.tmp = tempfile.TemporaryDirectory()
+        self.tmp = tempfile.TemporaryDirectory(ignore_cleanup_errors=True)
         self.path = Path(self.tmp.name) / "projects.db"
         self.calls = []
 

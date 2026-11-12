@@ -14,7 +14,7 @@ from twin import Twin, Handler, provider_call, BASE, load_catalog, SESSION_KEYS
 class TwinTests(unittest.TestCase):
     def setUp(self):
         SESSION_KEYS.clear()
-        self.tmp=tempfile.TemporaryDirectory();self.path=Path(self.tmp.name)/'projects.db';self.calls=[]
+        self.tmp=tempfile.TemporaryDirectory(ignore_cleanup_errors=True);self.path=Path(self.tmp.name)/'projects.db';self.calls=[]
         def fake(provider,model,context):
             self.calls.append((provider,model,json.loads(context)))
             return 'Reviewed by '+provider,{'output_tokens':12}
@@ -127,7 +127,7 @@ class ProviderAdapterTests(unittest.TestCase):
 
 class HttpBoundaryTests(unittest.TestCase):
     def setUp(self):
-        self.tmp=tempfile.TemporaryDirectory();self.s=ThreadingHTTPServer(('127.0.0.1',0),Handler)
+        self.tmp=tempfile.TemporaryDirectory(ignore_cleanup_errors=True);self.s=ThreadingHTTPServer(('127.0.0.1',0),Handler)
         port=self.s.server_address[1];self.s.origin='http://127.0.0.1:'+str(port);self.s.hosts={'127.0.0.1:'+str(port)};self.s.token='private-test-session';self.s.twin=Twin(Path(self.tmp.name)/'db')
         self.thread=threading.Thread(target=self.s.serve_forever,daemon=True);self.thread.start()
     def tearDown(self):self.s.shutdown();self.s.server_close();self.thread.join();self.s.twin.zoo.close();self.s.twin.db.close();self.tmp.cleanup()

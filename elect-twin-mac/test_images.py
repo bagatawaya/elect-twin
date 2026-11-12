@@ -5,7 +5,7 @@ import twin
 PNG=base64.b64decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aWQ0AAAAASUVORK5CYII=')
 class Images(unittest.TestCase):
  def test_image_consent_library_persistence(self):
-  with tempfile.TemporaryDirectory() as d:
+  with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as d:
    calls=[]
    def generate(*args):calls.append(args);return PNG,{'output_tokens':1}
    t=twin.Twin(Path(d)/'db',image_transport=generate)
