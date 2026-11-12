@@ -25,7 +25,7 @@ CATEGORIES = [
 
 class ZooStoreTests(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory()
+        self.tmp = tempfile.TemporaryDirectory(ignore_cleanup_errors=True)
         self.path = Path(self.tmp.name) / "zoo.sqlite3"
         self.store = ZooStore(self.path)
 
@@ -251,7 +251,7 @@ class ZooStoreTests(unittest.TestCase):
 
 class TwinZooIntegrationTests(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory()
+        self.tmp = tempfile.TemporaryDirectory(ignore_cleanup_errors=True)
         self.path = Path(self.tmp.name) / "projects.sqlite3"
         self.t = twin.Twin(self.path)
 
@@ -364,7 +364,7 @@ class TwinZooIntegrationTests(unittest.TestCase):
 
 class ZooHttpBoundaryTests(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory()
+        self.tmp = tempfile.TemporaryDirectory(ignore_cleanup_errors=True)
         self.server = ThreadingHTTPServer(("127.0.0.1", 0), twin.Handler)
         port = self.server.server_address[1]
         self.server.origin = "http://127.0.0.1:" + str(port)

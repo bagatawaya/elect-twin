@@ -149,14 +149,14 @@ class CatalogTests(unittest.TestCase):
     def test_only_portable_licensed_prompts_import(self):
         base={'id':'example','name':'document-review','title':'document review','capabilityType':'prompt-template','promptText':'Review evidence carefully.','license':{'confidence':'file-verified','name':'CC0-1.0'},'canonicalUrl':'https://example.org/source','revision':'pinned'}
         rows=[base,{**base,'id':'unknown-license','license':{'confidence':'unverified','name':'MIT'}},{**base,'id':'noncommercial','license':{'confidence':'file-verified','name':'CC-BY-NC-4.0'}},{**base,'id':'executable','capabilityType':'integration'},{**base,'id':'deprecated','deprecated':True}]
-        with tempfile.TemporaryDirectory() as directory:
+        with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as directory:
             path=Path(directory)/'skills.json';path.write_text(json.dumps(rows));before=path.read_bytes()
             imported=load_catalog(path)
             self.assertEqual([x['id'] for x in imported],['catalog:example'])
             self.assertEqual(imported[0]['source'],'https://example.org/source');self.assertEqual(imported[0]['revision'],'pinned')
             self.assertEqual(path.read_bytes(),before)
     def test_reject_non_array(self):
-        with tempfile.TemporaryDirectory() as directory:
+        with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as directory:
             path=Path(directory)/'skills.json';path.write_text('{}')
             with self.assertRaises(ValueError):load_catalog(path)
 

@@ -11,7 +11,7 @@ import twin
 
 class LocalShellTests(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory()
+        self.tmp = tempfile.TemporaryDirectory(ignore_cleanup_errors=True)
         self.t = twin.Twin(Path(self.tmp.name) / "projects.db")
 
     def tearDown(self):

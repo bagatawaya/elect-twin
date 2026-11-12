@@ -13,7 +13,7 @@ import twin
 class OnboardingInvitationTests(unittest.TestCase):
     def setUp(self):
         twin.SESSION_KEYS.clear()
-        self.tmp = tempfile.TemporaryDirectory()
+        self.tmp = tempfile.TemporaryDirectory(ignore_cleanup_errors=True)
         self.path = Path(self.tmp.name) / "projects.sqlite3"
         self.transport = Mock(return_value=("unused", {}))
         self.network = patch("twin.urlopen").start()

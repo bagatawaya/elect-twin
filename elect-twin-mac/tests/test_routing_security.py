@@ -18,7 +18,7 @@ import twin
 class RouteSecurityTests(unittest.TestCase):
     def setUp(self):
         twin.SESSION_KEYS.clear()
-        self.tmp = tempfile.TemporaryDirectory()
+        self.tmp = tempfile.TemporaryDirectory(ignore_cleanup_errors=True)
         self.server = ThreadingHTTPServer(("127.0.0.1", 0), twin.Handler)
         port = self.server.server_address[1]
         self.server.origin = "http://127.0.0.1:" + str(port)
