@@ -15,6 +15,7 @@ class LocalShellTests(unittest.TestCase):
         self.t = twin.Twin(Path(self.tmp.name) / "projects.db")
 
     def tearDown(self):
+        self.t.zoo.close()
         self.t.db.close()
         self.tmp.cleanup()
 
@@ -29,7 +30,7 @@ class LocalShellTests(unittest.TestCase):
             "bio": "Local test profile",
         })
         self.assertEqual(saved["human_name"], "Jay")
-        self.t.db.close()
+        self.t.zoo.close();self.t.db.close()
         self.t = twin.Twin(self.t.path)
         self.assertEqual(self.t.state()["profile"]["twin_name"], "Jay Twin")
         with self.assertRaises(ValueError):

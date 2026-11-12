@@ -40,6 +40,7 @@ class DataControlTests(unittest.TestCase):
         self.p = self.t.act("/api/projects", {"name": "Alpha", "goal": "Keep useful memory"})
 
     def tearDown(self):
+        self.t.zoo.close()
         self.t.db.close()
         self.tmp.cleanup()
         twin.SESSION_KEYS.clear()
