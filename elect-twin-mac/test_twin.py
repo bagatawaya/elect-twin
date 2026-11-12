@@ -130,7 +130,7 @@ class HttpBoundaryTests(unittest.TestCase):
         self.tmp=tempfile.TemporaryDirectory();self.s=ThreadingHTTPServer(('127.0.0.1',0),Handler)
         port=self.s.server_address[1];self.s.origin='http://127.0.0.1:'+str(port);self.s.hosts={'127.0.0.1:'+str(port)};self.s.token='private-test-session';self.s.twin=Twin(Path(self.tmp.name)/'db')
         self.thread=threading.Thread(target=self.s.serve_forever,daemon=True);self.thread.start()
-    def tearDown(self):self.s.shutdown();self.s.server_close();self.thread.join();self.s.twin.db.close();self.tmp.cleanup()
+    def tearDown(self):self.s.shutdown();self.s.server_close();self.thread.join();self.s.twin.zoo.close();self.s.twin.db.close();self.tmp.cleanup()
     def get(self,headers):return urlopen(Request(self.s.origin+'/api/state',headers=headers),timeout=3)
     def test_private_api_requires_token(self):
         with self.assertRaises(HTTPError) as cm:self.get({})
