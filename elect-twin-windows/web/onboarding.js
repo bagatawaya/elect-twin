@@ -35,9 +35,10 @@ function setupActions() {
 function setupWelcome() {
   return `<section class="setup-step" aria-label="Welcome and privacy">
     <h3>Your workspace stays optional and local</h3>
-    <p>Elect Twin stores its local database as local plaintext on this Mac. Projects are private by default; local storage is not a cryptographic boundary against this Mac’s operator.</p>
+    <p>OpenTwin stores its local database as local plaintext on this Mac. Projects are private by default; local storage is not a cryptographic boundary against this Mac’s operator.</p>
     <p>You can browse without a provider, skip any step, and return from My Models or People. No provider request or invitation delivery is part of setup.</p>
-    <div class="actions"><button type="button" class="primary" data-setup-step="providers">Continue to Providers</button><button type="button" data-setup-step="collaborators">Go to Collaborators</button></div>
+    <div class="actions" style="margin-top:20px;display:flex;gap:12px;align-items:center"><button type="button" class="primary" data-setup-step="providers">Connect a model</button><button type="button" class="secondary" data-setup-not-now>Explore first</button></div>
+    <div style="margin-top:14px;display:flex;gap:16px;font-size:12px;color:var(--text-tertiary)"><button type="button" data-setup-step="collaborators" style="background:none;border:none;color:inherit;cursor:pointer;padding:0;text-decoration:underline">Collaborators preview</button></div>
   </section>`;
 }
 
@@ -378,4 +379,8 @@ if (typeof document !== 'undefined') {
     return createInvitationPreview(form);
   });
   $('invitation-dialog').addEventListener('close', restoreInvitationLauncher);
+  if (typeof page !== 'undefined' && page === 'home' && typeof state !== 'undefined' && state.profile?.onboarding?.status === 'not_started') {
+    enhanceLocalPages();
+    maybeShowSetup();
+  }
 }

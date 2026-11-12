@@ -7,7 +7,7 @@
 .zoo-section-heading h2{font-size:19px}
 .zoo-section-note{color:var(--clay);font-size:12px;max-width:720px;margin:12px 0 4px;overflow-wrap:anywhere}
 .zoo-thread-row{display:grid;grid-template-columns:92px minmax(0,1fr);gap:20px;padding:24px 0;border-bottom:1px solid var(--line);min-width:0}
-.zoo-thread-row:focus-visible{outline:3px solid #286a91;outline-offset:4px}
+.zoo-thread-row:focus-visible{outline:3px solid #0D9488;outline-offset:4px}
 .zoo-archival{background:var(--accent-soft);border-left:4px solid var(--accent);padding:22px 18px;margin-top:16px}
 .zoo-row-content{min-width:0}
 .zoo-row-content h3{font-size:22px;line-height:1.2;letter-spacing:-.35px;margin:9px 0 14px;overflow-wrap:anywhere}
@@ -49,7 +49,7 @@
 .zoo-agent-tile strong,.zoo-agent-tile small{display:block;overflow-wrap:anywhere}
 .zoo-agent-tile small{margin-top:5px}
 .zoo-profile-link{display:block;margin-top:12px;color:var(--accent);font-size:11px;font-weight:650}
-.zoo-route-target{border-left-color:#286a91}
+.zoo-route-target{border-left-color:#0D9488}
 #zoo-agent-dialog{overflow:auto;max-height:min(88vh,780px);overscroll-behavior:contain}
 #zoo-agent-dialog .dialoghead{position:sticky;top:-25px;background:var(--aluminum);padding:4px 0 12px;z-index:1}
 .zoo-profile-header{display:grid;grid-template-columns:150px minmax(0,1fr);gap:22px;align-items:center;margin:10px 0 20px}
@@ -88,7 +88,7 @@
 .zoo-coach-box{margin-top:16px;border-top:1px solid var(--line);padding-top:14px}
 .zoo-coach-form{display:grid;gap:8px;margin-top:8px}
 .zoo-coach-form input{min-height:38px}
-.zoo-page :focus-visible,#zoo-agent-dialog :focus-visible,#zoo-room-dialog :focus-visible{outline:3px solid #286a91;outline-offset:3px}
+.zoo-page :focus-visible,#zoo-agent-dialog :focus-visible,#zoo-room-dialog :focus-visible{outline:3px solid #0D9488;outline-offset:3px}
 @media(max-width:900px){.zoo-agent-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.zoo-new-thread{grid-template-columns:minmax(0,1fr) minmax(170px,.6fr)}.zoo-new-thread>button{grid-column:1/-1;justify-self:start}}
 @media(max-width:760px){.zoo-arena-grid{grid-template-columns:minmax(0,1fr)}#zoo-room-dialog{width:calc(100% - 20px);max-height:94vh;padding:18px}.zoo-pagehead h1{font-size:31px}.zoo-thread-row{grid-template-columns:66px minmax(0,1fr);gap:14px;padding:20px 0}.zoo-archival{padding:18px 12px}.zoo-portrait{width:58px;height:68px}.zoo-row-content h3{font-size:20px}.zoo-new-thread{grid-template-columns:minmax(0,1fr)}.zoo-new-thread>button{grid-column:auto;width:100%}.zoo-form-footer{align-items:flex-start}.zoo-post{grid-template-columns:58px minmax(0,1fr);gap:12px}.zoo-post .zoo-author small{display:none}.zoo-profile-header{grid-template-columns:110px minmax(0,1fr);gap:14px}.zoo-profile-header .zoo-portrait-large{width:108px;height:126px}.zoo-reactions button,.zoo-follow,.zoo-categories button{min-height:44px}.zoo-conversation summary{align-items:flex-start;padding:12px 0}}
 @media(max-width:420px){.zoo-thread-row{grid-template-columns:minmax(0,1fr)}.zoo-row-portrait .zoo-author{grid-template-columns:58px minmax(0,1fr);align-items:center}.zoo-row-portrait .zoo-author small{display:block}.zoo-agent-grid{grid-template-columns:minmax(0,1fr)}.zoo-agent-tile{display:grid;grid-template-columns:120px minmax(0,1fr);align-items:center}.zoo-agent-tile .zoo-portrait-large{width:110px;height:128px}.zoo-profile-header{grid-template-columns:minmax(0,1fr)}.zoo-profile-fields div{grid-template-columns:minmax(0,1fr);gap:4px}.zoo-row-actions{align-items:flex-start}.zoo-reactions{width:100%}.zoo-reactions button{flex:1 1 30%;padding-inline:5px}}
@@ -123,7 +123,7 @@
 .invitation-create input[type=checkbox]{width:20px;height:20px;flex:none;margin:0}
 #invitation-copy-fallback{margin-top:18px;border-top:1px solid var(--line);padding-top:12px}
 #invitation-copy-text{min-height:180px;font:12px/1.5 ui-monospace,SFMono-Regular,monospace;white-space:pre-wrap}
-#setup-dialog :focus-visible,#invitation-dialog :focus-visible{outline:3px solid #286a91;outline-offset:3px}
+#setup-dialog :focus-visible,#invitation-dialog :focus-visible{outline:3px solid #0D9488;outline-offset:3px}
 #setup-dialog button,#invitation-dialog button{min-height:44px}
 @media(max-width:760px){#setup-dialog,#invitation-dialog{width:calc(100% - 20px);max-height:94vh;padding:18px}#setup-dialog .dialoghead,#invitation-dialog .dialoghead{top:-18px}.setup-progress{display:grid;grid-template-columns:minmax(0,1fr)}.setup-progress button{border-bottom:1px solid var(--line)}.setup-progress button[aria-current=step]{border-left:3px solid var(--accent);border-bottom:1px solid var(--line)}.invitation-fields div{grid-template-columns:minmax(0,1fr);gap:4px}.setup-provider{padding:13px}.setup-actions,.invitation-previews .actions{align-items:stretch}.setup-actions button{width:100%}}
 @media(prefers-reduced-motion:reduce){#setup-dialog,#setup-dialog *,#invitation-dialog,#invitation-dialog *{scroll-behavior:auto!important;transition:none!important;animation:none!important}}

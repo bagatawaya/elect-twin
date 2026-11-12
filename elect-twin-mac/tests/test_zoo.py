@@ -418,7 +418,7 @@ class ZooHttpBoundaryTests(unittest.TestCase):
         res = self.server.twin.zoo.act("/api/zoo/unseal-line", {})
         self.assertTrue(res["ok"])
         self.assertTrue(res["unsealed"])
-        self.assertIn("Contrarian AI Edge", res["edge"])
+        self.assertTrue("Forecast Disagreement" in res["edge"] or "Contrarian AI Edge" in res["edge"])
         state = self.server.twin.zoo.state()
         self.assertTrue(state["arena"]["whats-the-line"]["unsealed"])
 

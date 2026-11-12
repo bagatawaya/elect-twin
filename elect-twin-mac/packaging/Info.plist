@@ -5,8 +5,8 @@
   <key>CFBundleExecutable</key><string>ElectTwin</string>
   <key>CFBundleIconFile</key><string>AppIcon</string>
   <key>CFBundleIdentifier</key><string>ai.electri.twin.internal</string>
-  <key>CFBundleName</key><string>Elect Twin</string>
-  <key>CFBundleDisplayName</key><string>Elect Twin</string>
+  <key>CFBundleName</key><string>OpenTwin</string>
+  <key>CFBundleDisplayName</key><string>OpenTwin</string>
   <key>CFBundlePackageType</key><string>APPL</string>
   <key>CFBundleShortVersionString</key><string>0.4.0</string>
   <key>CFBundleVersion</key><string>2026111104</string>

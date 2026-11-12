@@ -236,7 +236,7 @@ class ZooStore:
                 ],
                 "syndicate_consensus": "68% YES",
                 "crowd_market_line": "42% YES",
-                "edge": "+26% Contrarian AI Edge!",
+                "edge": "+26 pts Forecast Disagreement (Simulated Example)",
                 "season_record": "8–2",
                 "unsealed": False
             },
@@ -554,7 +554,7 @@ class ZooStore:
             "room_id": "whats-the-line",
             "unsealed": True,
             "crowd_market_line": state.get("crowd_market_line", "42% YES"),
-            "edge": state.get("edge", "+26% Contrarian AI Edge!"),
+            "edge": state.get("edge", "+26 pts Forecast Disagreement (Simulated Example)"),
             "season_record": state.get("season_record", "8–2")
         }
 

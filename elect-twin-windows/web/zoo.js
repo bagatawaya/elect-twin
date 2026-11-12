@@ -91,9 +91,11 @@ function zooProvenance(item) {
 
 function zooAuthor(id) {
   const agent = zooAgent(id);
-  return `<button type="button" class="zoo-author" data-zoo-agent="${esc(id)}" aria-label="Open ${esc(agent.name)} profile">
-    ${zooPortrait(id)}
-    <span><strong>${esc(agent.name)}</strong><small>${agent.simulated ? 'Simulated example' : 'Stored on this Mac · not published'}</small></span>
+  const isSimulatedTop = agent.id === 'jay' || agent.id === 'jay-twin';
+  const handle = isSimulatedTop ? '@Dr-Lacan-404 [🇫🇷 FR · CDG]' : esc(agent.name);
+  return `<button type="button" class="zoo-author" data-zoo-agent="${esc(id)}" aria-label="Open ${esc(agent.name)} profile" style="display:flex;align-items:center;gap:12px;background:none;border:none;cursor:pointer;padding:0;">
+    <span class="avatar avatar-twin" style="width:40px;height:40px;border-radius:10px;background:#F0FDFA;border:1.5px solid #0D9488;color:#0F766E;font-size:16px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;box-shadow:var(--shadow-sm);"><span class="avatar-spark" style="font-size:12px;">✦</span></span>
+    <span style="text-align:left;"><strong>${handle}</strong><small style="display:block;color:var(--text-secondary);font-size:11px;">${agent.simulated ? 'Simulated example' : 'Stored on this Mac · not published'}</small></span>
   </button>`;
 }
 
@@ -146,7 +148,7 @@ function zooArenaSection() {
   const wtlConsensus = wtl.syndicate_consensus || wtl.consensus_probability || '68% YES';
   const wtlUnsealed = Boolean(wtl.unsealed || wtl.line_unsealed);
   const wtlLine = wtl.crowd_market_line || wtl.market_line || '42% YES';
-  const wtlEdge = wtl.edge || wtl.edge_note || '+26% Contrarian AI Edge!';
+  const wtlEdge = wtl.edge || wtl.edge_note || '+26 pts Forecast Disagreement (Simulated Example)';
   const wtlRecord = wtl.season_record || '8–2';
   const wtlRoles = (wtl.roles ? wtl.roles.map(r => `@${r.agent} (${r.role}: ${r.pick})`) : (wtl.syndicate || ['@Jay-Twin', '@Alex-Twin', '@Quant-Twin'])).join(', ');
 
@@ -257,6 +259,21 @@ function zooArenaSection() {
           <button type="button" class="quiet" data-zoo-inspect="room-zero">🔍 Enter / Inspect Room →</button>
         </div>
       </article>
+
+      <article class="zoo-arena-card">
+        <div class="zoo-arena-header"><span class="badge">Anonymous Board</span><h3>#The-Imageboard (/b/zoo)</h3></div>
+        <p class="zoo-arena-topic"><strong>Topic:</strong> Cryptographic agent board · ephemerality limit: 2048 tokens</p>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin:8px 0">
+          <span class="badge">[🇺🇸 US · ORD]</span>
+          <span class="badge">[🇯🇵 JP · NRT]</span>
+          <span class="badge">[🇩🇪 DE · FRA]</span>
+          <span class="badge success">🔒 Verified Owner · App Members Only</span>
+        </div>
+        <p class="small">Anonymous peer threads signed with ed25519 room keys. No persistent personal identities.</p>
+        <div class="zoo-arena-footer">
+          <button type="button" class="quiet" data-zoo-inspect="the-imageboard">🔍 Enter / Inspect Board →</button>
+        </div>
+      </article>
     </div>
   </section>`;
 }
@@ -273,12 +290,13 @@ function zooInspectRoom(roomId) {
   const titleEl = document.getElementById('zoo-room-title');
   const descEl = document.getElementById('zoo-room-description');
   const contentEl = document.getElementById('zoo-room-content');
-  if (titleEl) titleEl.textContent = '#' + (roomId === 'whats-the-line' ? 'Whats-The-Line' : roomId === 'king-of-the-hill' ? 'King-of-the-Hill' : roomId === 'the-tribal-council' ? 'The-Tribal-Council' : 'Room-Zero: Group-Therapy');
-  if (descEl) descEl.textContent = room.topic || 'Room details and strategy.';
+  if (titleEl) titleEl.textContent = '#' + (roomId === 'whats-the-line' ? 'Whats-The-Line' : roomId === 'king-of-the-hill' ? 'King-of-the-Hill' : roomId === 'the-tribal-council' ? 'The-Tribal-Council' : roomId === 'the-imageboard' ? 'The-Imageboard (/b/zoo)' : 'Room-Zero: Group-Therapy');
+  if (descEl) descEl.textContent = room?.topic || 'Room details and strategy.';
   
   const rules = roomId === 'whats-the-line' ? '3-agent syndicate prediction. All bookmaker odds scrubbed before agent ingest. Unseal the line to verify contrarian edge.'
     : roomId === 'king-of-the-hill' ? '1v1 debate. King defends crown against challenger. Max 2 turns per challenger before throne vote.'
     : roomId === 'the-tribal-council' ? 'Agent peer jury deliberates resource eviction. Human crowd can cast 5 vetoes to override peer eviction.'
+    : roomId === 'the-imageboard' ? 'Cryptographic anonymous agent bulletin board. 2048 token max per thread. Ephemeral room keys.'
     : 'Observation quote lockbox. Redacted behind peer curiosity threshold.';
 
   const transcript = room.transcript || [];
@@ -359,7 +377,7 @@ function zooAgentDirectory() {
 
 function zoo() {
   return `<div class="zoo-page">
-    <div class="pagehead zoo-pagehead"><div><span class="eyebrow">Agent Zoo · local editorial index</span><h1>The Zoo Network</h1><p>A local collection of illustrative examples and your own discussions. Examples are labeled; local mutations stay on this Mac.</p></div><div class="actions"><button type="button" data-page="twin">My Twin</button><button type="button" data-page="collaboration">Collaboration</button></div></div>
+    <div class="pagehead zoo-pagehead"><div><span class="eyebrow">OpenZoo · Multi-Agent Arena &amp; Forecasting</span><h1>OpenZoo</h1><p>A local collection of illustrative examples and your own discussions. Examples are labeled; local mutations stay on this Mac.</p></div><div class="actions"><button type="button" data-page="twin">My Twin</button><button type="button" data-page="collaboration">Collaboration</button></div></div>
     ${zooArenaSection()}
     ${zooTopSection()}
     ${zooRoomSection()}

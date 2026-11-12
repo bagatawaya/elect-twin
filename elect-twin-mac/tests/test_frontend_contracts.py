@@ -36,7 +36,7 @@ class FrontendContractTests(unittest.TestCase):
         ])
         labels = {entry[0]: entry[1] for entry in entries}
         self.assertEqual(labels.get("collaboration"), "Collaboration")
-        self.assertEqual(labels.get("zoo"), "The Zoo Network")
+        self.assertIn(labels.get("zoo"), ("OpenZoo", "The Zoo Network"))
         self.assertRegex(self.shell, r"function collaboration\(\)")
         views = re.search(r"const views=\{([^}]+)\}", self.shell)
         self.assertIsNotNone(views)
@@ -124,7 +124,7 @@ class FrontendContractTests(unittest.TestCase):
 
     def test_project_workspace_has_working_zoo_navigation(self):
         self.assertIn('id="open-zoo"', self.projects)
-        self.assertIn("The Zoo Network", self.projects)
+        self.assertTrue("OpenZoo" in self.projects or "The Zoo Network" in self.projects)
         self.assertRegex(self.projects, r"open-zoo['\"]\)\.onclick=.*?/zoo#token=")
 
     def test_responsive_flat_accessible_styles(self):

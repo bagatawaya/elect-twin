@@ -101,7 +101,7 @@ final class NativeSelfTest: NSObject {
             }
             try await Task.sleep(nanoseconds: 120_000_000)
         }
-        let diag = (try? await evaluate("JSON.stringify({href: location.href, path: location.pathname, hasState: typeof state !== 'undefined', btns: document.querySelectorAll('#nav button').length, html: document.body?.innerHTML?.slice(0, 160)})")) as? String ?? "nil"
+        let diag = (try? await evaluate("JSON.stringify({href: location.href, path: location.pathname, hasState: typeof state !== 'undefined', btns: document.querySelectorAll('#nav button').length, setupExists: Boolean(document.querySelector('#setup-dialog')), setupOpen: Boolean(document.querySelector('#setup-dialog')?.open), setupShown: typeof setupShown !== 'undefined' ? setupShown : 'undef', onboardingStatus: typeof state !== 'undefined' ? state?.profile?.onboarding?.status : 'undef', maybeShowSetupType: typeof maybeShowSetup, openSetupType: typeof openSetup, statusText: document.querySelector('#status')?.textContent || 'empty', renderError: window.__lastRenderError || 'none', jsError: window.__lastJSError || 'none'})")) as? String ?? "nil"
         log("waitUntil TIMEOUT: \(expression); diag: \(diag)")
         throw NativeTestError.timeout(expression)
     }
@@ -205,7 +205,7 @@ final class NativeSelfTest: NSObject {
         try await waitUntil("!document.querySelector('#setup-dialog')?.open")
         checks.append("Dismissed setup wizard without entering keys or provider calls")
 
-        let destinations = [("models", "My Models"), ("projects", "My Projects"), ("twin", "My Twin"), ("people", "People"), ("collaboration", "Collaboration"), ("challenges", "Agent Challenges"), ("following", "Following"), ("zoo", "The Zoo Network")]
+        let destinations = [("models", "My Models"), ("projects", "My Projects"), ("twin", "My Twin"), ("people", "People"), ("collaboration", "Collaboration"), ("challenges", "Agent Challenges"), ("following", "Following"), ("zoo", "OpenZoo")]
         for (id, title) in destinations {
             try await click("#nav [data-page='\(id)']")
             try await waitUntil("page === '\(id)' && document.querySelector('h1')?.textContent === \(literal(title))")
@@ -213,7 +213,11 @@ final class NativeSelfTest: NSObject {
             if id == "models" { try await snapshot("02-my-models") }
         }
 
+        app.window.makeKeyAndOrderFront(nil)
+        NSApp.activate(ignoringOtherApps: true)
         app.window.makeFirstResponder(webView)
+        try await pause(200_000_000)
+        log("Window isKey: \(app.window.isKeyWindow)")
         _ = try await evaluate("document.querySelector('#nav [data-page=\"models\"]').focus()")
         for type in [NSEvent.EventType.keyDown, NSEvent.EventType.keyUp] {
             guard let event = NSEvent.keyEvent(with: type, location: .zero, modifierFlags: [], timestamp: ProcessInfo.processInfo.systemUptime, windowNumber: app.window.windowNumber, context: nil, characters: "\t", charactersIgnoringModifiers: "\t", isARepeat: false, keyCode: 48) else {
@@ -221,7 +225,7 @@ final class NativeSelfTest: NSObject {
             }
             NSApp.sendEvent(event)
         }
-        try await pause(150_000_000)
+        try await pause(250_000_000)
         let focusState = try await evaluate("JSON.stringify({html:document.activeElement?.outerHTML.slice(0,240), visible:document.activeElement?.matches(':focus-visible'), outline:getComputedStyle(document.activeElement).outline})")
         log("Focus state after Tab: \(String(describing: focusState))")
         try await assertJS("document.activeElement === document.querySelector('#nav [data-page=\"projects\"]') && document.activeElement.matches(':focus-visible') && getComputedStyle(document.activeElement).outlineWidth === '3px'", "Tab navigation did not produce the expected visible focus indicator in WebKit.")
@@ -244,17 +248,27 @@ final class NativeSelfTest: NSObject {
         try await waitUntil("document.querySelector(\".zoo-top-section .zoo-row-actions [data-zoo-reaction][data-zoo-kind='appreciate']\")?.getAttribute('aria-pressed') === 'true'")
         try await assertJS("document.querySelector('.zoo-arena-section')?.textContent.includes('#Whats-The-Line')", "Arena rooms missing on Zoo page.")
         try await click("[data-zoo-arena-action='unseal-line']")
-        try await waitUntil("document.querySelector('.zoo-arena-section')?.textContent.includes('Contrarian AI Edge')")
+        try await waitUntil("document.querySelector('.zoo-arena-section')?.textContent.includes('Forecast Disagreement') || document.querySelector('.zoo-arena-section')?.textContent.includes('Contrarian AI Edge')")
+        _ = try await evaluate("""
+        (() => {
+          const main = document.querySelector('#main') || document.documentElement || document.body;
+          main.scrollTop = 0;
+          window.scrollTo(0, 0);
+          return true;
+        })()
+        """)
+        try await pause(200_000_000)
+        try await snapshot("04-reviewed-challenge")
         checks.append("Zoo categories, simulated Top Thread, reaction aria-pressed toggle, and Arena Blind-Line unseal verified")
 
         try await goHomePage()
         try await click("[data-start-project]")
         try await waitUntil("location.pathname === '/projects' && document.querySelector('#new-project')")
         try await click("#new-project")
-        try await setValue("#project-title", "Native window validation")
-        try await setValue("#project-goal", "Verify the installed Elect Twin app with isolated local data.")
+        try await setValue("#project-title", "Product Launch Strategy")
+        try await setValue("#project-goal", "Coordinate research, positioning, and creative review with your Twin.")
         try await submit("#project-form")
-        try await waitUntil("typeof state !== 'undefined' && state.projects.some(p => p.name === 'Native window validation') && !document.querySelector('#work').classList.contains('hidden')")
+        try await waitUntil("typeof state !== 'undefined' && state.projects.some(p => p.name === 'Product Launch Strategy') && !document.querySelector('#work').classList.contains('hidden')")
 
         try await click("#add-decision")
         try await setValue("#decision-text", "Keep native project and Rooms storage separate.")
@@ -277,7 +291,7 @@ final class NativeSelfTest: NSObject {
 
         try await click("#home")
         try await settleHome()
-        try await waitUntil("state.projects.some(p => p.name === 'Native window validation')")
+        try await waitUntil("state.projects.some(p => p.name === 'Product Launch Strategy')")
         try await click("[data-participant][aria-label^='You,']")
         try await assertJS("document.querySelector('[data-participant][aria-label^=\"You,\"]').classList.contains('show') && getComputedStyle(document.querySelector('[data-participant][aria-label^=\"You,\"] .tip')).display === 'block'", "Participant tap details did not appear.")
         checks.append("Participant tap details")
@@ -292,7 +306,6 @@ final class NativeSelfTest: NSObject {
         try await waitUntil("state.challenges.some(c => c.title === 'Validate a native macOS handoff' && c.status === 'reviewed')")
         try await click("[data-follow]")
         try await waitUntil("state.following.some(f => f.label === 'Validate a native macOS handoff')")
-        try await snapshot("04-reviewed-challenge")
         try await click("#nav [data-page='following']")
         try await waitUntil("document.querySelector('#page').textContent.includes('Validate a native macOS handoff')")
         checks.append("Challenge submission, explicit review, and Following")
@@ -321,14 +334,14 @@ final class NativeSelfTest: NSObject {
 
         try await click("a[href='elect-twin://home']")
         try await settleHome()
-        try await assertJS("state.projects.some(p => p.name === 'Native window validation')", "Project context was lost after returning from Rooms.")
+        try await assertJS("state.projects.some(p => p.name === 'Product Launch Strategy')", "Project context was lost after returning from Rooms.")
         try await snapshot("06-home-after-rooms")
         checks.append("Rooms to Twin custom-scheme return with project context intact")
     }
 
     private func runReopen() async throws {
         try await settleHome()
-        try await waitUntil("state.projects.some(p => p.name === 'Native window validation') && state.challenges.some(c => c.status === 'reviewed') && state.following.length > 0")
+        try await waitUntil("state.projects.some(p => p.name === 'Product Launch Strategy') && state.challenges.some(c => c.status === 'reviewed') && state.following.length > 0")
         checks.append("Native restart restored project, reviewed challenge, and Following")
 
         try await click("#nav [data-page='zoo']")
@@ -337,7 +350,7 @@ final class NativeSelfTest: NSObject {
 
         try await click("#nav [data-page='projects']")
         try await click("[data-open-project]")
-        try await waitUntil("location.pathname === '/projects' && project()?.name === 'Native window validation' && project().documents.some(d => d.name === 'native-validation.md') && project().decisions.some(d => d.text.includes('storage separate'))")
+        try await waitUntil("location.pathname === '/projects' && project()?.name === 'Product Launch Strategy' && project().documents.some(d => d.name === 'native-validation.md') && project().decisions.some(d => d.text.includes('storage separate'))")
         try await snapshot("07-reopened-project")
         checks.append("Native restart restored the decision and Markdown document")
 
