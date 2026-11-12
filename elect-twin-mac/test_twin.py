@@ -14,13 +14,13 @@ from twin import Twin, Handler, provider_call, BASE, load_catalog, SESSION_KEYS
 class TwinTests(unittest.TestCase):
     def setUp(self):
         SESSION_KEYS.clear()
-        self.tmp=tempfile.TemporaryDirectory();self.path=Path(self.tmp.name)/'projects.db';self.calls=[]
+        self.tmp=tempfile.TemporaryDirectory(ignore_cleanup_errors=True);self.path=Path(self.tmp.name)/'projects.db';self.calls=[]
         def fake(provider,model,context):
             self.calls.append((provider,model,json.loads(context)))
             return 'Reviewed by '+provider,{'output_tokens':12}
         self.t=Twin(self.path,transport=fake)
         self.p=self.t.act('/api/projects',{'name':'Project A','goal':'Choose a plan'})
-    def tearDown(self):self.t.db.close();self.tmp.cleanup();SESSION_KEYS.clear()
+    def tearDown(self):self.t.zoo.close();self.t.db.close();self.tmp.cleanup();SESSION_KEYS.clear()
     def preview(self,**overrides):
         d={'project_id':self.p['id'],'provider':'openai','model':'test-model','prompt':'Draft a plan'};d.update(overrides)
         return self.t.act('/api/preview',d)
@@ -33,7 +33,7 @@ class TwinTests(unittest.TestCase):
         with self.assertRaises(ValueError):self.t.act('/api/connect',{'provider':'openai','key':'contains spaces'})
     def test_create_and_reopen(self):
         self.t.act('/api/decision',{'project_id':self.p['id'],'text':'Keep private'})
-        self.t.db.close();self.t=Twin(self.path)
+        self.t.zoo.close();self.t.db.close();self.t=Twin(self.path)
         self.assertEqual(self.t.project(self.p['id'])['decisions'][0]['text'],'Keep private')
         if os.name != "nt":
             self.assertEqual(self.path.stat().st_mode & 0o777,0o600)
@@ -89,7 +89,7 @@ class TwinTests(unittest.TestCase):
         project=self.t.project(self.p['id']);self.assertEqual(project['runs'][0]['status'],'failed_or_unknown');self.assertEqual(project['messages'],[])
     def test_restart_marks_interrupted_unknown(self):
         p=self.t.project(self.p['id']);p['runs']=[{'id':'interrupted','status':'running'}];self.t.save(p)
-        self.t.db.close();self.t=Twin(self.path)
+        self.t.zoo.close();self.t.db.close();self.t=Twin(self.path)
         self.assertEqual(self.t.project(self.p['id'])['runs'][0]['status'],'interrupted_unknown')
     def test_keyword_suggestions_explain_matching(self):
         found=self.t.act('/api/skills/search',{'query':'review document'})['skills']
@@ -127,10 +127,10 @@ class ProviderAdapterTests(unittest.TestCase):
 
 class HttpBoundaryTests(unittest.TestCase):
     def setUp(self):
-        self.tmp=tempfile.TemporaryDirectory();self.s=ThreadingHTTPServer(('127.0.0.1',0),Handler)
+        self.tmp=tempfile.TemporaryDirectory(ignore_cleanup_errors=True);self.s=ThreadingHTTPServer(('127.0.0.1',0),Handler)
         port=self.s.server_address[1];self.s.origin='http://127.0.0.1:'+str(port);self.s.hosts={'127.0.0.1:'+str(port)};self.s.token='private-test-session';self.s.twin=Twin(Path(self.tmp.name)/'db')
         self.thread=threading.Thread(target=self.s.serve_forever,daemon=True);self.thread.start()
-    def tearDown(self):self.s.shutdown();self.s.server_close();self.thread.join();self.s.twin.db.close();self.tmp.cleanup()
+    def tearDown(self):self.s.shutdown();self.s.server_close();self.thread.join();self.s.twin.zoo.close();self.s.twin.db.close();self.tmp.cleanup()
     def get(self,headers):return urlopen(Request(self.s.origin+'/api/state',headers=headers),timeout=3)
     def test_private_api_requires_token(self):
         with self.assertRaises(HTTPError) as cm:self.get({})
@@ -149,14 +149,14 @@ class CatalogTests(unittest.TestCase):
     def test_only_portable_licensed_prompts_import(self):
         base={'id':'example','name':'document-review','title':'document review','capabilityType':'prompt-template','promptText':'Review evidence carefully.','license':{'confidence':'file-verified','name':'CC0-1.0'},'canonicalUrl':'https://example.org/source','revision':'pinned'}
         rows=[base,{**base,'id':'unknown-license','license':{'confidence':'unverified','name':'MIT'}},{**base,'id':'noncommercial','license':{'confidence':'file-verified','name':'CC-BY-NC-4.0'}},{**base,'id':'executable','capabilityType':'integration'},{**base,'id':'deprecated','deprecated':True}]
-        with tempfile.TemporaryDirectory() as directory:
+        with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as directory:
             path=Path(directory)/'skills.json';path.write_text(json.dumps(rows));before=path.read_bytes()
             imported=load_catalog(path)
             self.assertEqual([x['id'] for x in imported],['catalog:example'])
             self.assertEqual(imported[0]['source'],'https://example.org/source');self.assertEqual(imported[0]['revision'],'pinned')
             self.assertEqual(path.read_bytes(),before)
     def test_reject_non_array(self):
-        with tempfile.TemporaryDirectory() as directory:
+        with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as directory:
             path=Path(directory)/'skills.json';path.write_text('{}')
             with self.assertRaises(ValueError):load_catalog(path)
 

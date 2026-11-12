@@ -28,7 +28,7 @@ class Response:
 class DataControlTests(unittest.TestCase):
     def setUp(self):
         twin.SESSION_KEYS.clear()
-        self.tmp = tempfile.TemporaryDirectory()
+        self.tmp = tempfile.TemporaryDirectory(ignore_cleanup_errors=True)
         self.path = Path(self.tmp.name) / "projects.db"
         self.calls = []
 
@@ -40,6 +40,7 @@ class DataControlTests(unittest.TestCase):
         self.p = self.t.act("/api/projects", {"name": "Alpha", "goal": "Keep useful memory"})
 
     def tearDown(self):
+        self.t.zoo.close()
         self.t.db.close()
         self.tmp.cleanup()
         twin.SESSION_KEYS.clear()

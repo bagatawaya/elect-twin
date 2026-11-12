@@ -192,7 +192,7 @@ if (!/data-zoo-reaction="thread-people"[^>]*data-zoo-kind="appreciate"[^>]*aria-
 if (!rendered.includes('[Simulated example]')) throw new Error('Example provenance missing');
 if (!rendered.includes('Stored on this Mac · not published')) throw new Error('Local provenance missing');
 """
-        with tempfile.TemporaryDirectory(dir=ROOT / "tests") as directory:
+        with tempfile.TemporaryDirectory(ignore_cleanup_errors=True, dir=ROOT / "tests") as directory:
             script = Path(directory) / "zoo-contract.js"
             script.write_text(
                 "const FIXTURE = " + json.dumps(fixture, ensure_ascii=False) + ";\n"
@@ -330,7 +330,7 @@ function makeFixture() {
 }
 function assert(condition, message) { if (!condition) throw new Error(message); }
 """
-        with tempfile.TemporaryDirectory(dir=ROOT / "tests") as directory:
+        with tempfile.TemporaryDirectory(ignore_cleanup_errors=True, dir=ROOT / "tests") as directory:
             script = Path(directory) / "zoo-interaction.js"
             script.write_text(harness + "\n" + self.zoo_js + "\n" + scenario, encoding="utf-8")
             result = subprocess.run(["node", str(script)], text=True, capture_output=True)
@@ -734,7 +734,7 @@ function localInvitation() {
   };
 }
 """
-        with tempfile.TemporaryDirectory(dir=ROOT / "tests") as directory:
+        with tempfile.TemporaryDirectory(ignore_cleanup_errors=True, dir=ROOT / "tests") as directory:
             script = Path(directory) / "onboarding-interaction.js"
             script.write_text(harness + "\n" + self.onboarding + "\n" + scenario, encoding="utf-8")
             result = subprocess.run(["node", str(script)], text=True, capture_output=True)

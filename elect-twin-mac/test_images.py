@@ -5,7 +5,7 @@ import twin
 PNG=base64.b64decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aWQ0AAAAASUVORK5CYII=')
 class Images(unittest.TestCase):
  def test_image_consent_library_persistence(self):
-  with tempfile.TemporaryDirectory() as d:
+  with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as d:
    calls=[]
    def generate(*args):calls.append(args);return PNG,{'output_tokens':1}
    t=twin.Twin(Path(d)/'db',image_transport=generate)
@@ -16,7 +16,7 @@ class Images(unittest.TestCase):
    r=t.send({'preview_id':v['preview_id'],'consent':True})
    self.assertEqual(len(calls),1);self.assertEqual(t.project(p['id'])['assets'][0]['id'],r['asset_id'])
    self.assertEqual(t.db.execute('SELECT data FROM assets').fetchone()[0],PNG)
-   t.db.close();t=twin.Twin(Path(d)/'db');self.assertEqual(len(t.project(p['id'])['assets']),1);t.db.close()
+   t.zoo.close();t.db.close();t=twin.Twin(Path(d)/'db');self.assertEqual(len(t.project(p['id'])['assets']),1);t.zoo.close();t.db.close()
  def test_image_adapter_contract(self):
   class Response:
    def __enter__(self):return self

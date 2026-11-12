@@ -18,9 +18,9 @@ class ExtraProviderTests(unittest.TestCase):
         self.saved_keys=dict(twin.SESSION_KEYS);twin.SESSION_KEYS.clear()
     def tearDown(self):
         twin.SESSION_KEYS.clear();twin.SESSION_KEYS.update(self.saved_keys)
-    def test_three_distinct_fixed_https_destinations(self):
-        self.assertEqual(set(self.specs),{'gemini','mistral','groq'})
-        self.assertEqual(len({s['url'] for s in self.specs.values()}),3)
+    def test_four_distinct_fixed_https_destinations(self):
+        self.assertEqual(set(self.specs),{'gemini','mistral','groq','openrouter'})
+        self.assertEqual(len({s['url'] for s in self.specs.values()}),4)
         for s in self.specs.values():self.assertTrue(s['url'].startswith('https://'));self.assertNotIn('?',s['url'])
     def test_payload_and_headers(self):
         for provider,spec in self.specs.items():

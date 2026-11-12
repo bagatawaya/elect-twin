@@ -83,19 +83,23 @@ internal sealed class ElectTwinApp : IDisposable
         var menuStrip = new MenuStrip();
 
         var appMenu = new ToolStripMenuItem("&App");
-        appMenu.DropDownItems.Add("&About Elect Twin", null, (_, _) => ShowAbout());
+        appMenu.DropDownItems.Add("&About OpenTwin", null, (_, _) => ShowAbout());
         appMenu.DropDownItems.Add(new ToolStripSeparator());
         appMenu.DropDownItems.Add("E&xit", null, (_, _) => MainWindow.Close());
 
         var navMenu = new ToolStripMenuItem("&Navigate");
-        navMenu.DropDownItems.Add("&Home", null, (_, _) => NavigateHome())
-            .ShortcutKeys = Keys.Control | Keys.Shift | Keys.H;
-        navMenu.DropDownItems.Add("&Back", null, (_, _) => { if (_webView.CanGoBack) _webView.GoBack(); })
-            .ShortcutKeys = Keys.Alt | Keys.Left;
-        navMenu.DropDownItems.Add("&Forward", null, (_, _) => { if (_webView.CanGoForward) _webView.GoForward(); })
-            .ShortcutKeys = Keys.Alt | Keys.Right;
-        navMenu.DropDownItems.Add("&Reload", null, (_, _) => _webView.Reload())
-            .ShortcutKeys = Keys.Control | Keys.R;
+        var homeItem = new ToolStripMenuItem("&Home", null, (_, _) => NavigateHome())
+        { ShortcutKeys = Keys.Control | Keys.Shift | Keys.H };
+        navMenu.DropDownItems.Add(homeItem);
+        var backItem = new ToolStripMenuItem("&Back", null, (_, _) => { if (_webView.CanGoBack) _webView.GoBack(); })
+        { ShortcutKeys = Keys.Alt | Keys.Left };
+        navMenu.DropDownItems.Add(backItem);
+        var forwardItem = new ToolStripMenuItem("&Forward", null, (_, _) => { if (_webView.CanGoForward) _webView.GoForward(); })
+        { ShortcutKeys = Keys.Alt | Keys.Right };
+        navMenu.DropDownItems.Add(forwardItem);
+        var reloadItem = new ToolStripMenuItem("&Reload", null, (_, _) => _webView.Reload())
+        { ShortcutKeys = Keys.Control | Keys.R };
+        navMenu.DropDownItems.Add(reloadItem);
 
         menuStrip.Items.Add(appMenu);
         menuStrip.Items.Add(navMenu);

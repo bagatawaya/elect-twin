@@ -4,11 +4,13 @@ Official endpoint documentation checked 2026-11-10. Live account/model compatibi
 and billing have not been tested. The requested output limit is NOT a spend cap.
 """
 SOURCES = {
+    'openrouter': 'https://openrouter.ai/docs/api-reference/chat-completion',
     'gemini': 'https://aistudio.google.com/docs/openai',
     'mistral': 'https://docs.mistral.ai/api',
     'groq': 'https://console.groq.com/docs/api-reference#chat-create',
 }
 ENDPOINTS = {
+    'openrouter': ('OPENROUTER_API_KEY', 'https://openrouter.ai/api/v1/chat/completions', 'max_tokens'),
     'gemini': ('GEMINI_API_KEY', 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions', 'max_tokens'),
     'mistral': ('MISTRAL_API_KEY', 'https://api.mistral.ai/v1/chat/completions', 'max_tokens'),
     'groq': ('GROQ_API_KEY', 'https://api.groq.com/openai/v1/chat/completions', 'max_completion_tokens'),
