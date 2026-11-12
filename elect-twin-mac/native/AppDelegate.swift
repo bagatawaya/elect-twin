@@ -52,6 +52,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate {
     private var allowedPorts = Set<Int>()
     private var didStart = false
     private var selfTest: NativeSelfTest?
+    private lazy var updates = UpdateController(disabledForTest: NativeSelfTest.isRequested)
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSLog("ElectTwin applicationDidFinishLaunching")
@@ -70,6 +71,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate {
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool { true }
 
     func applicationWillTerminate(_ notification: Notification) {
+        updates.stop()
         stopEngines()
     }
 
@@ -100,6 +102,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate {
         main.addItem(appItem)
         let appMenu = NSMenu()
         appMenu.addItem(withTitle: "About Elect Twin", action: #selector(showAbout), keyEquivalent: "")
+        appMenu.addItem(.separator())
+        updates.addMenuItems(to: appMenu)
         appMenu.addItem(.separator())
         appMenu.addItem(withTitle: "Quit Elect Twin", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
         appItem.submenu = appMenu
@@ -188,6 +192,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate {
                 NSLog("ElectTwin loading url: \(url)")
                 self?.homeURL = url
                 self?.webView.load(URLRequest(url: url))
+                if let self { self.updates.start(window: self.window) }
             }
         } catch {
             stopEngines()

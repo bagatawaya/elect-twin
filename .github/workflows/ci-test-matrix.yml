@@ -58,6 +58,11 @@ jobs:
           cd elect-twin-mac
           python tests/check_js.py
 
+      - name: Test native macOS update checker and compile app
+        if: runner.os == 'macOS'
+        shell: bash
+        run: bash elect-twin-mac/tests/check_native_updates.sh
+
       - name: Test OS-independent pure-Python Rooms engine
         shell: bash
         run: |
