@@ -1,4 +1,4 @@
-"""Render the OpenTwin Porcelain & Ink geometry into macOS icon assets."""
+"""Render the canonical OpenTwin O+T monogram into macOS icon assets."""
 from pathlib import Path
 from PIL import Image, ImageDraw
 import subprocess
@@ -8,19 +8,23 @@ SIZE = 1024
 image = Image.new("RGBA", (SIZE, SIZE), (0, 0, 0, 0))
 draw = ImageDraw.Draw(image)
 
-# Base Squircle Container
-draw.rounded_rectangle((48, 48, 976, 976), radius=210, fill="#F8FAFC", outline="#CBD5E1", width=6)
+# 1. Outer Container Badge (circle cx=32 cy=32 r=29, fill=#F0FDFA, stroke=#0F766E)
+# Scale factor = 1024 / 64 = 16 -> r = 464, stroke = 56
+draw.ellipse((48, 48, 976, 976), fill="#F0FDFA", outline="#0F766E", width=56)
 
-# Human Circle (Deep Slate-Ink #0F172A)
-draw.ellipse((190, 292, 630, 732), fill="#0F172A")
-# Human Core Dot
-draw.ellipse((380, 482, 440, 542), fill="#FFFFFF")
+# 2. 'O' Ellipse (ellipse cx=23 cy=32 rx=8 ry=12, stroke=#0F172A stroke-width=4)
+# cx=368, cy=512, rx=128, ry=192 -> (240, 320, 496, 704), stroke = 64
+draw.ellipse((240, 320, 496, 704), outline="#0F172A", width=64)
 
-# AI Twin Squircle (Serene Teal #0F766E)
-draw.rounded_rectangle((470, 292, 910, 732), radius=130, fill="#0F766E")
-# AI Twin Spark (✦)
-draw.rounded_rectangle((672, 420, 708, 604), radius=16, fill="#FFFFFF")
-draw.rounded_rectangle((598, 494, 782, 530), radius=16, fill="#FFFFFF")
+# 3. 'T' Path (path d="M34 20h16M42 20v24", stroke=#0F766E stroke-width=4 round caps)
+# Horizontal bar: (544, 320) to (800, 320)
+draw.line([(544, 320), (800, 320)], fill="#0F766E", width=64)
+draw.ellipse((544 - 32, 320 - 32, 544 + 32, 320 + 32), fill="#0F766E")
+draw.ellipse((800 - 32, 320 - 32, 800 + 32, 320 + 32), fill="#0F766E")
+
+# Vertical bar: (672, 320) to (672, 704)
+draw.line([(672, 320), (672, 704)], fill="#0F766E", width=64)
+draw.ellipse((672 - 32, 704 - 32, 672 + 32, 704 + 32), fill="#0F766E")
 
 image.save(ROOT / "AppIcon.png")
 
