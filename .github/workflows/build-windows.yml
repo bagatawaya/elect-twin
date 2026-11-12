@@ -1,4 +1,4 @@
-name: Build Windows v0.4.0 Installer
+name: Build Windows v0.4.1 Installer
 
 on:
   workflow_dispatch:
@@ -86,23 +86,23 @@ jobs:
       - name: Generate SHA-256 sidecar
         shell: pwsh
         run: |
-          $installer = "elect-twin-windows/dist/Elect-Twin-Setup-0.4.0-x64.exe"
+          $installer = "elect-twin-windows/dist/OpenTwin-Setup-0.4.1-x64.exe"
           $hash = (Get-FileHash -Path $installer -Algorithm SHA256).Hash.ToLower()
-          "$hash  Elect-Twin-Setup-0.4.0-x64.exe" | Out-File -FilePath "elect-twin-windows/dist/Elect-Twin-Setup-0.4.0-x64.exe.sha256" -Encoding ascii
+          "$hash  OpenTwin-Setup-0.4.1-x64.exe" | Out-File -FilePath "elect-twin-windows/dist/OpenTwin-Setup-0.4.1-x64.exe.sha256" -Encoding ascii
           Write-Host "Generated installer SHA-256: $hash"
 
       - name: Upload Windows Setup Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Elect-Twin-Windows-0.4.0-Setup
+          name: OpenTwin-Windows-0.4.1-Setup
           path: |
-            elect-twin-windows/dist/Elect-Twin-Setup-0.4.0-x64.exe
-            elect-twin-windows/dist/Elect-Twin-Setup-0.4.0-x64.exe.sha256
+            elect-twin-windows/dist/OpenTwin-Setup-0.4.1-x64.exe
+            elect-twin-windows/dist/OpenTwin-Setup-0.4.1-x64.exe.sha256
 
       - name: Attach Assets to GitHub Release
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            elect-twin-windows/dist/Elect-Twin-Setup-0.4.0-x64.exe
-            elect-twin-windows/dist/Elect-Twin-Setup-0.4.0-x64.exe.sha256
+            elect-twin-windows/dist/OpenTwin-Setup-0.4.1-x64.exe
+            elect-twin-windows/dist/OpenTwin-Setup-0.4.1-x64.exe.sha256
