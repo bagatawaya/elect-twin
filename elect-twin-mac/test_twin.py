@@ -33,7 +33,7 @@ class TwinTests(unittest.TestCase):
         with self.assertRaises(ValueError):self.t.act('/api/connect',{'provider':'openai','key':'contains spaces'})
     def test_create_and_reopen(self):
         self.t.act('/api/decision',{'project_id':self.p['id'],'text':'Keep private'})
-        self.t.db.close();self.t=Twin(self.path)
+        self.t.zoo.close();self.t.db.close();self.t=Twin(self.path)
         self.assertEqual(self.t.project(self.p['id'])['decisions'][0]['text'],'Keep private')
         if os.name != "nt":
             self.assertEqual(self.path.stat().st_mode & 0o777,0o600)
@@ -89,7 +89,7 @@ class TwinTests(unittest.TestCase):
         project=self.t.project(self.p['id']);self.assertEqual(project['runs'][0]['status'],'failed_or_unknown');self.assertEqual(project['messages'],[])
     def test_restart_marks_interrupted_unknown(self):
         p=self.t.project(self.p['id']);p['runs']=[{'id':'interrupted','status':'running'}];self.t.save(p)
-        self.t.db.close();self.t=Twin(self.path)
+        self.t.zoo.close();self.t.db.close();self.t=Twin(self.path)
         self.assertEqual(self.t.project(self.p['id'])['runs'][0]['status'],'interrupted_unknown')
     def test_keyword_suggestions_explain_matching(self):
         found=self.t.act('/api/skills/search',{'query':'review document'})['skills']
