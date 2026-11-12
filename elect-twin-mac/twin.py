@@ -23,6 +23,74 @@ BASE = 'You are a personal strategy and drafting partner. Use the supplied proje
 
 def uid(): return uuid.uuid4().hex
 
+# Studio dashboard widget suite. Layout metadata only — never project or Zoo row data.
+DASHBOARD_WIDGET_TYPES = ('model_market_tracker','global_agent_telemetry','morning_postcard','project_decisions','model_scorecard','airlock_diff','zoo_odds_watch','fork_crew_spotlight','zoo_arena_pulse_cta','story_spectrum_mapper','pro_sports_odds_board','model_tracker_hub','custom_task_widget')
+DASHBOARD_SPANS = ('1x1','2x1','2x2')
+DASHBOARD_WIDGET_TITLES = {
+ 'model_market_tracker':'Frontier Model Intelligence','global_agent_telemetry':'The Live Zoo Pulse',
+ 'morning_postcard':'While You Were Out','project_decisions':'Pinned Decisions',
+ 'model_scorecard':'Blind Scrimmage Scorecard','airlock_diff':'Outbound Sanitizer Diff',
+ 'zoo_odds_watch':'Arena Odds Watch','fork_crew_spotlight':'Fork Crew Spotlight',
+ 'zoo_arena_pulse_cta':'Arena Pulse','story_spectrum_mapper':'News Spectrum & Spin Mapper',
+ 'pro_sports_odds_board':'Blind Odds & Syndicate Board','model_tracker_hub':'Model Tracker Hub',
+ 'custom_task_widget':'Task Results'}
+DASHBOARD_MAX_WIDGETS = 12
+# The four "Day 1 Value" widgets seeded onto a fresh Home grid.
+DASHBOARD_DAY_ONE = (('model_market_tracker','2x1'),('global_agent_telemetry','1x1'),('zoo_odds_watch','1x1'),('morning_postcard','1x1'))
+
+def default_dashboard_layout():
+    layout=[{'id':'dash-'+t,'type':t,'title':DASHBOARD_WIDGET_TITLES[t],'span':s,'config':{},'order':i} for i,(t,s) in enumerate(DASHBOARD_DAY_ONE)]
+    for t in DASHBOARD_WIDGET_TYPES:
+        if t not in [d[0] for d in DASHBOARD_DAY_ONE]:
+            layout.append({'id':'dash-'+t,'type':t,'title':DASHBOARD_WIDGET_TITLES[t],'span':'1x1','config':{},'order':len(layout)})
+    return layout
+
+# Task Center persistence (tasks_automation.json, 0600). is_enabled is separate from triggers[].
+TASK_TRIGGERS = ('1h','6h','daily','on_app_open')
+TASK_STATUSES = ('idle','needs_approval','running','completed')
+TASK_CAP = 20
+
+def seed_tasks():
+    return [
+     {'id':'task-morning-digest','name':'Morning Zoo Digest','kind':'digest','is_enabled':True,'triggers':['daily','on_app_open'],'cap':'<= 300 output tokens · free/local tiers only','status':'needs_approval','last_result':None,'note':'Summarizes settled OpenZoo arena activity since your last visit. Drafts wait for your approval; nothing is sent.'},
+     {'id':'task-arena-watch','name':'Arena Odds Watch Sync','kind':'watch','is_enabled':False,'triggers':['6h'],'cap':'0 paid provider calls','status':'idle','last_result':None,'note':'Tracks #Whats-The-Line syndicate vs. market spreads and pins notable disagreement to your dashboard.'}]
+
+# Deterministic local media-lean heuristic. No network fetch; the submitted text is the only input.
+MEDIA_LEAN_LEXICON = {
+ 'left':['workers','union','equity','regulation','antitrust','climate','public funding','inequality','safety net'],
+ 'right':['free market','deregulation','tax cuts','border','patriot','liberty','mandate','bureaucracy','woke'],
+ 'center':['analysis','report','data','study','survey','consensus','forecast','review','bipartisan']}
+MEDIA_LEAN_TABLE = [
+ {'outlet':'The Daily Cardinal','lean':'left'},{'outlet':'Worker\u2019s Herald','lean':'left'},
+ {'outlet':'The Ledger','lean':'center'},{'outlet':'Wire Report','lean':'center'},
+ {'outlet':'Liberty Tribune','lean':'right'},{'outlet':'The Free Press Gazette','lean':'right'}]
+
+def _pct(text): return int(str(text).split('%')[0].replace('+',''))
+
+def default_sports_odds():
+    rows=[
+     {'league':'NFL','event':'Ravens @ Chiefs — Baltimore +3.0 · Total 47.5','syndicate_blind_prob':'68% BAL cover','sealed_market_prob':'52% BAL cover','thesis':'Syndicate sees defensive-line fatigue the market is ignoring.'},
+     {'league':'NBA','event':'Celtics @ Nuggets — DEN -2.5','syndicate_blind_prob':'61% DEN','sealed_market_prob':'55% DEN','thesis':'Altitude-adjusted pace model favors the home rotation depth.'},
+     {'league':'MLB','event':'Yankees @ Astros — HOU moneyline','syndicate_blind_prob':'57% HOU','sealed_market_prob':'49% HOU','thesis':'Bullpen workload delta is not yet priced in.'},
+     {'league':'NHL','event':'Rangers @ Hurricanes — CAR -1.5 puck line','syndicate_blind_prob':'54% CAR','sealed_market_prob':'58% CAR','thesis':'Syndicate is contrarian against public goaltender bias.'}]
+    for r in rows:r['disagreement_pts']=_pct(r['syndicate_blind_prob'])-_pct(r['sealed_market_prob'])
+    return rows
+
+def default_model_tracker():
+    def m(id,name,context_window,speed,cost_1m,license,twin_recommendation):
+        return {'id':id,'name':name,'context_window':context_window,'speed':speed,'cost_1m':cost_1m,'license':license,'twin_recommendation':twin_recommendation}
+    return [
+     {'id':'cat-frontier','name':'Frontier Cloud','models':[
+       m('gpt-5.2','GPT-5.2','400K tokens','Fast','~$2.50 in / ~$10 out per 1M tokens','Commercial API · prompts leave this Mac','Best for long document synthesis when you accept cloud processing.'),
+       m('claude-4.5-sonnet','Claude 4.5 Sonnet','200K tokens','Fast','~$3.00 in / ~$15 out per 1M tokens','Commercial API · prompts leave this Mac','Strongest drafting and review voice; a good default for decision briefs.'),
+       m('gemini-3-pro','Gemini 3 Pro','1M tokens','Medium','~$1.25 in / ~$5.00 out per 1M tokens','Commercial API · prompts leave this Mac','Use for very large context windows; verify citations carefully.')]},
+     {'id':'cat-fast','name':'Fast & Cheap','models':[
+       m('groq-llama-3.3','Groq Llama 3.3 70B','128K tokens','Very fast','~$0.59 in / ~$0.79 out per 1M tokens','Commercial API · prompts leave this Mac','Best price/speed for high-frequency scrimmage rounds.'),
+       m('gemini-3-flash','Gemini 3 Flash','1M tokens','Very fast','~$0.30 in / ~$2.50 out per 1M tokens','Commercial API · prompts leave this Mac','Cheap bulk passes; double-check numeric claims.')]},
+     {'id':'cat-local','name':'Local & Private','models':[
+       m('ollama-llama-3.3','Ollama Llama 3.3 70B','128K tokens','Hardware-bound','$0 (electricity only)','Open weights · everything stays on this Mac','The Twin recommendation for private vault work: zero outbound data.'),
+       m('ollama-qwen-3','Ollama Qwen3 32B','128K tokens','Hardware-bound','$0 (electricity only)','Open weights · everything stays on this Mac','Lighter footprint for smaller Macs; a good second local slot.')]}]
+
 SESSION_KEYS = {}
 # Extension point: provider adapters are trusted code, not arbitrary remote endpoints.
 PROVIDERS = {
@@ -38,6 +106,9 @@ PROVIDERS = {
   'answer':lambda data:'\n'.join(x['text'] for x in data.get('content',[]) if x.get('type')=='text')}
 }
 
+from shared_context import sanitize_shared_context, sanitize_shared_text
+from hub_client import HubClient
+from model_onboarding import Onboarding, compatibility_guide, detect_and_register_credential, auto_select_models_for_session, discover_local_models
 from providers_extra import build_extra_providers
 from zoo import ZooStore
 from collaboration import InvitationStore, SoloRoomStore, SOLO_PRESETS
@@ -96,6 +167,8 @@ def load_catalog(path):
 
 class Twin:
     def __init__(self,path,transport=provider_call,catalog=None,image_transport=image_call,zoo_path=None):
+        self.hub_client=HubClient()
+        self.onboarding=Onboarding(SESSION_KEYS)
         self.path=Path(path)
         self.zoo_path=Path(zoo_path) if zoo_path is not None else self.path.with_name('zoo.sqlite3')
         try:
@@ -121,6 +194,130 @@ class Twin:
             for r in p['runs']:
                 if r['status']=='running': r['status']='interrupted_unknown';changed=True
             if changed:self.save(p)
+    def dashboard_layout_path(self): return self.path.with_name('dashboard_layout.json')
+    def dashboard_layout(self):
+        path=self.dashboard_layout_path()
+        if path.exists():
+            try: saved=json.loads(path.read_text(encoding='utf-8'))
+            except (ValueError,OSError): saved=None
+            if isinstance(saved,list) and saved and all(isinstance(w,dict) and w.get('type') in DASHBOARD_WIDGET_TYPES for w in saved): return saved
+        return default_dashboard_layout()
+    def save_dashboard_layout(self,widgets):
+        cleaned=self.validate_dashboard_layout(widgets)
+        path=self.dashboard_layout_path(); tmp=path.with_suffix('.tmp')
+        tmp.write_text(json.dumps(cleaned,ensure_ascii=False,indent=2),encoding='utf-8')
+        os.replace(tmp,path); os.chmod(path,0o600)
+        return cleaned
+    @staticmethod
+    def validate_dashboard_layout(widgets):
+        if not isinstance(widgets,list): raise ValueError('Layout must be a widget array')
+        if not widgets: raise ValueError('Layout must contain at least one widget')
+        if len(widgets)>DASHBOARD_MAX_WIDGETS: raise ValueError('Too many widgets')
+        seen=set(); cleaned=[]
+        for i,w in enumerate(widgets):
+            if not isinstance(w,dict): raise ValueError('Each widget must be an object')
+            if set(w)-{'id','type','title','span','config','order'}: raise ValueError('Unsupported widget field')
+            wtype=w.get('type')
+            if wtype not in DASHBOARD_WIDGET_TYPES: raise ValueError('Unsupported widget type')
+            wid=w.get('id')
+            if not isinstance(wid,str) or not wid.strip() or len(wid)>80: raise ValueError('Widget id must be nonempty text within 80 characters')
+            if wid in seen: raise ValueError('Duplicate widget id')
+            seen.add(wid)
+            title=w.get('title',wtype)
+            if not isinstance(title,str) or not title.strip() or len(title)>120: raise ValueError('Widget title must be nonempty text within 120 characters')
+            span=w.get('span','1x1')
+            if isinstance(span,bool): raise ValueError('Widget span must be 1x1, 2x1, or 2x2')
+            if isinstance(span,int): span={1:'1x1',2:'2x1'}.get(span)  # legacy numeric layouts
+            if span not in DASHBOARD_SPANS: raise ValueError('Widget span must be 1x1, 2x1, or 2x2')
+            config=w.get('config',{})
+            if not isinstance(config,dict): raise ValueError('Widget config must be an object')
+            if len(json.dumps(config,ensure_ascii=False))>4000: raise ValueError('Widget config is too large')
+            cleaned.append({'id':wid,'type':wtype,'title':title.strip(),'span':span,'config':config,'order':i})
+        return cleaned
+    def tasks_path(self): return self.path.with_name('tasks_automation.json')
+    def tasks(self):
+        path=self.tasks_path()
+        if path.exists():
+            try: saved=json.loads(path.read_text(encoding='utf-8'))
+            except (ValueError,OSError): saved=None
+            if isinstance(saved,list) and saved and all(isinstance(t,dict) and t.get('id') for t in saved): return saved
+        return seed_tasks()
+    def save_tasks(self,items):
+        if not isinstance(items,list): raise ValueError('Tasks must be an array')
+        if not items: raise ValueError('Tasks must contain at least one task')
+        if len(items)>TASK_CAP: raise ValueError('Too many tasks')
+        seen=set(); cleaned=[]
+        for t in items:
+            if not isinstance(t,dict): raise ValueError('Each task must be an object')
+            if set(t)-{'id','name','kind','is_enabled','triggers','cap','status','last_result','note'}: raise ValueError('Unsupported task field')
+            tid=t.get('id')
+            if not isinstance(tid,str) or not tid.strip() or len(tid)>80: raise ValueError('Task id must be nonempty text within 80 characters')
+            if tid in seen: raise ValueError('Duplicate task id')
+            seen.add(tid)
+            name=t.get('name',tid)
+            if not isinstance(name,str) or not name.strip() or len(name)>120: raise ValueError('Task name must be nonempty text within 120 characters')
+            enabled=t.get('is_enabled',False)
+            if not isinstance(enabled,bool): raise ValueError('Task is_enabled must be a boolean')
+            triggers=t.get('triggers',[])
+            if not isinstance(triggers,list) or any(x not in TASK_TRIGGERS for x in triggers): raise ValueError('Task triggers must come from 1h, 6h, daily, on_app_open')
+            status=t.get('status','idle')
+            if status not in TASK_STATUSES: raise ValueError('Unsupported task status')
+            note=t.get('note','')
+            if not isinstance(note,str) or len(note)>500: raise ValueError('Task note must be text within 500 characters')
+            cap=t.get('cap','')
+            if not isinstance(cap,str) or len(cap)>200: raise ValueError('Task cap must be text within 200 characters')
+            cleaned.append({'id':tid,'name':name.strip(),'kind':str(t.get('kind','task'))[:40],'is_enabled':enabled,'triggers':triggers,'cap':cap,'status':status,'last_result':t.get('last_result'),'note':note.strip()})
+        path=self.tasks_path(); tmp=path.with_suffix('.tmp')
+        tmp.write_text(json.dumps(cleaned,ensure_ascii=False,indent=2),encoding='utf-8')
+        os.replace(tmp,path); os.chmod(path,0o600)
+        return cleaned
+    def analyze_story(self,d):
+        raw=d.get('url_or_headline')
+        if not isinstance(raw,str) or not raw.strip() or len(raw)>500: raise ValueError('url_or_headline must be nonempty text within 500 characters')
+        raw=raw.strip()
+        lower=raw.lower()
+        source=raw
+        for row in MEDIA_LEAN_TABLE:
+            if row['outlet'].lower() in lower: source=row['outlet']; break
+        else:
+            if '://' in raw:
+                host=re.sub(r'^https?://','',raw).split('/')[0]
+                source=host or raw
+            else:
+                source='Headline submission (no outlet match in the 6-outlet lean table)'
+        scores={k:sum(1 for kw in v if kw in lower) for k,v in MEDIA_LEAN_LEXICON.items()}
+        best=max(scores,key=lambda k:scores[k])
+        lean=best if scores[best]>0 else 'center'
+        total=sum(scores.values()) or 1
+        spread={k:max(10,round(100*scores[k]/total)) for k in scores}
+        norm=100/sum(spread.values())
+        coverage={k:round(spread[k]*norm) for k in ('left','center','right')}
+        coverage['blindspot_alert']= None
+        if coverage[lean]<30: coverage['blindspot_alert']='Under-covered on the '+lean+': this story may read one-sided in your current feed.'
+        headline=re.sub(r'^https?://\S+\s*','',raw).strip() or raw
+        def variant(prefix,framing):
+            return prefix+' '+framing+': '+headline
+        comparative=[
+         variant('[Left-leaning frame]','who gains and who pays'),
+         variant('[Center wire frame]','what is confirmed, what is claimed'),
+         variant('[Right-leaning frame]','what it means for markets and mandates')]
+        loaded=[kw for kws in MEDIA_LEAN_LEXICON.values() for kw in kws if kw in lower]
+        receipt=('DE-SPINNED RECEIPT (local heuristic, no network fetch)\n'
+                 'SUBMITTED: '+raw+'\n'
+                 'DETECTED SOURCE: '+source+'\n'
+                 'CLASSIFIED LEAN: '+lean+' (keyword score '+str(scores[lean])+'/'+str(total)+')\n'
+                 'LOADED TERMS FOUND: '+(', '.join(loaded) if loaded else 'none detected')+'\n'
+                 'CLAIM: '+headline+'\n'
+                 'VERIFIED FACTS ATTACHED: 0 — attach sources before sharing.')
+        return {'submitted_source':source,'coverage_split':coverage,'comparative_headlines':comparative,'de_spinned_receipt':receipt,'method':'local 3-bucket lexicon heuristic · informational only'}
+    def sports_odds(self): return default_sports_odds()
+    def model_tracker_summary(self):
+        return {'categories':[{'id':c['id'],'name':c['name'],'models':[{k:m[k] for k in ('id','name','speed','cost_1m')} for m in c['models']]} for c in default_model_tracker()]}
+    def model_tracker_detail(self,model_id):
+        for c in default_model_tracker():
+            for m in c['models']:
+                if m['id']==model_id: return {'category':c['name'],**m}
+        raise ValueError('Unknown model id')
     def projects(self): return [json.loads(x[0]) for x in self.db.execute('SELECT body FROM projects ORDER BY rowid')]
     def project(self,id):
         row=self.db.execute('SELECT body FROM projects WHERE id=?',(id,)).fetchone()
@@ -174,19 +371,41 @@ class Twin:
             for item in p.get('assets',[]):add('asset',item['id'],p,item['name'],item.get('prompt',''),provider=item.get('provider'),model=item.get('model'))
         return {'results':results[:limit]}
     def act(self,route,d):
+        if route=='/api/zoo/hub/text-preview':
+            if set(d)!={'text'}:raise ValueError('Only explicit text is accepted')
+            return {'text':sanitize_shared_text(d['text']),'requires_exact_preview_approval':True,'warning':'Review all selected text. Automatic detection cannot identify every private fact.'}
+        if route=='/api/zoo/hub/context-preview':
+            if set(d)-{'project_id','document_ids','decision_ids'}:raise ValueError('Unsupported context selection')
+            with self.lock:
+                project=self.project(d.get('project_id'))
+                result=sanitize_shared_context(project,{k:d[k] for k in ('document_ids','decision_ids') if k in d})
+            return {'text':json.dumps(result['context'],ensure_ascii=False,indent=2),'requires_exact_preview_approval':True,'warning':result['warning']}
+        if route=='/api/zoo/hub/connect':return self.hub_client.connect(d)
+        if route=='/api/zoo/hub/disconnect':return self.hub_client.disconnect()
+        if route=='/api/zoo/hub/request':return self.hub_client.request(d)
+        if route=='/api/models/discover-local':
+            if d.get('consent') is not True:raise ValueError('Explicit local discovery consent required')
+            return discover_local_models()
         if route=='/api/send':return self.send(d)
         with self.lock:
             if route.startswith('/api/zoo/') and route!='/api/zoo/state':return self.zoo.act(route,d)
+            if route=='/api/models/smart-connect':
+                if isinstance(d.get('credential'),str) and d['credential'].strip().startswith('sk-or-v1-'):self.onboarding.cancel()
+                return detect_and_register_credential(d.get('credential'),SESSION_KEYS)
+            if route=='/api/models/auto-select':return auto_select_models_for_session(SESSION_KEYS,d.get('intent','auto'))
+            if route=='/api/oauth/openrouter/cancel':return self.onboarding.cancel()
             if route=='/api/connect':
                 provider=d.get('provider')
                 if provider not in PROVIDERS:raise ValueError('Unsupported provider')
                 key=self.text(d,'key',500)
                 if any(c.isspace() for c in key):raise ValueError('Invalid key format')
+                if provider=='openrouter':self.onboarding.cancel()
                 SESSION_KEYS[provider]=key
                 return {'configured':True,'verified':False,'storage':'server memory only; discarded on restart'}
             if route=='/api/disconnect':
                 provider=d.get('provider')
                 if provider not in PROVIDERS:raise ValueError('Unsupported provider')
+                if provider=='openrouter':self.onboarding.cancel()
                 SESSION_KEYS.pop(provider,None)
                 return {'configured':bool(os.environ.get(PROVIDERS[provider]['env'])),'storage':'Session key removed; environment credentials are controlled by the server process'}
             if route=='/api/onboarding':
@@ -237,6 +456,9 @@ class Twin:
                 if not cursor.rowcount:raise ValueError('Followed item not found')
                 return {'deleted':d.get('id')}
             if route=='/api/library/search':return self.library_search(d)
+            if route=='/api/dashboard/layout':return {'widgets':self.save_dashboard_layout(d.get('widgets'))}
+            if route=='/api/dashboard/analyze-story':return self.analyze_story(d)
+            if route=='/api/tasks':return {'tasks':self.save_tasks(d.get('tasks'))}
             if route=='/api/projects':
                 p={'id':uid(),'name':self.text(d,'name',200),'goal':self.text(d,'goal',5000),'documents':[],'decisions':[],'messages':[],'runs':[]};self.save(p);return p
             if route=='/api/skills/search':
@@ -338,6 +560,7 @@ class Handler(BaseHTTPRequestHandler):
     def reply(self,status,data,html=False):
         b=data.encode() if html else json.dumps(data).encode();self.send_response(status)
         self.send_header('Content-Type','text/html; charset=utf-8' if html else 'application/json')
+        self.send_header('Referrer-Policy','no-referrer')
         self.send_header('Cache-Control','no-store');self.send_header('X-Content-Type-Options','nosniff')
         self.send_header('Content-Security-Policy',"default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data: blob:; frame-ancestors 'none'; base-uri 'none'; form-action 'self'")
         self.send_header('Content-Length',str(len(b)));self.end_headers();self.wfile.write(b)
@@ -357,10 +580,36 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         parsed=urlparse(self.path);path=parsed.path
         if not self.allowed():return self.reply(403,{'error':'Local origin required'})
+        if path=='/api/oauth/openrouter/callback':
+            try:
+                query=parse_qs(parsed.query,keep_blank_values=True,max_num_fields=4)
+                if set(query)!={'code','state'} or any(len(x)!=1 for x in query.values()):raise ValueError('Invalid callback')
+                self.server.twin.onboarding.complete(query['code'][0],query['state'][0])
+                return self.reply(200,'<!doctype html><meta charset="utf-8"><title>Connected</title><script>history.replaceState(null,"","/api/oauth/openrouter/result")</script><h1>Connected via OpenRouter</h1><p>Return to OpenTwin. Your key is held only for this app session. Model access and billing are not verified.</p>',True)
+            except Exception:
+                return self.reply(400,'<!doctype html><meta charset="utf-8"><title>Sign-in not completed</title><script>history.replaceState(null,"","/api/oauth/openrouter/result")</script><p>Sign-in was not completed. Return to OpenTwin and restart sign-in. No automatic retry was made.</p>',True)
+        if path in ['/api/oauth/openrouter/start','/api/models/compatibility-guide']:
+            if not self.auth():return self.reply(403,{'error':'Local session authorization required'})
+            if path.endswith('/start'):return self.reply(200,self.server.twin.onboarding.start(self.server.server_address[1]))
+            return self.reply(200,compatibility_guide())
         page='shell' if path=='/home' or (path=='/' and getattr(self.server,'native_mode',False)) else 'projects'
         if path in ['/','/home','/projects','/twin','/twin/projects']:return self.reply(200,index_html(getattr(self.server,'development_token',None),page),True)
         if self.zoo_document(path):return self.reply(200,index_html(getattr(self.server,'development_token',None),'shell'),True)
         if path in ['/api/asset','/api/zoo/state','/api/state'] and not self.auth():return self.reply(403,{'error':'Use the private launch URL printed by the server'})
+        if path=='/api/dashboard/layout':
+            if not self.auth():return self.reply(403,{'error':'Use the private launch URL printed by the server'})
+            with self.server.twin.lock:return self.reply(200,{'widgets':self.server.twin.dashboard_layout()})
+        if path.startswith('/api/dashboard/model-tracker'):
+            if not self.auth():return self.reply(403,{'error':'Use the private launch URL printed by the server'})
+            model_id=path.rsplit('/',1)[-1] if path!='/api/dashboard/model-tracker' else ''
+            with self.server.twin.lock:
+                try:return self.reply(200,self.server.twin.model_tracker_detail(model_id) if model_id else self.server.twin.model_tracker_summary())
+                except ValueError as e:return self.reply(404,{'error':str(e)})
+        if path in ['/api/dashboard/sports-odds','/api/tasks']:
+            if not self.auth():return self.reply(403,{'error':'Use the private launch URL printed by the server'})
+            with self.server.twin.lock:
+                if path.endswith('/sports-odds'):return self.reply(200,{'matchups':self.server.twin.sports_odds()})
+                return self.reply(200,{'tasks':self.server.twin.tasks()})
         if path=='/api/asset':
             id=parse_qs(parsed.query).get('id',[''])[0]
             with self.server.twin.lock:row=self.server.twin.db.execute('SELECT data FROM assets WHERE id=?',(id,)).fetchone()

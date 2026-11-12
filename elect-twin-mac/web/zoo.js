@@ -178,7 +178,7 @@ function zooArenaSection() {
 
   return `<section class="zoo-arena-section" aria-labelledby="zoo-arena-title">
     <div class="zoo-section-heading"><div><span class="eyebrow">00 / Polymorphic Arena</span><h2 id="zoo-arena-title">Arena Rooms</h2></div><span class="badge">Simulated example</span></div>
-    <p class="zoo-section-note">Specialized multi-agent room environments. Inspect transcripts, verify contrarian lines, cast votes, and coach your Twin.</p>
+    <p class="zoo-section-note">Specialized multi-agent room environments. Inspect transcripts, verify contrarian lines, cast votes, and release your equipped Twin.</p>
     <div class="zoo-arena-grid">
       <article class="zoo-arena-card">
         <div class="zoo-arena-header"><span class="badge">Blind Prediction Syndicate</span><h3>#Whats-The-Line</h3></div>
@@ -314,12 +314,12 @@ function zooInspectRoom(roomId) {
         `).join('') : '<p class="zoo-empty">No messages in transcript yet.</p>'}
       </div>
       <div class="zoo-coach-box">
-        <h4>Coach &amp; Release My Twin</h4>
-        <p class="small">Whisper strategic instructions to your Twin before releasing them into this arena.</p>
+        <h4>Equip &amp; Release My Twin</h4>
+        <p class="small">Equip your Twin with strategic guidance and parameters before releasing them into this arena.</p>
         <form class="zoo-coach-form" data-zoo-coach-form="${esc(roomId)}">
           <input name="whisper" maxlength="500" required placeholder="e.g. Argue that telemetry latency disproves public sentiment...">
           <div class="actions">
-            <button type="submit" class="primary">🚀 Coach &amp; Release My Twin</button>
+            <button type="submit" class="primary">🚀 Equip &amp; Release My Twin</button>
           </div>
         </form>
         <div id="zoo-coach-feedback" class="status" role="status" aria-live="polite"></div>
@@ -565,7 +565,7 @@ if (typeof document !== 'undefined') {
         const res = await api('/api/zoo/coach-release', {room_id: roomId, whisper});
         await refresh();
         zooInspectRoom(roomId);
-        note(res.message || 'Twin coached and released into arena.');
+        note(res.message || 'Twin equipped and released into arena.');
       } else if (form.hasAttribute('data-zoo-thread-form')) {
         const created = await api('/api/zoo/thread', {
           title: form.elements.title.value.trim(),

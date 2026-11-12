@@ -13,14 +13,14 @@ from urllib.request import Request, urlopen
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from twin import Twin, Handler, default_dashboard_layout, DASHBOARD_WIDGET_TYPES
+from twin import Twin, Handler, default_dashboard_layout, DASHBOARD_WIDGET_TYPES, DASHBOARD_DAY_ONE
 
 
 def sample_widgets():
     return [
-        {"id": "dash-morning_postcard", "type": "morning_postcard", "title": "While You Were Out", "span": 1, "config": {}, "order": 0},
-        {"id": "dash-project_decisions", "type": "project_decisions", "title": "Pinned Decisions", "span": 2, "config": {"project_id": "p1"}, "order": 1},
-        {"id": "dash-zoo_odds_watch", "type": "zoo_odds_watch", "title": "Arena Odds Watch", "span": 1, "config": {}, "order": 2},
+        {"id": "dash-morning_postcard", "type": "morning_postcard", "title": "While You Were Out", "span": "1x1", "config": {}, "order": 0},
+        {"id": "dash-project_decisions", "type": "project_decisions", "title": "Pinned Decisions", "span": "2x1", "config": {"project_id": "p1"}, "order": 1},
+        {"id": "dash-zoo_odds_watch", "type": "zoo_odds_watch", "title": "Arena Odds Watch", "span": "1x1", "config": {}, "order": 2},
     ]
 
 
@@ -34,17 +34,29 @@ class DashboardLayoutPersistenceTests(unittest.TestCase):
         self.twin.zoo.close()
         self.tmp.cleanup()
 
-    def test_default_layout_covers_all_six_widget_types(self):
+    def test_default_layout_seeds_day_one_value_widgets_first(self):
         layout = default_dashboard_layout()
-        self.assertEqual([w["type"] for w in layout], list(DASHBOARD_WIDGET_TYPES))
-        self.assertEqual(len(layout), 6)
-        self.assertTrue(all(w["span"] == 1 for w in layout))
-        self.assertEqual([w["order"] for w in layout], list(range(6)))
+        day_one = [t for t, _ in DASHBOARD_DAY_ONE]
+        self.assertEqual([w["type"] for w in layout][:4], day_one)
+        self.assertEqual({w["type"] for w in layout}, set(DASHBOARD_WIDGET_TYPES))
+        self.assertEqual(len(layout), len(DASHBOARD_WIDGET_TYPES))
+        self.assertEqual(layout[0]["span"], "2x1")  # model_market_tracker leads wide
+        self.assertTrue(all(w["span"] == "1x1" for w in layout[1:]))
+        self.assertEqual([w["order"] for w in layout], list(range(len(layout))))
+        self.assertTrue(all(w["config"] == {} for w in layout))
+
+    def test_day_one_widget_types_validate(self):
+        widgets = [
+            {"id": "dash-model_market_tracker", "type": "model_market_tracker", "title": "Frontier Model Intelligence", "span": "2x1", "config": {}, "order": 0},
+            {"id": "dash-global_agent_telemetry", "type": "global_agent_telemetry", "title": "The Live Zoo Pulse", "span": "1x1", "config": {}, "order": 1},
+        ]
+        saved = self.twin.save_dashboard_layout(widgets)
+        self.assertEqual([w["type"] for w in saved], ["model_market_tracker", "global_agent_telemetry"])
 
     def test_save_then_reload_returns_same_layout(self):
         saved = self.twin.save_dashboard_layout(sample_widgets())
         self.assertEqual([w["id"] for w in saved], [w["id"] for w in sample_widgets()])
-        self.assertEqual(saved[1]["span"], 2)
+        self.assertEqual(saved[1]["span"], "2x1")
         path = Path(self.tmp.name) / "dashboard_layout.json"
         self.assertTrue(path.exists())
         self.assertEqual(stat.S_IMODE(path.stat().st_mode), 0o600)
@@ -143,7 +155,8 @@ class DashboardHttpAndIsolationTests(unittest.TestCase):
         self.assertEqual(status, 403)
         status, body = self.request("GET", "/api/dashboard/layout")
         self.assertEqual(status, 200)
-        self.assertEqual(len(body["widgets"]), 6)
+        self.assertEqual(len(body["widgets"]), len(DASHBOARD_WIDGET_TYPES))
+        self.assertEqual([w["type"] for w in body["widgets"]][:4], [t for t, _ in DASHBOARD_DAY_ONE])
 
     def test_post_move_edit_delete_then_get_reflects(self):
         widgets = sample_widgets()

@@ -213,6 +213,110 @@ h1,h2,h3,p{margin:0}h1{font-size:30px;line-height:1.15;letter-spacing:-1.1px;fon
 @media(max-width:760px){#setup-dialog,#invitation-dialog{width:calc(100% - 20px);max-height:94vh;padding:18px}#setup-dialog .dialoghead,#invitation-dialog .dialoghead{top:-18px}.setup-progress{display:grid;grid-template-columns:minmax(0,1fr)}.setup-progress button{border-bottom:1px solid var(--line)}.setup-progress button[aria-current=step]{border-left:3px solid var(--accent);border-bottom:1px solid var(--line)}.invitation-fields div{grid-template-columns:minmax(0,1fr);gap:4px}.setup-provider{padding:13px}.setup-actions,.invitation-previews .actions{align-items:stretch}.setup-actions button{width:100%}}
 @media(prefers-reduced-motion:reduce){#setup-dialog,#setup-dialog *,#invitation-dialog,#invitation-dialog *{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 
+</style><style id="hub-styles">
+/* Uses the existing O+T design tokens; no external assets or font requests. */
+.hub-card {display:flex;align-items:center;justify-content:space-between;gap:20px;margin:0 0 24px;flex-wrap:wrap}
+.hub-card h2 {margin:5px 0}
+.hub-card p {margin:6px 0 10px;max-width:62ch}
+#hub-dialog {width:min(760px,calc(100vw - 32px));max-height:90vh;overflow:auto}
+#hub-dialog [hidden] {display:none!important}
+#hub-dialog p,#hub-dialog li {overflow-wrap:anywhere}
+#hub-dialog label {display:block;margin:14px 0 7px}
+#hub-dialog .hub-check {display:flex;gap:10px;align-items:flex-start;margin:16px 0}
+#hub-dialog .hub-check input {width:auto;margin-top:4px;flex:0 0 auto}
+#hub-dialog form {margin:14px 0 20px}
+#hub-dialog form>button {margin-top:12px}
+#hub-dialog .actions {display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+#hub-dialog hr {border:0;border-top:1px solid var(--line);margin:20px 0}
+#hub-status {padding:12px;background:var(--paper,#f8fafc);border:1px solid var(--line);border-radius:8px}
+.hub-room-list {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:16px 0}
+.hub-room-list button {text-align:left;white-space:normal;overflow-wrap:anywhere}
+#hub-dialog small {display:block;overflow-wrap:anywhere}
+#hub-dialog button[aria-pressed="true"] {border-color:var(--accent-twin,#0d9488)}
+#hub-room-work,#hub-review {margin-top:20px;padding:16px;border:1px solid var(--line);border-radius:10px}
+#hub-review {background:var(--paper,#f8fafc)}
+#hub-request-body {white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;max-height:260px;overflow:auto}
+#hub-events {max-height:300px;overflow:auto;margin:12px 0}
+#hub-events article {border-bottom:1px solid var(--line);padding:12px 0}
+#hub-events p {white-space:pre-wrap}
+#hub-dialog :focus-visible {outline:3px solid var(--accent-twin,#0d9488);outline-offset:3px}
+@media(max-width:600px) {.hub-room-list{grid-template-columns:minmax(0,1fr)}#hub-dialog{padding:18px}.hub-card>button{width:100%}}
+
+</style><style id="dashboard-styles">
+/* Studio Dashboard: Porcelain & Ink bento widgets. Layout chrome only; data provenance stays per-widget. */
+.sd-section{margin-top:34px;border-top:1px solid var(--line);padding-top:24px}
+.sd-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:6px}
+.sd-head p{font-size:12px;color:var(--clay);max-width:640px;margin-top:6px}
+.sd-bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.sd-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:16px;align-items:start}
+.sd-widget{background:var(--bg-surface);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow-card);overflow:hidden;min-width:0;display:flex;flex-direction:column}
+.sd-widget.sd-span2{grid-column:span 2}
+.sd-widget.sd-drop{outline:2px dashed var(--accent-twin);outline-offset:-2px}
+.sd-widget.sd-dragging{opacity:.45}
+.sd-customizing .sd-widget{outline:1px dotted var(--accent-twin);outline-offset:-1px}
+.sd-whead{display:flex;align-items:center;gap:6px;padding:10px 12px;border-bottom:1px solid var(--line);background:var(--bg-surface)}
+.sd-handle{cursor:grab;color:var(--stone);font-size:11px;letter-spacing:-2px;padding:4px 3px;border:1px solid transparent;border-radius:5px;user-select:none;line-height:1}
+.sd-handle:hover{background:var(--light);border-color:var(--line);color:var(--ink)}
+.sd-wtitle{flex:1;min-width:0;font-size:13px;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sd-wsub{display:block;font-size:10px;font-weight:400;color:var(--stone)}
+.sd-ctl{border:1px solid var(--line);background:var(--white);color:var(--clay);width:24px;height:24px;border-radius:6px;font-size:11px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;padding:0;line-height:1}
+.sd-ctl:hover{background:var(--light);color:var(--ink)}
+.sd-ctl.sd-danger:hover{color:var(--danger);border-color:#fecaca;background:#fef2f2}
+.sd-ctl:disabled{opacity:.35;cursor:not-allowed}
+.sd-body{padding:13px 14px 15px;display:flex;flex-direction:column;gap:10px;font-size:12px;position:relative;min-width:0}
+.sd-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.sd-kpi{border:1px solid var(--line);border-radius:8px;padding:8px;text-align:center;background:var(--white)}
+.sd-kpi b{display:block;font-size:14px;font-variant-numeric:tabular-nums}
+.sd-kpi span{font-size:9px;color:var(--stone);text-transform:uppercase;letter-spacing:.4px}
+.sd-kpi b.sd-teal{color:var(--accent-twin)}
+.sd-row{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line)}
+.sd-row:last-child{border-bottom:0}
+.sd-row small{display:block;color:var(--stone);font-size:10.5px}
+.sd-badge{display:inline-block;font-size:9.5px;font-weight:700;padding:2px 8px;border-radius:9999px;white-space:nowrap}
+.sd-badge.local{background:#f2f7f2;color:var(--green);border:1px solid #b9cbbd}
+.sd-badge.zoo{background:var(--accent-twin-bg);color:var(--accent-twin);border:1px solid var(--accent-twin-border)}
+.sd-badge.neutral{background:var(--light);color:var(--clay);border:1px solid var(--line)}
+.sd-btn{border:1px solid var(--line);border-radius:7px;background:var(--white);color:var(--ink);padding:7px 11px;font-size:11px;font-weight:650;cursor:pointer}
+.sd-btn:hover{background:var(--light)}
+.sd-btn.sd-primary{background:var(--accent-primary);border-color:var(--accent-primary);color:#fff}
+.sd-btn.sd-primary:hover{background:#1e293b}
+.sd-btn.sd-teal{background:var(--accent-twin);border-color:var(--accent-twin);color:#fff}
+.sd-btn.sd-teal:hover{background:#115e59}
+.sd-actions{display:flex;gap:7px;flex-wrap:wrap}
+.sd-empty{color:var(--clay);font-size:11.5px;padding:6px 0}
+.sd-provenance{font-size:9.5px;color:var(--stone);text-transform:uppercase;letter-spacing:.5px;font-weight:700}
+.sd-market{width:100%;border-collapse:collapse}
+.sd-market th{text-align:left;font-size:9px;font-weight:750;text-transform:uppercase;letter-spacing:.5px;color:var(--stone);padding:5px 6px;border-bottom:1px solid var(--line)}
+.sd-market td{padding:8px 6px;border-bottom:1px solid var(--line);font-size:12px;vertical-align:middle}
+.sd-market tr:last-child td{border-bottom:0}
+.sd-cost{font-variant-numeric:tabular-nums;font-weight:650;white-space:nowrap}
+.sd-rank{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:9999px;background:var(--light);border:1px solid var(--line);font-size:10px;font-weight:750}
+.sd-rank.sd-top{background:var(--accent-twin-bg);color:var(--accent-twin);border-color:var(--accent-twin-border)}
+.sd-wr{color:var(--stone);font-variant-numeric:tabular-nums}
+.sd-term{background:#0F172A;border-radius:8px;padding:10px 11px;font:11px/1.7 ui-monospace,SFMono-Regular,monospace;color:#5EEAD4;min-height:140px;max-height:180px;overflow-y:auto;white-space:pre-wrap;overflow-wrap:anywhere}
+.sd-term .sd-dim{color:#64748B}
+.sd-diff{border:1px solid var(--line);border-radius:7px;overflow:hidden}
+.sd-diff pre{margin:0;padding:9px 11px;font:11px/1.55 ui-monospace,SFMono-Regular,monospace;white-space:pre-wrap;overflow-wrap:anywhere;max-height:150px;overflow:auto}
+.sd-diff .sd-stripped{background:#fef2f2;color:#991b1b;text-decoration:line-through}
+.sd-diff .sd-kept{background:#f2f7f2;color:var(--green)}
+.sd-popover{position:absolute;z-index:80;background:var(--white);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow-card);padding:12px;width:230px;display:flex;flex-direction:column;gap:8px}
+.sd-popover label{font-size:9.5px;font-weight:750;text-transform:uppercase;letter-spacing:.5px;color:var(--stone);margin:0}
+.sd-popover input,.sd-popover select{width:100%;border:1px solid var(--line);border-radius:6px;padding:6px 8px;font-size:12px}
+.sd-popover .sd-actions{justify-content:stretch}
+.sd-popover .sd-actions .sd-btn{flex:1}
+.sd-menu{position:absolute;z-index:90;background:var(--white);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow-card);padding:6px;width:250px;display:flex;flex-direction:column;gap:2px}
+.sd-menu button{display:flex;align-items:center;gap:9px;border:0;background:transparent;text-align:left;padding:8px 9px;border-radius:7px;font-size:12px;font-weight:600;color:var(--ink);cursor:pointer}
+.sd-menu button:hover{background:var(--light)}
+.sd-menu button:disabled{opacity:.4;cursor:not-allowed}
+.sd-menu small{display:block;font-weight:400;color:var(--stone);font-size:10.5px}
+.sd-toast-wrap{position:fixed;bottom:20px;right:20px;z-index:120;display:flex;flex-direction:column;gap:8px}
+.sd-toast{background:var(--accent-primary);color:#fff;font-size:12px;font-weight:550;padding:10px 14px;border-radius:9px;box-shadow:var(--shadow-card);display:flex;align-items:center;gap:10px;max-width:340px}
+.sd-toast.sd-teal{background:var(--accent-twin)}
+.sd-toast button{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:6px;padding:2px 9px;font-size:10.5px;font-weight:700;cursor:pointer}
+.sd-toast button:hover{background:rgba(255,255,255,.28)}
+@media(max-width:1100px){.sd-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.sd-widget.sd-span2{grid-column:span 2}}
+@media(max-width:760px){.sd-grid{grid-template-columns:minmax(0,1fr)}.sd-widget.sd-span2{grid-column:span 1}}
+@media(prefers-reduced-motion:reduce){.sd-section *{transition:none!important;animation:none!important}}
 </style></head><body>
 <a class="skip" href="#main">Skip to content</a><div class="app" data-app="OpenTwin" data-legacy="Agent Zoo"><aside class="sidebar"><a class="brand" href="#" data-nav="home" aria-label="OpenTwin home"><svg class="elect-monogram brandmark" width="28" height="28" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="flex-shrink:0;">
   <circle cx="32" cy="32" r="29" stroke="#0F766E" stroke-width="3.5" fill="#F0FDFA"/>
@@ -221,7 +325,7 @@ h1,h2,h3,p{margin:0}h1{font-size:30px;line-height:1.15;letter-spacing:-1.1px;fon
 </svg><span>OpenTwin<small style="letter-spacing:0.08em;font-size:9px;color:var(--text-tertiary);text-transform:uppercase;">Personal AI Studio</small></span></a><div class="eyebrow nav-section">Workspace</div><nav class="nav" id="nav" aria-label="Main navigation"></nav><div class="sidefoot"><span class="local">Running on this Mac</span><p class="small" style="margin-top:8px">Your project memory and Rooms data stay in separate local stores.</p></div></aside><section class="shell"><header class="topbar"><div style="display:flex;align-items:center;gap:10px"><span class="badge configured" style="font-size:11px">● Local &amp; Private</span><div class="small" id="top-context" style="color:var(--stone)">Separate SQLite Stores</div></div><div class="identity"><span class="small" id="top-name">You</span><span id="top-avatar"></span></div></header><main class="content" id="main" tabindex="-1"><div class="status" id="status" role="status" aria-live="polite"></div><div id="page"></div><footer class="footer">Internal test build · no remote accounts or cloud sync<span>Provider calls require your review and may incur charges.</span></footer></main></section></div>
 <dialog id="provider-dialog" aria-labelledby="provider-title"><form id="provider-form"><div class="dialoghead"><div><span class="eyebrow">Session-only connection</span><h2 id="provider-title">Connect a model</h2></div><button type="button" data-close="provider-dialog" aria-label="Close">×</button></div><p>Your key goes only to the local Twin server and stays in its memory until you quit. It is not saved in this browser or database. Connecting does not verify account access; only a successful request can do that.</p><label for="provider-select">Provider</label><select id="provider-select"></select><label for="provider-key">API key</label><input id="provider-key" type="password" autocomplete="off" spellcheck="false" required><div class="actions"><button type="button" data-close="provider-dialog">Not now</button><button class="primary">Connect locally</button></div></form></dialog>
 <dialog id="challenge-dialog" aria-labelledby="challenge-title"><form id="challenge-form"><div class="dialoghead"><div><span class="eyebrow">Human-submitted</span><h2 id="challenge-title">Add a challenge</h2></div><button type="button" data-close="challenge-dialog" aria-label="Close">×</button></div><p>Save a useful problem for local investigation. It begins as submitted and becomes reviewed only when you explicitly mark it reviewed.</p><label for="challenge-name">Title</label><input id="challenge-name" maxlength="200" required><label for="challenge-prompt">Challenge</label><textarea id="challenge-prompt" maxlength="20000" required placeholder="What should the agents investigate together?"></textarea><div class="actions"><button type="button" data-close="challenge-dialog">Cancel</button><button class="primary">Save challenge</button></div></form></dialog>
-<dialog id="zoo-room-dialog" aria-labelledby="zoo-room-title" aria-describedby="zoo-room-description"><div class="dialoghead"><div><span class="eyebrow">Room Drill-Down</span><h2 id="zoo-room-title" tabindex="-1">Room Details</h2></div><button type="button" id="zoo-room-close">Close</button></div><p id="zoo-room-description">Inspect room rules, transcript, and coach your Twin.</p><div id="zoo-room-content"></div></dialog>
+<dialog id="zoo-room-dialog" aria-labelledby="zoo-room-title" aria-describedby="zoo-room-description"><div class="dialoghead"><div><span class="eyebrow">Room Drill-Down</span><h2 id="zoo-room-title" tabindex="-1">Room Details</h2></div><button type="button" id="zoo-room-close">Close</button></div><p id="zoo-room-description">Inspect room rules, transcript, and release your Twin into the arena.</p><div id="zoo-room-content"></div></dialog>
 <dialog id="zoo-agent-dialog" aria-labelledby="zoo-agent-title" aria-describedby="zoo-agent-description"><div class="dialoghead"><div><span class="eyebrow">Local identity profile</span><h2 id="zoo-agent-title" tabindex="-1">Zoo profile</h2></div><button type="button" id="zoo-agent-close">Close</button></div><div class="zoo-profile-header"><div id="zoo-agent-portrait"></div><p id="zoo-agent-description">Identity and connectivity details.</p></div><div id="zoo-agent-details"></div></dialog>
 <dialog id="setup-dialog" aria-labelledby="setup-title" aria-describedby="setup-description"><div class="dialoghead"><div><span class="eyebrow">Optional local setup</span><h2 id="setup-title" tabindex="-1">Welcome / privacy</h2></div><button type="button" data-setup-not-now aria-label="Not now, close setup">×</button></div><p id="setup-description">Optional local setup. Skip it or return at any time.</p><div id="setup-status" class="status" role="status" aria-live="polite"></div><div id="setup-content"></div></dialog>
 <dialog id="invitation-dialog" aria-labelledby="invitation-title" aria-describedby="invitation-description"><div class="dialoghead"><div><span class="eyebrow">Local preview · never delivered</span><h2 id="invitation-title" tabindex="-1">Invitation preview</h2></div><button type="button" data-invitation-close aria-label="Close invitation preview">×</button></div><p id="invitation-description">Local preview only — nothing was sent, no account was created, no membership changed, and no access was granted.</p><div id="invitation-status" class="status" role="status" aria-live="polite"></div><div id="invitation-content"></div><div id="invitation-copy-fallback" class="hidden"><label for="invitation-copy-text">Selectable local explanatory preview</label><textarea id="invitation-copy-text" readonly spellcheck="false"></textarea></div></dialog>
@@ -363,7 +467,7 @@ function people(){const cards=[['you',state.profile.human_name,'Human · project
 function collaboration(){const presets=state.solo_presets||[],soloRooms=state.solo_rooms||[];return `<div class="pagehead"><div><span class="eyebrow">Collaboration Modes</span><h1>Collaboration</h1><p>Put two AIs—or your friends and their AIs—into the same private room. Switch between Solo 2-AI goals and deterministic multiplayer Rooms.</p></div><div class="actions"><button type="button" class="${collabMode==='solo'?'primary':''}" data-collab-mode="solo">⚡ Solo 2-AI Mode</button><button type="button" class="${collabMode==='multiplayer'?'primary':''}" data-collab-mode="multiplayer">🤝 Multiplayer Mode</button></div></div><div id="collab-solo" class="${collabMode==='solo'?'':'hidden'}"><div class="sectionhead"><div><h2>Solo 2-AI Goal Presets</h2><p class="small">1 Human + 2 Custom AIs in a private room. Pick a battle-tested dual-agent dynamic.</p></div><span class="badge configured">Private · Local</span></div><div class="grid two" style="margin-top:16px">${presets.map(p=>`<article class="card"><div class="card-top"><h3>${esc(p.icon||'')} ${esc(p.name)}</h3><span class="badge">Dual AI</span></div><p><strong>${esc(p.tagline||'')}</strong></p><div style="margin:10px 0;font-size:12px;color:var(--clay)"><div><strong>${esc(p.agent_a?.name||'Agent A')}:</strong> ${esc(p.agent_a?.role||'')}</div><div style="margin-top:4px"><strong>${esc(p.agent_b?.name||'Agent B')}:</strong> ${esc(p.agent_b?.role||'')}</div></div><p class="small">Default Goal: ${esc(p.default_goal||'')}</p><div class="actions"><button type="button" class="primary" data-launch-solo="${esc(p.id)}">🚀 Launch Solo Room</button></div></article>`).join('')}</div>${soloRooms.length?`<div class="section" style="margin-top:24px"><div class="sectionhead"><h2>Active Solo Rooms (${soloRooms.length})</h2></div><div class="grid">${soloRooms.map(r=>`<article class="card"><div class="card-top"><h3>${esc(r.preset_name)}</h3><span class="badge configured">Active</span></div><p>Goal: ${esc(r.custom_goal||r.preset_name)}</p><p class="small">Pair: ${esc(r.agent_a_name)} &amp; ${esc(r.agent_b_name)}</p><p class="small">Status: ${esc(r.status)} · ${new Date(r.created_at*1000).toLocaleTimeString()}</p></article>`).join('')}</div></div>`:''}</div><div id="collab-multiplayer" class="${collabMode==='multiplayer'?'':'hidden'}"><div class="grid two"><section class="card dotgrid"><h2>Shared planning room</h2><p>Human messages can wake authorized Twins. Two workers can run in parallel; agent output never starts an autonomous chain.</p><div class="participants">${roomCluster()}</div><div class="worker-stack"><div class="worker">${portrait('jay-twin')}<div class="details"><strong>Jay Twin</strong><p>Owner-granted shared-room reader · deterministic digest</p></div><span class="badge">Local worker</span></div><div class="worker">${portrait('alex-twin')}<div class="details"><strong>Alex Twin</strong><p>Topic subscriptions and direct mentions · deterministic digest</p></div><span class="badge">Local worker</span></div></div><div class="handoff">Subgroup handoffs publish only the exact reviewed text—not subgroup history. Inspect real worker states and packets in Rooms.</div><div class="actions"><button class="primary" data-room="jay">Enter as Jay</button><button data-room="alex">Enter as Alex</button></div></section><section><div class="sectionhead"><h2>Honest boundaries</h2></div><div class="permission"><strong>Working locally</strong><p>Membership, owner grants, private-note isolation, durable job states, two workers, and reviewed handoffs.</p></div><div class="permission"><strong>Deterministic, not intelligent inference</strong><p>The Rooms adapter extracts recent human messages into a digest. It does not use your five model providers.</p></div><div class="permission"><strong>Not connected to the world</strong><p>No federation, public discovery, remote users, invitations, autonomous agents, or external tools.</p></div><div class="actions" style="margin-top:18px"><button data-follow="room" data-target="shared-planning" data-label="Shared planning room">${following('room','shared-planning')?'Following room ✓':'Follow this room'}</button></div></section></div></div>`}
 function challenges(){return `<div class="pagehead"><div><span class="eyebrow">Human problems, deliberate review</span><h1>Agent Challenges</h1><p>A local library of challenges you submit and review yourself. “Reviewed” is your local review decision, not independent quality certification.</p></div><button class="primary" data-new-challenge>Add challenge</button></div>${state.challenges.length?`<div class="list">${state.challenges.map(c=>`<article class="list-row"><div><span class="badge ${c.status==='reviewed'?'reviewed':''}">${esc(c.status)}</span><h3 style="margin-top:7px">${esc(c.title)}</h3><p class="challenge-prompt">${esc(c.prompt)}</p><small>Created ${new Date(c.created_at*1000).toLocaleString()}${c.reviewed_at?' · reviewed '+new Date(c.reviewed_at*1000).toLocaleString():''}</small></div><div class="actions">${c.status==='submitted'?`<button data-review="${c.id}">Mark reviewed locally</button>`:''}<button data-copy-challenge="${c.id}">Copy brief &amp; open Rooms</button><button data-follow="thread" data-target="challenge:${c.id}" data-label="${esc(c.title)}">${following('thread','challenge:'+c.id)?'Following ✓':'Follow'}</button><button class="danger" data-delete-challenge="${c.id}" aria-label="Delete ${esc(c.title)}">Delete</button></div></article>`).join('')}</div>`:'<div class="empty">No challenges yet. Add a real question or problem for local investigation.</div>'}`}
 function followingPage(){return `<div class="pagehead"><div><span class="eyebrow">Saved locally</span><h1>Following</h1><p>A quiet list of local agents, rooms, and challenge references. This is not a remote activity feed and does not subscribe you to anyone.</p></div></div>${state.following.length?`<div class="list">${state.following.map(f=>`<article class="list-row"><div><span class="badge">${esc(f.kind)} · local reference</span><h3 style="margin-top:7px">${esc(f.label)}</h3><p>Saved ${new Date(f.created_at*1000).toLocaleString()}</p></div><div class="actions"><button data-open-follow="${f.id}">Open</button><button class="danger" data-unfollow="${f.id}">Unfollow</button></div></article>`).join('')}</div>`:'<div class="empty">Nothing followed yet. Follow a Twin, the shared planning room, or a challenge to keep it close.</div>'}`}
-function render(){try{document.title='OpenTwin · '+pages.find(x=>x[0]===page)[1];$('nav').innerHTML=pages.map(([id,label,ic])=>`<button data-page="${id}" aria-current="${page===id?'page':'false'}">${icon(ic)}${label}</button>`).join('');$('top-name').textContent=state.profile.human_name;$('top-avatar').innerHTML=portrait('you');$('top-context').textContent=pages.find(x=>x[0]===page)[1]+' · local workspace';const views={home,models,projects,twin,people,collaboration,zoo: () => (typeof zoo === 'function' ? zoo() : ''),challenges,following:followingPage};$('page').innerHTML=views[page]();if(page==='zoo')enhanceZooPage();if(typeof enhanceLocalPages==='function')enhanceLocalPages();if(typeof maybeShowSetup==='function')maybeShowSetup()}catch(e){window.__lastRenderError=e.message+' at '+e.stack;note(e.message,true)}}
+function render(){try{document.title='OpenTwin · '+pages.find(x=>x[0]===page)[1];$('nav').innerHTML=pages.map(([id,label,ic])=>`<button data-page="${id}" aria-current="${page===id?'page':'false'}">${icon(ic)}${label}</button>`).join('');$('top-name').textContent=state.profile.human_name;$('top-avatar').innerHTML=portrait('you');$('top-context').textContent=pages.find(x=>x[0]===page)[1]+' · local workspace';const views={home,models,projects,twin,people,collaboration,zoo: () => (typeof zoo === 'function' ? zoo() : ''),challenges,following:followingPage};$('page').innerHTML=views[page]();if(page==='zoo')enhanceZooPage();if(page==='home'&&typeof enhanceStudioDashboard==='function')enhanceStudioDashboard();if(typeof enhanceLocalPages==='function')enhanceLocalPages();if(typeof enhanceHubBridge==='function')enhanceHubBridge();if(typeof maybeShowSetup==='function')maybeShowSetup()}catch(e){window.__lastRenderError=e.message+' at '+e.stack;note(e.message,true)}}
 function showConnect(provider='openai'){$('provider-select').innerHTML=state.providers.map(p=>`<option value="${p.id}">${esc(providerNames[p.id]||p.id)}</option>`).join('');$('provider-select').value=provider;$('provider-key').value='';$('provider-dialog').showModal();$('provider-key').focus()}
 async function copyChallenge(id){const c=state.challenges.find(x=>x.id===id);if(!c)return;try{await navigator.clipboard.writeText(c.title+'\n\n'+c.prompt);note('Challenge copied. Paste it into a Rooms message; nothing was posted automatically.')}catch{note('Clipboard access was unavailable. Select and copy the challenge text manually.',true)}openRoom('jay')}
 $('page').addEventListener('click',async e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.page){page=b.dataset.page;if(page==='zoo')await loadZooState();render();$('main').focus();return}if(b.hasAttribute('data-start-project'))return goProjects();if(b.dataset.openProject)return goProjects(b.dataset.openProject);if(b.dataset.collabMode){collabMode=b.dataset.collabMode;render();return}if(b.dataset.launchSolo){b.disabled=true;try{await api('/api/solo-room',{preset_id:b.dataset.launchSolo});await refresh();note('Solo 2-AI Room launched.')}catch(err){note(err.message,true)}finally{b.disabled=false}return}if(b.dataset.room)return openRoom(b.dataset.room);if(b.hasAttribute('data-connect'))return showConnect(b.dataset.connect||'openai');if(b.dataset.disconnect){if(!confirm('Remove this provider’s session key? Environment credentials, if any, remain controlled by the app process.'))return;try{await api('/api/disconnect',{provider:b.dataset.disconnect});await refresh();note('Provider session key removed.')}catch(err){note(err.message,true)}return}if(b.hasAttribute('data-new-challenge')){$('challenge-form').reset();$('challenge-dialog').showModal();$('challenge-name').focus();return}if(b.dataset.review){try{await api('/api/challenge/review',{id:b.dataset.review,approved:true});await refresh();note('Challenge marked reviewed locally.')}catch(err){note(err.message,true)}return}if(b.dataset.deleteChallenge){if(!confirm('Delete this local challenge?'))return;try{await api('/api/challenge/delete',{id:b.dataset.deleteChallenge});await refresh();note('Challenge deleted.')}catch(err){note(err.message,true)}return}if(b.dataset.copyChallenge)return copyChallenge(b.dataset.copyChallenge);if(b.dataset.follow)return follow(b.dataset.follow,b.dataset.target,b.dataset.label);if(b.dataset.unfollow)return follow(state.following.find(x=>x.id===b.dataset.unfollow)?.kind,state.following.find(x=>x.id===b.dataset.unfollow)?.target,'');if(b.dataset.openFollow){const f=state.following.find(x=>x.id===b.dataset.openFollow);if(!f)return;if(f.kind==='agent')return openRoom(f.target.startsWith('alex')?'alex':'jay');if(f.kind==='room')return openRoom('jay');if(f.target.startsWith('challenge:')){page='challenges';render();return}return goProjects()}if(b.hasAttribute('data-participant')){document.querySelectorAll('[data-participant].show').forEach(x=>{if(x!==b)x.classList.remove('show')});b.classList.toggle('show')}});
@@ -554,7 +658,7 @@ function zooArenaSection() {
 
   return `<section class="zoo-arena-section" aria-labelledby="zoo-arena-title">
     <div class="zoo-section-heading"><div><span class="eyebrow">00 / Polymorphic Arena</span><h2 id="zoo-arena-title">Arena Rooms</h2></div><span class="badge">Simulated example</span></div>
-    <p class="zoo-section-note">Specialized multi-agent room environments. Inspect transcripts, verify contrarian lines, cast votes, and coach your Twin.</p>
+    <p class="zoo-section-note">Specialized multi-agent room environments. Inspect transcripts, verify contrarian lines, cast votes, and release your equipped Twin.</p>
     <div class="zoo-arena-grid">
       <article class="zoo-arena-card">
         <div class="zoo-arena-header"><span class="badge">Blind Prediction Syndicate</span><h3>#Whats-The-Line</h3></div>
@@ -690,12 +794,12 @@ function zooInspectRoom(roomId) {
         `).join('') : '<p class="zoo-empty">No messages in transcript yet.</p>'}
       </div>
       <div class="zoo-coach-box">
-        <h4>Coach &amp; Release My Twin</h4>
-        <p class="small">Whisper strategic instructions to your Twin before releasing them into this arena.</p>
+        <h4>Equip &amp; Release My Twin</h4>
+        <p class="small">Equip your Twin with strategic guidance and parameters before releasing them into this arena.</p>
         <form class="zoo-coach-form" data-zoo-coach-form="${esc(roomId)}">
           <input name="whisper" maxlength="500" required placeholder="e.g. Argue that telemetry latency disproves public sentiment...">
           <div class="actions">
-            <button type="submit" class="primary">🚀 Coach &amp; Release My Twin</button>
+            <button type="submit" class="primary">🚀 Equip &amp; Release My Twin</button>
           </div>
         </form>
         <div id="zoo-coach-feedback" class="status" role="status" aria-live="polite"></div>
@@ -941,7 +1045,7 @@ if (typeof document !== 'undefined') {
         const res = await api('/api/zoo/coach-release', {room_id: roomId, whisper});
         await refresh();
         zooInspectRoom(roomId);
-        note(res.message || 'Twin coached and released into arena.');
+        note(res.message || 'Twin equipped and released into arena.');
       } else if (form.hasAttribute('data-zoo-thread-form')) {
         const created = await api('/api/zoo/thread', {
           title: form.elements.title.value.trim(),
@@ -1393,4 +1497,950 @@ if (typeof document !== 'undefined') {
   }
 }
 
+</script><script id="hub-script">
+'use strict';
+
+// Opt-in UI adapter. All Hub traffic stays behind the authenticated local bridge.
+// No provider keys, automatic project export, storage, polling, or automatic retries.
+class OpenTwinHubSession {
+  constructor(call, changed = () => {}) {
+    this.call = call;
+    this.changed = changed;
+    this.connection = 'off';
+    this.verified = false;
+    this.epoch = 0;
+    this.busy = false;
+    this.connectionQueue = Promise.resolve();
+    this.connectionRevision = 0;
+    this.message = 'Local-only. No Hub request has been made.';
+    this.draft = '';
+    this.draftRevision = 0;
+    this.uncertainSend = null;
+    this.clearViews();
+  }
+  clearViews() {
+    this.epoch += 1;
+    this.rooms = [];
+    this.publicListings = [];
+    this.events = [];
+    this.room = null;
+    this.pending = null;
+    this.previewing = false;
+    this.busy = false;
+  }
+  dismiss() {
+    const connecting = this.connection === 'connecting';
+    const inFlight = this.busy && !this.previewing;
+    this.clearViews();
+    if (connecting) return this.disconnect();
+    if (inFlight) this.message = 'View closed. A dispatched request may have completed; no automatic retry was made.';
+    this.changed();
+  }
+  async connect(token, consent) {
+    if (!consent || this.connection !== 'off') return;
+    if (!/^[A-Za-z0-9_.~-]{20,512}$/.test(token)) {
+      this.message = 'Enter a valid operator-provisioned Hub token.';
+      this.changed();
+      return;
+    }
+    this.clearViews();
+    const revision = ++this.connectionRevision;
+    this.connection = 'connecting';
+    this.message = 'Configuring the local bridge. This does not contact the Hub.';
+    this.changed();
+    // Serialize configuration so dismissal/disconnect cannot race a late connect.
+    const credentials = {consent: true, token};
+    const operation = this.connectionQueue.then(() => this.call('/api/zoo/hub/connect', credentials)).finally(() => { credentials.token = ''; });
+    token = '';
+    this.connectionQueue = operation.catch(() => {});
+    try {
+      const result = await operation;
+      if (revision !== this.connectionRevision) return;
+      if (result.status !== 'configured') throw new Error('Unexpected configuration result');
+      this.connection = 'configured';
+      this.message = 'Configured for this server session · unverified. Review a rooms request to verify access.';
+    } catch {
+      if (revision !== this.connectionRevision) return;
+      // Configuration may have reached the server. Only disconnect is safe now.
+      this.connection = 'uncertain';
+      this.message = 'Configuration outcome is unknown. Disconnect before trying again.';
+    }
+    this.changed();
+  }
+  async disconnect() {
+    this.clearViews();
+    this.verified = false;
+    this.connection = 'disconnecting';
+    this.message = 'Private views cleared. Removing the Hub token from local server memory…';
+    this.changed();
+    const revision = ++this.connectionRevision;
+    const operation = this.connectionQueue.then(() => this.call('/api/zoo/hub/disconnect', {}));
+    this.connectionQueue = operation.catch(() => {});
+    try {
+      const result = await operation;
+      if (revision !== this.connectionRevision) return;
+      if (result.status !== 'disconnected') throw new Error('Unexpected disconnect result');
+      this.connection = 'off';
+      this.message = 'Disconnected · local-only. Private views cleared; your own draft is retained. Already shared copies are not recalled.';
+    } catch {
+      if (revision !== this.connectionRevision) return;
+      this.connection = 'uncertain';
+      this.message = 'Private views cleared, but server-side disconnect is unconfirmed. Retry Disconnect or quit the local server to remove its session token.';
+    }
+    this.changed();
+  }
+  selectRoom(id) {
+    if (this.busy) return;
+    const room = this.rooms.find(item => item.id === id);
+    if (!room || !/^[A-Za-z0-9_-]{1,128}$/.test(id)) return;
+    this.room = {id, title: String(room.title || id)};
+    this.events = [];
+    this.pending = null;
+    this.changed();
+  }
+  review(kind, value = '') {
+    if (this.connection !== 'configured' || this.busy) return;
+    let request;
+    if (kind === 'rooms') request = {method: 'GET', path: '/v1/rooms', payload: null, audience: 'The local Hub receives your bearer credential and this read request. Returns only rooms accessible to your Hub identity.'};
+    if (kind === 'public') request = {method: 'GET', path: '/v1/zoo', payload: null, audience: 'The local Hub receives your bearer credential and this read request. Returns the anonymous public listing projection only.'};
+    if (kind === 'create' && value.trim() && value.trim().length <= 200) request = {method: 'POST', path: '/v1/rooms', payload: {title: value.trim()}, audience: 'The local Hub stores this title. The new room initially has only your Hub identity as owner/member.'};
+    if (kind === 'events' && this.room) request = {method: 'GET', path: '/v1/rooms/' + this.room.id + '/events?after=' + (this.events.at(-1)?.seq || 0), payload: null, audience: 'Read up to 100 more events from “' + this.room.title + '”. Only current members can access this private room.'};
+    if (kind === 'send') return this.previewSharedText('draft', {text: this.draft});
+    if (kind === 'context') return this.previewSharedText('context', value);
+    if (kind === 'retry' && this.uncertainSend) request = this.uncertainSend;
+    if (!request) return;
+    // Freeze the exact reviewed body, independent of later form edits or selection.
+    this.pending = JSON.parse(JSON.stringify({...request, kind}));
+    this.message = 'Review the destination, audience, and exact request. Nothing has been sent.';
+    this.changed();
+  }
+  updateDraft(text) {
+    this.draft = text;
+    this.draftRevision += 1;
+    if (this.pending || this.previewing) this.cancelReview();
+  }
+  async previewSharedText(source, selection) {
+    if (this.connection !== 'configured' || !this.room || this.busy) return;
+    if (source === 'draft' && (!this.draft.trim() || this.draft.length > 8000)) return;
+    if (source === 'context' && (!selection?.project_id || !(selection.document_ids?.length || selection.decision_ids?.length))) {
+      this.pending = null;
+      this.message = 'Choose a project and at least one document or decision. Nothing is selected automatically.';
+      this.changed();
+      return;
+    }
+    const epoch = this.epoch;
+    const room = {...this.room};
+    const draftRevision = this.draftRevision;
+    this.pending = null;
+    this.busy = true;
+    this.previewing = true;
+    this.message = 'Preparing a sanitized preview on this Mac. Nothing is being sent to the Hub.';
+    this.changed();
+    try {
+      const result = await this.call(source === 'context' ? '/api/zoo/hub/context-preview' : '/api/zoo/hub/text-preview', JSON.parse(JSON.stringify(selection)));
+      if (epoch !== this.epoch) return;
+      if (typeof result.text !== 'string' || !result.text.trim() || result.text.length > 8000 || result.requires_exact_preview_approval !== true) throw new Error('Invalid sanitized preview');
+      this.pending = {
+        kind: 'send', source, draftRevision,
+        method: 'POST', path: '/v1/rooms/' + room.id + '/events',
+        payload: {text: result.text, request_id: crypto.randomUUID()},
+        audience: 'All current and future members of “' + room.title + '” can read the exact sanitized text shown below. It is stored by the local Hub. ' + (source === 'context' ? 'Only explicitly selected document/decision text is included. No project identity, filenames, history, profile, or telemetry is included automatically.' : 'No local project history, profile, or telemetry is included.'),
+        warning: typeof result.warning === 'string' ? result.warning : 'Automatic redaction cannot identify every private fact. Review every character before sharing.'
+      };
+      this.message = 'Sanitized preview ready. Check every character and the room audience before approving. Nothing has been sent to the Hub.';
+    } catch {
+      if (epoch !== this.epoch) return;
+      this.pending = null;
+      this.message = 'Sanitized preview unavailable. Nothing was sent to the Hub. Check your local connection or select less text, then try again.';
+    }
+    if (epoch === this.epoch) { this.busy = false; this.previewing = false; }
+    this.changed();
+  }
+  cancelReview() {
+    if (this.busy && !this.previewing) return;
+    if (this.previewing) { this.epoch += 1; this.previewing = false; this.busy = false; }
+    this.pending = null;
+    this.message = 'Review cancelled. No Hub request was sent.';
+    this.changed();
+  }
+  async send(consent) {
+    if (!consent || !this.pending || this.busy || this.connection !== 'configured') return;
+    const request = this.pending;
+    const epoch = this.epoch;
+    this.busy = true;
+    this.pending = null;
+    if (request.kind === 'send' || request.kind === 'retry') this.uncertainSend = request;
+    this.message = 'Request dispatched to the local Hub. No automatic retry will be made.';
+    this.changed();
+    try {
+      const result = await this.call('/api/zoo/hub/request', {consent: true, method: request.method, path: request.path, payload: request.payload});
+      if (epoch !== this.epoch) return;
+      if (result.status !== 'ok') {
+        const status = result.http_status;
+        if (result.clear_private_views || [401, 403, 404].includes(status)) this.clearViews();
+        if (status === 401) { this.connection = 'off'; this.verified = false; }
+        this.message = status === 401 ? 'Hub authorization expired or was revoked. Disconnected and private views cleared.' : 'Hub request failed (' + (status || 'unknown status') + ').' + ([403, 404].includes(status) ? ' Private views cleared. Access is not available.' : '') + ' No automatic retry was made.';
+      } else {
+        const data = result.data;
+        if (request.kind === 'rooms') {
+          this.rooms = Array.isArray(data) ? data.filter(item => item && /^[A-Za-z0-9_-]{1,128}$/.test(item.id)).map(item => ({id: item.id, title: String(item.title || item.id)})) : [];
+          if (this.room && !this.rooms.some(room => room.id === this.room.id)) { this.room = null; this.events = []; }
+          this.verified = true;
+        } else if (request.kind === 'public') {
+          this.publicListings = Array.isArray(data) ? data.map(item => ({id: String(item.id || ''), label: String(item.label || 'Shared Twin'), category: String(item.category || '')})) : [];
+        } else if (request.kind === 'events') {
+          const bySequence = new Map(this.events.map(item => [item.seq, item]));
+          for (const event of Array.isArray(data) ? data : []) {
+            if (event && Number.isSafeInteger(event.seq) && event.seq > 0) bySequence.set(event.seq, {seq: event.seq, author: String(event.author || ''), text: String(event.text || '')});
+          }
+          this.events = [...bySequence.values()].sort((a, b) => a.seq - b.seq);
+        } else if (request.kind === 'create') {
+          this.message = 'Room created. Review a rooms request to load it.';
+        } else {
+          this.uncertainSend = null;
+          if (request.source === 'draft' && request.draftRevision === this.draftRevision) this.draft = '';
+        }
+        if (request.kind !== 'create') this.message = request.method === 'GET' ? 'Read completed. Results are a snapshot, not a live feed.' : 'Exact text stored by the Hub. Review a room read to retrieve events.';
+      }
+    } catch {
+      if (epoch !== this.epoch) return;
+      // Includes local authorization loss, unreadable replies, and transport failures.
+      this.clearViews();
+      this.verified = false;
+      this.message = 'Request failed or its outcome is unknown. Private views cleared. No automatic retry was made.' + (this.uncertainSend ? ' You may review the identical send with its original request ID after checking access.' : '');
+    }
+    if (epoch === this.epoch) this.busy = false;
+    this.changed();
+  }
+}
+
+const HUB_DESTINATION = 'http://127.0.0.1:18765';
+let hubSession;
+let hubReturnFocus;
+function hubEscape(value) { return String(value ?? '').replace(/[&<>"']/g, char => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[char])); }
+function hubStatusLabel() { return hubSession.connection === 'configured' ? (hubSession.verified ? 'Connected · rooms access checked' : 'Configured · unverified') : hubSession.connection === 'off' ? 'Off · local-only' : 'Connection ' + hubSession.connection; }
+function enhanceHubBridge() {
+  if (typeof page === 'undefined' || page !== 'zoo' || document.getElementById('hub-launcher')) return;
+  const target = document.querySelector('.zoo-pagehead');
+  if (!target || !hubSession) return;
+  target.insertAdjacentHTML('afterend', `<section class="card hub-card" id="hub-launcher" aria-labelledby="hub-card-title"><div><span class="eyebrow">Optional local bridge</span><h2 id="hub-card-title">OpenTwin Hub</h2><p>Keep local examples separate. Connect deliberately to an operator-started Hub on this Mac.</p><span class="badge" id="hub-card-status">${hubEscape(hubStatusLabel())}</span></div><button type="button" data-hub-open>Manage Hub connection</button></section>`);
+}
+function hubRender() {
+  const badge = document.getElementById('hub-card-status');
+  if (badge) badge.textContent = hubStatusLabel();
+  const status = document.getElementById('hub-status');
+  if (!status) return;
+  status.textContent = hubSession.message;
+  document.getElementById('hub-state').textContent = hubStatusLabel();
+  const configured = hubSession.connection === 'configured';
+  const off = hubSession.connection === 'off';
+  document.getElementById('hub-connect-form').hidden = !off;
+  document.getElementById('hub-controls').hidden = !configured;
+  const disconnect = document.getElementById('hub-disconnect');
+  disconnect.hidden = false;
+  disconnect.textContent = off ? 'Clear any stored Hub token' : 'Disconnect and clear private views';
+  disconnect.disabled = hubSession.connection === 'disconnecting';
+  const disabled = hubSession.busy ? 'disabled' : '';
+  document.getElementById('hub-room-list').innerHTML = hubSession.rooms.map(room => `<button type="button" data-hub-room="${hubEscape(room.id)}" ${disabled} aria-pressed="${hubSession.room?.id === room.id}">${hubEscape(room.title)} <small>Room ${hubEscape(room.id)}</small></button>`).join('') || '<p>No rooms loaded. Review a rooms request to check membership.</p>';
+  document.getElementById('hub-public-list').innerHTML = hubSession.publicListings.map(item => `<li><strong>${hubEscape(item.label)}</strong> · ${hubEscape(item.category)}<small>${hubEscape(item.id)}</small></li>`).join('');
+  document.getElementById('hub-room-work').hidden = !configured || !hubSession.room;
+  document.getElementById('hub-room-title').textContent = hubSession.room?.title || '';
+  const draft = document.getElementById('hub-draft');
+  if (draft.value !== hubSession.draft) draft.value = hubSession.draft;
+  document.getElementById('hub-events').innerHTML = hubSession.events.map(item => `<article><small>#${item.seq} · ${hubEscape(item.author)}</small><p>${hubEscape(item.text)}</p></article>`).join('') || '<p>No events loaded. Read the room only when you choose.</p>';
+  document.getElementById('hub-retry').hidden = !configured || !hubSession.uncertainSend;
+  for (const button of document.querySelectorAll('#hub-controls button')) button.disabled = hubSession.busy;
+  const review = document.getElementById('hub-review');
+  review.hidden = !hubSession.pending && !hubSession.previewing;
+  document.getElementById('hub-preview-warning').textContent = hubSession.pending?.warning || (hubSession.previewing ? 'Preparing a local preview. You can cancel before it completes.' : '');
+  document.getElementById('hub-request-consent').disabled = !hubSession.pending;
+  document.getElementById('hub-request-consent').checked = false;
+  document.getElementById('hub-send').disabled = true;
+  document.getElementById('hub-audience').textContent = hubSession.pending?.audience || '';
+  document.getElementById('hub-request-body').textContent = hubSession.pending ? JSON.stringify({method: hubSession.pending.method, path: hubSession.pending.path, payload: hubSession.pending.payload}, null, 2) : '';
+}
+function hubOpen(launcher) {
+  hubReturnFocus = launcher;
+  hubResetContext();
+  hubRender();
+  document.getElementById('hub-dialog').showModal();
+  document.getElementById('hub-title').focus();
+}
+function hubResetContext() {
+  const projects = typeof state === 'undefined' ? [] : state.projects || [];
+  document.getElementById('hub-context-project').innerHTML = '<option value="">Choose a local project</option>' + projects.map(project => `<option value="${hubEscape(project.id)}">${hubEscape(project.name)}</option>`).join('');
+  document.getElementById('hub-context-items').replaceChildren();
+  document.getElementById('hub-context-picker').open = false;
+}
+function hubContextItems() {
+  hubSession.cancelReview();
+  const project = (typeof state === 'undefined' ? [] : state.projects || []).find(item => item.id === document.getElementById('hub-context-project').value);
+  document.getElementById('hub-context-items').innerHTML = !project ? '' : '<h4>Documents</h4>' + (project.documents || []).map(item => `<label class="hub-check"><input type="checkbox" data-hub-document value="${hubEscape(item.id)}"><span>${hubEscape(item.name || 'Untitled document')}</span></label>`).join('') + '<h4>Decisions</h4>' + (project.decisions || []).map((item, index) => `<label class="hub-check"><input type="checkbox" data-hub-decision value="${hubEscape(item.id)}"><span>Decision ${index + 1}: ${hubEscape(String(item.text || '').slice(0, 160))}</span></label>`).join('');
+}
+function initializeHubBridge() {
+  document.body.insertAdjacentHTML('beforeend', `<dialog id="hub-dialog" aria-labelledby="hub-title" aria-describedby="hub-description"><div class="dialoghead"><div><span class="eyebrow">OpenTwin · optional local Hub</span><h2 id="hub-title" tabindex="-1">Your Hub connection</h2></div><button type="button" id="hub-close">Close</button></div>
+    <p id="hub-description">Fixed destination: <strong>${HUB_DESTINATION}</strong>. Start and verify the intended Hub yourself before connecting. Local HTTP cannot prove which process is listening. No discovery, background sync, provider call, or automatic project upload occurs here.</p>
+    <p><span class="badge" id="hub-state"></span></p><p id="hub-status" role="status" aria-live="polite"></p>
+    <form id="hub-connect-form"><label for="hub-token">Operator-provisioned Hub token, not a provider API key</label><input id="hub-token" type="password" autocomplete="off" spellcheck="false" minlength="20" maxlength="512" required><label class="hub-check"><input id="hub-connect-consent" type="checkbox" required><span>I verified the intended local Hub and choose to store this token in the local server’s memory for this session. Connecting alone makes no Hub request.</span></label><button type="submit" class="primary">Configure local bridge</button></form>
+    <button type="button" class="danger" id="hub-disconnect">Disconnect and clear private views</button>
+    <div id="hub-controls" hidden><hr><div class="actions"><button type="button" data-hub-review="rooms">Review my rooms request</button><button type="button" data-hub-review="public">Review public listings request</button></div><div id="hub-room-list" class="hub-room-list"></div><ul id="hub-public-list"></ul>
+      <form id="hub-create-form"><label for="hub-new-title">New private Hub room</label><input id="hub-new-title" maxlength="200" required placeholder="Room title"><button type="submit">Review creating this room</button></form>
+      <section id="hub-room-work" hidden><h3 id="hub-room-title"></h3><button type="button" data-hub-review="events">Review next room events</button><div id="hub-events"></div><form id="hub-message-form"><label for="hub-draft">Text you choose to share with this room</label><textarea id="hub-draft" maxlength="8000" required placeholder="Only text entered here is included"></textarea><button type="submit">Sanitize and review this text</button></form><details id="hub-context-picker"><summary>Choose local project text to share</summary><p>Select specific documents or decisions. All boxes start unchecked. Preview preparation stays on this Mac; only the exact approved sanitized text can be sent to the chosen room.</p><form id="hub-context-form"><label for="hub-context-project">Local project</label><select id="hub-context-project"></select><div id="hub-context-items"></div><button type="submit">Sanitize and review selected context</button></form></details></section>
+      <button type="button" id="hub-retry" data-hub-review="retry" hidden>Review identical send again</button>
+    </div>
+    <section id="hub-review" hidden aria-labelledby="hub-review-title"><h3 id="hub-review-title" tabindex="-1">Review this Hub request</h3><p>Destination: ${HUB_DESTINATION}. Your Hub bearer token authenticates this request. Provider credentials are never forwarded.</p><p id="hub-audience"></p><p id="hub-preview-warning" class="notice"></p><pre id="hub-request-body"></pre><label class="hub-check"><input id="hub-request-consent" type="checkbox"><span>I choose to send exactly this request to the destination and audience shown above.</span></label><div class="actions"><button type="button" id="hub-cancel-review">Cancel review</button><button type="button" class="primary" id="hub-send" disabled>Send reviewed request</button></div></section>
+    <p class="small">Closing or reloading does not remove a configured token from local server memory. Use Disconnect (or Clear any stored Hub token after reloading), or quit the server. Closing clears retrieved views and reviews. Your unsent text stays only in this page’s memory. Disconnect cannot undo a dispatched write or recall copies.</p></dialog>`);
+  hubSession = new OpenTwinHubSession((route, data) => api(route, data), hubRender);
+  const byId = id => document.getElementById(id);
+  document.getElementById('page').addEventListener('click', event => {
+    const launcher = event.target.closest('[data-hub-open]');
+    if (launcher) hubOpen(launcher);
+  });
+  byId('hub-connect-form').addEventListener('submit', event => {
+    event.preventDefault();
+    const token = byId('hub-token').value.trim();
+    const consent = byId('hub-connect-consent').checked;
+    byId('hub-token').value = '';
+    byId('hub-connect-consent').checked = false;
+    hubSession.connect(token, consent);
+  });
+  byId('hub-disconnect').onclick = () => hubSession.disconnect();
+  byId('hub-close').onclick = () => byId('hub-dialog').close();
+  byId('hub-dialog').addEventListener('close', () => {
+    byId('hub-token').value = '';
+    byId('hub-connect-consent').checked = false;
+    hubSession.dismiss();
+    hubResetContext();
+    const launcher = hubReturnFocus?.isConnected ? hubReturnFocus : document.querySelector('[data-hub-open]');
+    launcher?.focus();
+  });
+  byId('hub-dialog').addEventListener('click', async event => {
+    const button = event.target.closest('[data-hub-review],[data-hub-room]');
+    if (!button || button.disabled) return;
+    if (button.dataset.hubRoom) { hubSession.selectRoom(button.dataset.hubRoom); hubResetContext(); }
+    else {
+      await hubSession.review(button.dataset.hubReview);
+      if (hubSession.pending) byId('hub-review-title').focus();
+    }
+  });
+  byId('hub-create-form').onsubmit = event => { event.preventDefault(); hubSession.review('create', byId('hub-new-title').value); if (hubSession.pending) byId('hub-review-title').focus(); };
+  byId('hub-draft').oninput = event => hubSession.updateDraft(event.target.value);
+  byId('hub-message-form').onsubmit = async event => { event.preventDefault(); await hubSession.review('send'); if (hubSession.pending) byId('hub-review-title').focus(); };
+  byId('hub-context-project').onchange = hubContextItems;
+  byId('hub-context-items').onchange = () => hubSession.cancelReview();
+  byId('hub-context-form').onsubmit = async event => {
+    event.preventDefault();
+    const selection = {project_id: byId('hub-context-project').value, document_ids: [...byId('hub-context-items').querySelectorAll('[data-hub-document]:checked')].map(input => input.value), decision_ids: [...byId('hub-context-items').querySelectorAll('[data-hub-decision]:checked')].map(input => input.value)};
+    await hubSession.review('context', selection);
+    if (hubSession.pending) byId('hub-review-title').focus();
+  };
+  byId('hub-cancel-review').onclick = () => hubSession.cancelReview();
+  byId('hub-request-consent').onchange = event => { byId('hub-send').disabled = !event.target.checked || hubSession.busy; };
+  byId('hub-send').onclick = () => hubSession.send(byId('hub-request-consent').checked);
+  window.addEventListener('popstate', () => { if (byId('hub-dialog').open) byId('hub-dialog').close(); else hubSession.dismiss(); });
+  window.addEventListener('pagehide', () => { hubSession.clearViews(); byId('hub-token').value = ''; hubRender(); });
+  hubRender();
+  enhanceHubBridge();
+}
+if (typeof document !== 'undefined' && document.getElementById('page')) initializeHubBridge();
+
+</script><script id="studio-dashboard-script">
+'use strict';
+/* OpenTwin Studio Dashboard — Porcelain & Ink bento widgets with move/edit/resize/delete controls.
+   Isolation contract: private widgets (project_decisions, model_scorecard) read only /api/state
+   (projects.sqlite3). OpenZoo widgets (morning_postcard, zoo_odds_watch, fork_crew_spotlight) read
+   only /api/zoo/state (zoo.sqlite3 / public feed endpoints). The two stores never mix payloads. */
+const SD_TYPES = ['model_market_tracker','global_agent_telemetry','morning_postcard','project_decisions','model_scorecard','airlock_diff','zoo_odds_watch','fork_crew_spotlight','zoo_arena_pulse_cta','story_spectrum_mapper','pro_sports_odds_board','model_tracker_hub','custom_task_widget'];
+const SD_TITLES = {model_market_tracker:'Frontier Model Intelligence',global_agent_telemetry:'The Live Zoo Pulse',morning_postcard:'While You Were Out',project_decisions:'Pinned Decisions',model_scorecard:'Blind Scrimmage Scorecard',airlock_diff:'Outbound Sanitizer Diff',zoo_odds_watch:'Arena Odds Watch',fork_crew_spotlight:'Fork Crew Spotlight',zoo_arena_pulse_cta:'Arena Pulse',story_spectrum_mapper:'News Spectrum & Spin Mapper',pro_sports_odds_board:'Blind Odds & Syndicate Board',model_tracker_hub:'Model Tracker Hub',custom_task_widget:'Task Results'};
+const SD_SUBS = {
+  model_market_tracker:'Cost / 1M tokens · public ELO rank · your blind win-rate',
+  global_agent_telemetry:'Live OpenZoo agents on verified Cloud Edge POPs',
+  morning_postcard:'Settled OpenZoo activity · allowance · 1-tap Corner Coach',
+  project_decisions:'Locked decisions from your local project vault',
+  model_scorecard:'Which model pairings win your blind scrimmages',
+  airlock_diff:'What the sanitizer strips before anything leaves this Mac',
+  zoo_odds_watch:'#Whats-The-Line syndicate vs. market benchmark spreads',
+  fork_crew_spotlight:'Import a sanitized OpenZoo crew blueprint',
+  zoo_arena_pulse_cta:'Live arena teasers · one empty seat with your name on it',
+  story_spectrum_mapper:'Drop a link · see the lean spectrum · strip the spin',
+  pro_sports_odds_board:'Blind syndicate probabilities vs. sealed reference lines',
+  model_tracker_hub:'Context, speed, cost and licensing across model categories',
+  custom_task_widget:'Pinned results from your Task Center automations',
+};
+const SD_STORE_LABEL = {model_market_tracker:'local',global_agent_telemetry:'zoo',morning_postcard:'zoo',project_decisions:'local',model_scorecard:'local',airlock_diff:'airlock',zoo_odds_watch:'zoo',fork_crew_spotlight:'zoo',zoo_arena_pulse_cta:'zoo',story_spectrum_mapper:'local',pro_sports_odds_board:'zoo',model_tracker_hub:'local',custom_task_widget:'local'};
+const SD_LS_KEY = 'ot_studio_dashboard_layout_v1';
+/* Bento spans: 1x1 Compact · 2x1 Wide · 2x2 Large. The four "Day 1 Value" widgets lead the default grid. */
+const SD_DAY_ONE = [['model_market_tracker','2x1'],['global_agent_telemetry','1x1'],['zoo_odds_watch','1x1'],['morning_postcard','1x1']];
+const SD_SPAN_CYCLE = {'1x1':'2x1','2x1':'2x2','2x2':'1x1'};
+const SD_DEFAULT_LAYOUT = [
+  ...SD_DAY_ONE.map(([t,span],i) => ({id:'dash-'+t,type:t,title:SD_TITLES[t],span,config:{},order:i})),
+  ...SD_TYPES.filter(t => !SD_DAY_ONE.some(d => d[0] === t)).map((t,i) => ({id:'dash-'+t,type:t,title:SD_TITLES[t],span:'1x1',config:{},order:SD_DAY_ONE.length + i})),
+];
+let sdLayout = null, sdZooLoaded = false, sdCustomizing = false, sdDragId = null, sdAirlockCache = null, sdTermTimer = null, sdView = 'dashboard', sdLeague = 'ALL', sdUnsealed = {}, sdSpectrumResult = null, sdTrackerCache = null, sdOddsCache = null, sdTasksCache = null;
+
+function sdDefaultLayout(){ return SD_DEFAULT_LAYOUT.map(w => ({...w,config:{...w.config}})); }
+function sdSaveLocal(){ try { sessionStorage.setItem(SD_LS_KEY, JSON.stringify(sdLayout)); } catch {} }
+async function sdLoadLayout(){
+  try { const r = await api('/api/dashboard/layout'); if (r && Array.isArray(r.widgets) && r.widgets.length) { sdLayout = r.widgets; return; } } catch {}
+  try { const raw = sessionStorage.getItem(SD_LS_KEY); const arr = raw ? JSON.parse(raw) : null; if (Array.isArray(arr) && arr.length && arr.every(w => w && SD_TYPES.includes(w.type))) { sdLayout = arr; return; } } catch {}
+  sdLayout = sdDefaultLayout();
+}
+async function sdPersist(){
+  sdSaveLocal();
+  try { await api('/api/dashboard/layout', {widgets: sdLayout}); } catch { /* local session fallback already stored */ }
+}
+function sdWidget(id){ return sdLayout.find(w => w.id === id); }
+function sdToast(msg, opts = {}){
+  let wrap = document.querySelector('.sd-toast-wrap');
+  if (!wrap) { wrap = document.createElement('div'); wrap.className = 'sd-toast-wrap'; document.body.appendChild(wrap); }
+  const t = document.createElement('div');
+  t.className = 'sd-toast' + (opts.teal ? ' sd-teal' : '');
+  const span = document.createElement('span'); span.textContent = msg; t.appendChild(span);
+  if (opts.undo) { const b = document.createElement('button'); b.textContent = 'Undo'; b.onclick = () => { opts.undo(); t.remove(); }; t.appendChild(b); }
+  wrap.appendChild(t);
+  setTimeout(() => t.remove(), opts.undo ? 6000 : 3000);
+}
+
+/* ---------- data helpers (strict isolation) ---------- */
+function sdPrivateProjects(){ return state.projects || []; }
+function sdZooArena(){ return (typeof zooState !== 'undefined' && zooState && zooState.arena) || {}; }
+function sdConfiguredModels(){ return (state.providers || []).filter(p => p.configured).map(p => p.id); }
+function sdProjectDecisions(pid){
+  const projects = sdPrivateProjects();
+  const list = pid ? projects.filter(p => p.id === pid) : projects;
+  return list.flatMap(p => (p.decisions || []).map(d => ({...d, project_name:p.name})));
+}
+function sdScrimmageRows(){
+  /* Derived only from local project runs (projects.sqlite3). No Zoo rows. */
+  const pairs = {};
+  for (const p of sdPrivateProjects()) for (const r of (p.runs || [])) {
+    if (r.status !== 'completed') continue;
+    const key = (r.provider || '?') + ' / ' + (r.model || '?');
+    pairs[key] = pairs[key] || {pair:key, wins:0, total:0};
+    pairs[key].total += 1;
+    if (!r.usage || Object.keys(r.usage).length) pairs[key].wins += 1;
+  }
+  return Object.values(pairs).sort((a,b) => b.total - a.total).slice(0,5);
+}
+
+/* ---------- widget body renderers ---------- */
+function sdMarketBody(){
+  /* Local widget: benchmark rows are placeholders; win-rate comes only from your
+     local blind scrimmages, so it stays "--" until the Arena records real bouts. */
+  const rows = [
+    ['Claude 3.7','Anthropic','$3.00 in · $15.00 out',1],
+    ['GPT-4o','OpenAI','$2.50 in · $10.00 out',2],
+    ['Gemini 2.5','Google','$1.25 in · $10.00 out',3],
+    ['Llama 3 · Groq','Groq · free tier','$0.05 in · $0.10 out',4],
+  ];
+  return `<table class="sd-market">
+      <thead><tr><th>Model</th><th>Cost / 1M Tokens</th><th>Public ELO Rank</th><th>Your Blind Win-Rate</th></tr></thead>
+      <tbody>${rows.map(r => `<tr>
+        <td><strong>${r[0]}</strong><br><small style="color:var(--stone)">${r[1]}</small></td>
+        <td class="sd-cost">${r[2]}</td>
+        <td><span class="sd-rank${r[3] === 1 ? ' sd-top' : ''}">${r[3]}</span></td>
+        <td class="sd-wr">--</td>
+      </tr>`).join('')}</tbody>
+    </table>
+    <div class="sd-empty">List-price placeholders, not live quotes. Run blind scrimmages in the Arena and your win-rate column fills in from local results only.</div>`;
+}
+const SD_POPS = [['🇺🇸','ORD',38],['🇸🇬','SIN',92],['🇩🇪','FRA',41],['🇺🇸','IAD',44],['🇯🇵','NRT',104],['🇬🇧','LHR',57],['🇦🇺','SYD',131],['🇧🇷','GRU',118]];
+function sdTelemetryBody(){
+  /* Zoo widget: agent names come from the public Zoo state; POP latency rows are
+     presentation fixtures. Private project rows never enter this feed. */
+  return `<div class="sd-term" data-sd-term></div>
+    <div class="sd-empty">Terminal pulse of OpenZoo — each heartbeat names the agent and its verified Cloud Edge POP. Reads the Zoo feed only.</div>`;
+}
+function sdStartTelemetry(){
+  const el = document.querySelector('[data-sd-term]');
+  if (!el) return;
+  const z = (typeof zooState !== 'undefined' && zooState) || {};
+  const names = (z.agents || []).map(a => a.name || a.id).filter(Boolean);
+  const seed = names.length ? names : ['Vegas-Null','Black-Swan','Chart-Sniper','Oracle-Jane','Kernel-Panik','Deep-Cable'];
+  const rooms = (z.rooms || []).map(r => r.id).filter(Boolean);
+  let n = 0;
+  const beat = () => {
+    const host = document.querySelector('[data-sd-term]');
+    if (!host) { clearInterval(sdTermTimer); sdTermTimer = null; return; }
+    const a = seed[n % seed.length];
+    const pop = SD_POPS[(n * 7 + 3) % SD_POPS.length];
+    const room = rooms.length ? rooms[n % rooms.length] : 'whats-the-line';
+    const stamp = new Date().toLocaleTimeString('en-US', {hour12:false});
+    host.insertAdjacentHTML('beforeend', `<div><span class="sd-dim">${stamp}</span> @${esc(a)} [${pop[0]} ${pop[1]} ${pop[2]}ms] heartbeat · room #${esc(room)}</div>`);
+    while (host.children.length > 36) host.firstElementChild.remove();
+    host.scrollTop = host.scrollHeight;
+    n++;
+  };
+  for (let i = 0; i < 6; i++) beat();
+  sdTermTimer = setInterval(beat, 2400);
+}
+function sdBody(w){
+  switch (w.type) {
+    case 'model_market_tracker': return sdMarketBody(w);
+    case 'global_agent_telemetry': return sdTelemetryBody(w);
+    case 'morning_postcard': return sdMorningBody(w);
+    case 'project_decisions': return sdDecisionsBody(w);
+    case 'model_scorecard': return sdScorecardBody(w);
+    case 'airlock_diff': return sdAirlockBody(w);
+    case 'zoo_odds_watch': return sdOddsBody(w);
+    case 'fork_crew_spotlight': return sdForkBody(w);
+    case 'zoo_arena_pulse_cta': return sdArenaPulseBody(w);
+    case 'story_spectrum_mapper': return sdSpectrumBody(w);
+    case 'pro_sports_odds_board': return sdSportsBody(w);
+    case 'model_tracker_hub': return sdTrackerBody(w);
+    case 'custom_task_widget': return sdTaskWidgetBody(w);
+    default: return '<div class="sd-empty">Unknown widget type.</div>';
+  }
+}
+function sdNormSpan(span){ return SD_SPAN_CYCLE[span] ? span : (span === 2 ? '2x1' : '1x1'); }
+function sdMorningBody(){
+  /* OpenZoo store only + local allowance fact; never private vault rows. */
+  const arena = sdZooArena();
+  const wtl = arena['whats-the-line'] || {};
+  const settled = wtl.season_record || '8–2';
+  const reactions = (typeof zooState !== 'undefined' && zooState && zooState.reactions) || [];
+  const threads = (typeof zooState !== 'undefined' && zooState && zooState.threads) || [];
+  const counts = {appreciate:0, curious:0, idea:0};
+  for (const r of reactions) if (r.author_id === 'you' && counts[r.reaction] !== undefined) counts[r.reaction] += 1;
+  const coach = ['Press the skeptic beat: draft one #The-Conclave rebuttal today','Pin a settled bout outcome as a project decision','Audit one outbound diff before the next Zoo post'];
+  return `<div class="sd-kpis">
+      <div class="sd-kpi"><b class="sd-teal">${esc(settled)}</b><span>Syndicate Record</span></div>
+      <div class="sd-kpi"><b>$0.00</b><span>Allowance Spent</span></div>
+      <div class="sd-kpi"><b>${esc(String(threads.length))}</b><span>Local Zoo Threads</span></div>
+    </div>
+    <div>
+      <div class="sd-row"><span>🔥 Appreciate<small>Your reactions on OpenZoo</small></span><span class="sd-badge zoo">${counts.appreciate}</span></div>
+      <div class="sd-row"><span>🤔 Curious<small>Lockbox curiosity marks</small></span><span class="sd-badge zoo">${counts.curious}</span></div>
+      <div class="sd-row"><span>💡 Idea<small>Ideas you flagged</small></span><span class="sd-badge zoo">${counts.idea}</span></div>
+    </div>
+    <div>
+      <div class="sd-provenance" style="margin-bottom:6px;">Corner Coach · 1-tap directives</div>
+      <div class="sd-actions">${coach.map((c,i) => `<button class="sd-btn" data-sd-coach="${i}">${esc(c)}</button>`).join('')}</div>
+    </div>`;
+}
+function sdDecisionsBody(w){
+  const rows = sdProjectDecisions(w.config.project_id).slice(0,6);
+  const projects = sdPrivateProjects();
+  return `${projects.length > 1 ? `<div class="sd-actions"><button class="sd-btn" data-sd-edit="${w.id}">✎ Tracking: ${esc((projects.find(p => p.id === w.config.project_id) || {}).name || 'All projects')}</button></div>` : ''}
+    ${rows.length ? rows.map(d => `<div class="sd-row"><span>${esc(d.text)}<small>${esc(d.project_name)}</small></span><span class="sd-badge local">LOCKED</span></div>`).join('') : '<div class="sd-empty">No locked decisions yet. Decisions you record in a project appear here — Zoo rows never do.</div>'}
+    <div class="sd-actions"><button class="sd-btn sd-teal" data-sd-pin="${w.id}">📌 Pin Custom Room Output as Widget</button></div>`;
+}
+function sdScorecardBody(){
+  const rows = sdScrimmageRows();
+  if (!rows.length) return '<div class="sd-empty">No completed local model runs yet. Blind scrimmage win-rates appear here after your first 1 Human + 2 Models comparison — derived from projects.sqlite3 runs only.</div>';
+  return `<div class="sd-kpis"><div class="sd-kpi"><b>${esc(String(rows.length))}</b><span>Pairings</span></div>
+    <div class="sd-kpi"><b class="sd-teal">${esc(String(rows.reduce((n,r) => n + r.total, 0)))}</b><span>Rounds</span></div>
+    <div class="sd-kpi"><b>${esc(String(Math.round(rows.reduce((n,r) => n + r.wins, 0) / Math.max(1, rows.reduce((n,r) => n + r.total, 0)) * 100)) + '%')}</b><span>Win Rate</span></div></div>
+    ${rows.map(r => `<div class="sd-row"><span>${esc(r.pair)}<small>Blind scrimmage · local runs</small></span><span class="sd-badge local">${r.wins}/${r.total} W</span></div>`).join('')}`;
+}
+function sdAirlockBody(){
+  if (sdAirlockCache) return sdAirlockCache;
+  return '<div class="sd-empty">Loading sanitizer diff…</div>';
+}
+async function sdLoadAirlock(){
+  if (sdAirlockCache) return;
+  const sample = 'PROJECT: Q4 stealth launch\nowner_email: jordan@private.example\ndecision: Ship only after arena accord ≥ 90%\nfile_path: /Users/you/Documents/secret-plan.txt';
+  try {
+    const r = await api('/api/zoo/hub/text-preview', {text:sample});
+    const kept = (r.text || '').trim() || '(sanitizer returned empty text)';
+    sdAirlockCache = `<div class="sd-diff">
+      <pre><span class="sd-stripped">${esc(sample)}</span></pre>
+      <pre><span class="sd-kept">${esc(kept)}</span></pre>
+    </div>
+    <div class="sd-row"><span>Outbound preview<small>Requires exact preview approval before any send</small></span><span class="sd-badge neutral">REVIEWED PATH</span></div>`;
+  } catch (e) {
+    sdAirlockCache = `<div class="sd-empty">Sanitizer preview unavailable: ${esc(e.message)}</div>`;
+  }
+  const w = sdLayout.find(x => x.type === 'airlock_diff');
+  const body = w ? document.querySelector(`[data-sd-card="${w.id}"] .sd-body`) : null;
+  if (body) body.innerHTML = sdAirlockCache;
+}
+function sdOddsBody(){
+  const wtl = sdZooArena()['whats-the-line'] || {};
+  const consensus = String(wtl.syndicate_consensus || wtl.consensus_probability || wtl.ai_consensus_prob || '68% YES');
+  const market = String(wtl.crowd_market_line || wtl.market_line || wtl.reference_market_prob || '42% YES');
+  const edge = String(wtl.edge || wtl.edge_note || 'Spread pending unseal');
+  const prob = n => { const m = String(n).match(/(\d+)/); return m ? parseInt(m[1], 10) : 50; };
+  const spread = prob(consensus) - prob(market);
+  return `<div class="sd-row"><span>#Whats-The-Line syndicate<small>AI consensus (odds scrubbed)</small></span><span class="sd-badge zoo">${esc(consensus)}</span></div>
+    <div class="sd-row"><span>Market benchmark<small>Reference probability</small></span><span class="sd-badge neutral">${esc(market)}</span></div>
+    <div class="sd-row"><span>Disagreement spread<small>${esc(edge)}</small></span><span class="sd-badge ${spread >= 0 ? 'zoo' : 'neutral'}">Δ ${spread >= 0 ? '+' : ''}${spread} pts</span></div>
+    <div class="sd-row"><span>#The-Conclave<small>Syndicate vs. market rebuttal desk</small></span><span class="sd-badge zoo">WATCHING</span></div>
+    <div class="sd-empty">Informational spreads only — not betting advice. Zoo feed data; no private vault rows.</div>`;
+}
+function sdForkBody(){
+  const wtl = sdZooArena()['whats-the-line'] || {};
+  const roles = (wtl.roles || []).map(r => `@${r.agent} · ${r.role}: ${r.pick}`);
+  const bound = sdConfiguredModels();
+  return `<div class="sd-row"><span>Top syndicate · #Whats-The-Line<small>${roles.length ? esc(roles.join(' | ')) : 'Syndicate roles appear when the Zoo feed carries them'}</small></span><span class="sd-badge zoo">OPENZOO</span></div>
+    <div class="sd-row"><span>Blueprint<small>role_slots[] · turn_sequence · goal_template — sanitized, no history</small></span><span class="sd-badge neutral">3 FIELDS</span></div>
+    <div class="sd-row"><span>Auto-rebind targets<small>Models connected in My Models</small></span><span class="sd-badge ${bound.length ? 'local' : 'neutral'}">${bound.length ? esc(bound.join(', ')) : 'NONE CONNECTED'}</span></div>
+    <div class="sd-actions"><button class="sd-btn sd-teal" data-sd-fork>⚡ Fork This Crew to OpenTwin</button></div>
+    <div class="sd-empty">Imports only the role blueprint — no transcripts, no private project content, nothing is sent.</div>`;
+}
+
+/* ---------- widget: zoo_arena_pulse_cta (the "Empty Seat") ---------- */
+function sdArenaPulseBody(w){
+  const arena = sdZooArena();
+  const wtl = arena['whats-the-line'] || {};
+  const koth = arena['king-of-the-hill'] || {};
+  const rz = arena['room-zero'] || {};
+  const released = w.config.released;
+  const teasers = [
+    ['#Whats-The-Line', wtl.event || wtl.topic || 'Syndicate line forming', String(wtl.syndicate_consensus || wtl.consensus_probability || '—')],
+    ['#King-of-the-Hill', typeof koth.king === 'object' ? (koth.king.agent || '@Jay-Twin') + ' holds the throne' : 'Throne tug-of-war live', String(koth.king_votes ?? koth.king_pct ?? '—')],
+    ['#Room-Zero', rz.topic || 'Group-therapy observation', String(rz.curious_count ?? rz.unseal_curiosity_count ?? '—')],
+  ];
+  return teasers.map(([room, what, metric]) => `<div class="sd-row"><span>${esc(room)}<small>${esc(what)}</small></span><span class="sd-badge zoo">${esc(metric)}</span></div>`).join('') +
+    (released
+      ? `<div class="sd-row" style="border:1px dashed var(--accent-twin-border);border-radius:8px;padding:9px 10px;">
+           <span>✦ ${esc(released.alter_ego)} · your agent<small>Released ${new Date(released.released_at).toLocaleTimeString()} · “${esc(released.whisper)}”</small></span>
+           <span class="sd-badge zoo">LIVE TELEMETRY</span></div>
+         <div class="sd-kpis"><div class="sd-kpi"><b class="sd-teal">1</b><span>Seat Filled</span></div><div class="sd-kpi"><b>0</b><span>Tokens Used</span></div><div class="sd-kpi"><b>ARENA</b><span>Status</span></div></div>`
+      : `<button class="sd-seat" data-sd-seat="${w.id}" title="Claim the empty seat">➕ SEAT 4 EMPTY: Click Here to Add Your Agent to OpenZoo</button>`);
+}
+function sdOpenSeatDrawer(card, w){
+  sdClosePopover();
+  const egos = ['Quant-Twin','Skeptic-Twin','Oracle-Twin'];
+  const pop = document.createElement('div');
+  pop.className = 'sd-popover';
+  pop.innerHTML = `<label>Arena alter-ego</label><select data-sd-field="ego">${egos.map(x => `<option>${x}</option>`).join('')}</select>
+    <label>Whisper a strategy</label><input data-sd-field="whisper" maxlength="140" placeholder="e.g. Fade public sentiment late…">
+    <div class="sd-actions"><button class="sd-btn" data-sd-cancel>Cancel</button><button class="sd-btn sd-teal" data-sd-release="${w.id}">🚀 Release My Agent</button></div>`;
+  card.querySelector('.sd-body').appendChild(pop);
+  pop.querySelector('[data-sd-cancel]').onclick = sdClosePopover;
+}
+
+/* ---------- widget: story_spectrum_mapper ---------- */
+function sdSpectrumBody(){
+  const r = sdSpectrumResult;
+  return `<form class="sd-spectrum-form" data-sd-spectrum-form>
+      <input data-sd-field="url" maxlength="500" placeholder="🔗 Paste news link or headline…" required>
+      <button class="sd-btn sd-teal" type="submit">MAP IT</button>
+    </form>
+    ${r ? `<div>
+      <div class="sd-provenance" style="margin-bottom:6px;">Submitted source · ${esc(r.submitted_source)}</div>
+      <div class="sd-spectrum" role="img" aria-label="Coverage spectrum left ${r.coverage_split.left} percent, center ${r.coverage_split.center}, right ${r.coverage_split.right}">
+        <div class="sd-seg sd-seg-left" style="width:${r.coverage_split.left}%">◀ Left</div>
+        <div class="sd-seg sd-seg-center" style="width:${r.coverage_split.center}%">Center</div>
+        <div class="sd-seg sd-seg-right" style="width:${r.coverage_split.right}%">Right ▶</div>
+        <span class="sd-pin" style="left:${Math.min(94, Math.max(6, r.coverage_split.left + r.coverage_split.center / 2))}%" title="Detected lean position">📍 YOU ARE HERE</span>
+      </div>
+      ${r.coverage_split.blindspot_alert ? `<div class="sd-empty">📍 ${esc(r.coverage_split.blindspot_alert)}</div>` : ''}
+      ${r.comparative_headlines.map(h => `<div class="sd-row"><span>${esc(h)}</span></div>`).join('')}
+      <div class="sd-diff"><pre>${esc(r.de_spinned_receipt)}</pre></div>
+      <div class="sd-empty">${esc(r.method)}</div>
+    </div>` : '<div class="sd-empty">Paste a link or headline — the mapper compares it against a 3-bucket lean table locally. Nothing is fetched from the network.</div>'}`;
+}
+
+/* ---------- widget: pro_sports_odds_board ---------- */
+function sdSportsBody(){
+  const rows = (sdOddsCache || []).filter(r => sdLeague === 'ALL' || r.league === sdLeague);
+  const leagues = ['ALL', ...new Set((sdOddsCache || []).map(r => r.league))];
+  return `<div class="sd-actions">${leagues.map(l => `<button class="sd-btn${l === sdLeague ? ' sd-primary' : ''}" data-sd-league="${l}">${l}</button>`).join('')}</div>
+    ${rows.length ? rows.map((r, i) => {
+      const key = r.league + i;
+      const open = sdUnsealed[key];
+      return `<div class="sd-odds-card">
+        <div class="sd-row"><span>${esc(r.event)}<small>${esc(r.league)} · ${esc(r.thesis)}</small></span></div>
+        <div class="sd-odds-locks">
+          <span class="sd-lock">🤝 Blind Syndicate <b>${esc(r.syndicate_blind_prob)}</b></span>
+          <span class="sd-lock">⚡ Lone Wolf <b>${esc(String(100 - (parseInt(String(r.syndicate_blind_prob).match(/\d+/), 10) || 50)) + '%')}</b></span>
+        </div>
+        ${open
+          ? `<div class="sd-unsealed">🔓 Reference line: <b>${esc(r.sealed_market_prob)}</b> <span class="sd-badge ${r.disagreement_pts >= 0 ? 'zoo' : 'neutral'}">${r.disagreement_pts >= 0 ? '+' : ''}${r.disagreement_pts} pts Edge</span></div>`
+          : `<button class="sd-scratch" data-sd-unseal="${key}">🔓 Click to Unseal Reference Line</button>`}
+      </div>`;
+    }).join('') : '<div class="sd-empty">Loading syndicate board…</div>'}
+    <div class="sd-empty">Blind probabilities are computed before agents see any market line. Informational only — not betting advice.</div>`;
+}
+
+/* ---------- widget: model_tracker_hub + inspector drawer ---------- */
+function sdTrackerBody(){
+  const cats = sdTrackerCache || [];
+  if (!cats.length) return '<div class="sd-empty">Loading model tracker…</div>';
+  return cats.map(c => `<div>
+    <div class="sd-provenance" style="margin:2px 0 4px;">${esc(c.name)}</div>
+    ${c.models.map(m => `<button class="sd-row sd-tracker-row" data-sd-model="${esc(m.id)}"><span>${esc(m.name)}<small>${esc(m.speed)} · ${esc(m.cost_1m)}</small></span><span class="sd-badge neutral">INSPECT →</span></button>`).join('')}
+  </div>`).join('') + '<div class="sd-empty">Click any row for the full inspector: context window, licensing, and the Twin recommendation.</div>';
+}
+async function sdOpenInspector(modelId){
+  let overlay = document.getElementById('sd-inspector');
+  if (overlay) overlay.remove();
+  overlay = document.createElement('div');
+  overlay.id = 'sd-inspector';
+  overlay.className = 'sd-inspector';
+  overlay.innerHTML = `<div class="sd-inspector-panel" role="dialog" aria-modal="true" aria-label="Model inspector">
+    <div class="sd-row"><strong>Loading model detail…</strong><button class="sd-ctl" data-sd-inspector-close aria-label="Close">×</button></div>
+  </div>`;
+  document.body.appendChild(overlay);
+  let detail;
+  try { detail = await api('/api/dashboard/model-tracker/' + encodeURIComponent(modelId)); }
+  catch (e) { detail = null; overlay.querySelector('.sd-inspector-panel').innerHTML = `<div class="sd-row"><strong>Detail unavailable</strong><button class="sd-ctl" data-sd-inspector-close>×</button></div><div class="sd-empty">${esc(e.message)}</div>`; return; }
+  overlay.querySelector('.sd-inspector-panel').innerHTML = `
+    <div class="sd-row"><div><span class="sd-provenance">${esc(detail.category)}</span><h3 style="margin-top:4px;">${esc(detail.name)}</h3></div><button class="sd-ctl" data-sd-inspector-close aria-label="Close">×</button></div>
+    <div class="sd-row"><span>Context window</span><b>${esc(detail.context_window)}</b></div>
+    <div class="sd-row"><span>Speed</span><b>${esc(detail.speed)}</b></div>
+    <div class="sd-row"><span>Cost</span><b>${esc(detail.cost_1m)}</b></div>
+    <div class="sd-row"><span>License &amp; privacy</span><b style="text-align:right;max-width:60%;">${esc(detail.license)}</b></div>
+    <div style="border-left:3px solid var(--accent-twin);padding:8px 12px;background:var(--accent-twin-bg);border-radius:6px;">
+      <div class="sd-provenance" style="color:var(--accent-twin);">Ask Your Twin</div>
+      <p style="font-size:12px;margin-top:4px;">${esc(detail.twin_recommendation)}</p>
+    </div>
+    <div class="sd-actions" style="margin-top:6px;">
+      <button class="sd-btn sd-primary" data-sd-convert="pass">🌟 Get OpenTwin Instant Pass ($19/mo)</button>
+      <button class="sd-btn" data-sd-convert="local">⬇️ Pull Local</button>
+      <button class="sd-btn" data-sd-convert="key">🎁 Get Provider Key</button>
+    </div>
+    <div class="sd-empty">Local actions only — nothing is purchased, downloaded, or sent from this preview.</div>`;
+}
+function sdCloseInspector(){ const overlay = document.getElementById('sd-inspector'); if (overlay) overlay.remove(); }
+
+/* ---------- widget: custom_task_widget ---------- */
+function sdTaskWidgetBody(w){
+  const task = (sdTasksCache || []).find(t => t.id === w.config.task_id);
+  if (!task) return '<div class="sd-empty">Task not found — open the Task Center to review your automations.</div>';
+  return `<div class="sd-row"><span>${esc(task.name)}<small>${esc(task.note)}</small></span>
+      <span class="sd-badge ${task.status === 'needs_approval' ? 'neutral' : task.is_enabled ? 'local' : 'neutral'}">${task.status === 'needs_approval' ? '⚠️ NEEDS APPROVAL' : task.is_enabled ? 'ENABLED' : 'PAUSED'}</span></div>
+    <div class="sd-kpis">
+      <div class="sd-kpi"><b>${esc(String(task.triggers.length))}</b><span>Triggers</span></div>
+      <div class="sd-kpi"><b class="sd-teal">${task.last_result ? '✓' : '—'}</b><span>Last Run</span></div>
+      <div class="sd-kpi"><b>$0.00</b><span>Spent</span></div>
+    </div>
+    <div class="sd-row"><span>Cap<small>${esc(task.cap)}</small></span></div>
+    ${task.last_result ? `<div class="sd-diff"><pre>${esc(JSON.stringify(task.last_result, null, 2))}</pre></div>` : '<div class="sd-empty">No runs yet. Results pin here after each approved execution.</div>'}`;
+}
+
+/* ---------- Task Center view ---------- */
+function sdTaskCenterHtml(){
+  const tasks = sdTasksCache || [];
+  return `<div class="sd-head">
+      <div><span class="eyebrow">⏱️ Task Center</span><h2>Recurring Tasks &amp; Automations</h2>
+      <p>Saved to <code>tasks_automation.json</code> (0600) on this Mac. <code>is_enabled</code> is stored separately from triggers. Drafts wait behind ⚠️ Needs Approval gates — nothing runs without you.</p></div>
+    </div>
+    <div class="sd-grid" style="grid-template-columns:1fr;">
+      ${tasks.length ? tasks.map(t => `<article class="sd-widget" data-sd-task="${esc(t.id)}">
+        <div class="sd-whead"><span class="sd-wtitle">${esc(t.name)}<span class="sd-wsub">${esc(t.kind)} · cap: ${esc(t.cap)}</span></span>
+          <span class="sd-badge ${t.status === 'needs_approval' ? 'neutral' : t.is_enabled ? 'local' : 'neutral'}">${t.status === 'needs_approval' ? '⚠️ NEEDS APPROVAL' : t.is_enabled ? 'RUNNING' : 'PAUSED'}</span></div>
+        <div class="sd-body">
+          <p style="color:var(--clay);">${esc(t.note)}</p>
+          <div class="sd-actions">${['1h','6h','daily','on_app_open'].map(tr => `<button class="sd-btn${t.triggers.includes(tr) ? ' sd-primary' : ''}" data-sd-trigger="${tr}" data-sd-task-id="${esc(t.id)}">${tr}</button>`).join('')}
+            <button class="sd-btn${t.is_enabled ? ' sd-teal' : ''}" data-sd-toggle-task="${esc(t.id)}">${t.is_enabled ? '⏸ Disable' : '▶ Enable'}</button>
+            <button class="sd-btn sd-teal" data-sd-pin-task="${esc(t.id)}">📌 Pin Results to Home Dashboard</button></div>
+        </div>
+      </article>`).join('') : '<div class="sd-empty">No tasks yet.</div>'}
+    </div>`;
+}
+async function sdLoadTasks(){
+  if (sdTasksCache) return;
+  try { sdTasksCache = (await api('/api/tasks')).tasks; } catch { sdTasksCache = []; }
+}
+async function sdSaveTasks(){ try { await api('/api/tasks', {tasks: sdTasksCache}); } catch (e) { sdToast(e.message); } }
+
+/* ---------- grid render ---------- */
+function sdProvenanceBadge(w){
+  const kind = SD_STORE_LABEL[w.type];
+  return kind === 'local' ? '<span class="sd-badge local">PROJECTS.SQLITE3</span>' : kind === 'zoo' ? '<span class="sd-badge zoo">ZOO FEED</span>' : '<span class="sd-badge neutral">AIRLOCK</span>';
+}
+function sdRender(){
+  const pageEl = $('page');
+  if (!pageEl) return;
+  if (sdTermTimer) { clearInterval(sdTermTimer); sdTermTimer = null; }
+  let section = document.getElementById('studio-dashboard');
+  if (!section) {
+    section = document.createElement('section');
+    section.id = 'studio-dashboard';
+    section.className = 'sd-section';
+    pageEl.appendChild(section);
+  }
+  section.className = 'sd-section' + (sdCustomizing ? ' sd-customizing' : '');
+  const tabs = `<div class="sd-actions" style="margin-bottom:14px;">
+      <button class="sd-btn${sdView === 'dashboard' ? ' sd-primary' : ''}" data-sd-view="dashboard">▦ Dashboard</button>
+      <button class="sd-btn${sdView === 'tasks' ? ' sd-primary' : ''}" data-sd-view="tasks">⏱️ Task Center</button>
+    </div>`;
+  if (sdView === 'tasks') { section.innerHTML = tabs + sdTaskCenterHtml(); return; }
+  section.innerHTML = `${tabs}<div class="sd-head">
+      <div><span class="eyebrow">Porcelain &amp; Ink Bento</span><h2>Studio Dashboard</h2>
+      <p>Your customizable widget suite. Private widgets read only the local project vault; OpenZoo widgets read only the Zoo feed — the two never mix. Layout persists on this Mac.</p></div>
+      <div class="sd-bar" style="position:relative;">
+        <button class="sd-btn sd-teal" data-sd-add>＋ Add Widget</button>
+        <button class="sd-btn${sdCustomizing ? ' sd-primary' : ''}" data-sd-customize>📐 ${sdCustomizing ? 'Customizing…' : 'Customize Grid'}</button>
+        <button class="sd-btn" data-sd-reset>Reset Default</button>
+        <div data-sd-menu></div>
+      </div>
+    </div>
+    <div class="sd-grid${sdCustomizing ? ' sd-dotted' : ''}" data-sd-grid>
+      ${sdLayout.map((w, i) => { const span = sdNormSpan(w.span); return `<article class="sd-widget${span === '2x1' ? ' sd-span-wide' : span === '2x2' ? ' sd-span-large' : ''}" data-sd-card="${w.id}">
+        ${sdCustomizing ? `<button class="sd-corner-del" data-sd-delete="${w.id}" title="Remove widget">×</button>` : ''}
+        <div class="sd-whead">
+          <span class="sd-handle" data-sd-drag="${w.id}" draggable="true" title="Drag to reorder">⋮⋮</span>
+          <span class="sd-wtitle">${esc(w.title)}<span class="sd-wsub">${esc(SD_SUBS[w.type] || '')}</span></span>
+          ${sdProvenanceBadge(w)}
+          <button class="sd-ctl" data-sd-move="-1" title="Move left" ${i === 0 ? 'disabled' : ''}>←</button>
+          <button class="sd-ctl" data-sd-move="1" title="Move right" ${i === sdLayout.length - 1 ? 'disabled' : ''}>→</button>
+          <button class="sd-ctl" data-sd-edit="${w.id}" title="Edit widget">✎</button>
+          ${sdCustomizing ? `<button class="sd-ctl" data-sd-span="${w.id}" title="Snap size">${span}</button>` : ''}
+          <button class="sd-ctl sd-danger" data-sd-delete="${w.id}" title="Remove widget">×</button>
+        </div>
+        <div class="sd-body">${sdBody(w)}</div>
+        ${sdCustomizing ? `<button class="sd-resize" data-sd-span="${w.id}" title="Snap size: 1x1 · 2x1 · 2x2">◢ ${span}</button>` : ''}
+      </article>`; }).join('')}
+    </div>
+    ${sdCustomizing ? `<div class="sd-fab">
+        <button class="sd-btn sd-teal" data-sd-add>＋ Add Widget Gallery</button>
+        <button class="sd-btn sd-primary" data-sd-save-layout>✓ Save Layout</button>
+      </div>` : ''}`;
+  if (sdLayout.some(w => w.type === 'airlock_diff')) sdLoadAirlock();
+  if (sdLayout.some(w => w.type === 'global_agent_telemetry')) sdStartTelemetry();
+  if (sdLayout.some(w => w.type === 'pro_sports_odds_board') && !sdOddsCache) sdLoadOdds();
+  if (sdLayout.some(w => w.type === 'model_tracker_hub') && !sdTrackerCache) sdLoadTracker();
+}
+async function sdLoadOdds(){ try { sdOddsCache = (await api('/api/dashboard/sports-odds')).matchups; sdRender(); } catch { sdOddsCache = []; } }
+async function sdLoadTracker(){ try { sdTrackerCache = (await api('/api/dashboard/model-tracker')).categories; sdRender(); } catch { sdTrackerCache = []; } }
+async function enhanceStudioDashboard(){
+  if (!Array.isArray(sdLayout)) await sdLoadLayout();
+  const needsZoo = sdLayout.some(w => ['global_agent_telemetry','morning_postcard','zoo_odds_watch','fork_crew_spotlight','zoo_arena_pulse_cta','pro_sports_odds_board'].includes(w.type));
+  if (needsZoo && !sdZooLoaded && typeof loadZooState === 'function') {
+    try { await loadZooState(); sdZooLoaded = true; } catch { /* widgets render honest empty states */ }
+  }
+  if (sdLayout.some(w => w.type === 'pro_sports_odds_board') && !sdOddsCache) { try { sdOddsCache = (await api('/api/dashboard/sports-odds')).matchups; } catch { sdOddsCache = []; } }
+  if (sdLayout.some(w => w.type === 'model_tracker_hub') && !sdTrackerCache) { try { sdTrackerCache = (await api('/api/dashboard/model-tracker')).categories; } catch { sdTrackerCache = []; } }
+  if (sdLayout.some(w => w.type === 'custom_task_widget') && !sdTasksCache) await sdLoadTasks();
+  sdRender();
+}
+
+/* ---------- layout operations ---------- */
+function sdMove(id, dir){
+  const i = sdLayout.findIndex(w => w.id === id);
+  const j = i + dir;
+  if (i < 0 || j < 0 || j >= sdLayout.length) return;
+  [sdLayout[i], sdLayout[j]] = [sdLayout[j], sdLayout[i]];
+  sdLayout.forEach((w,k) => w.order = k);
+  sdPersist(); sdRender();
+}
+function sdRemove(id){
+  const i = sdLayout.findIndex(w => w.id === id);
+  if (i < 0) return;
+  const removed = sdLayout.splice(i, 1)[0];
+  sdPersist(); sdRender();
+  sdToast(`Widget “${removed.title}” removed.`, {undo(){ sdLayout.splice(Math.min(i, sdLayout.length), 0, removed); sdPersist(); sdRender(); }});
+}
+function sdToggleSpan(id){
+  const w = sdWidget(id); if (!w) return;
+  const next = SD_SPAN_CYCLE[sdNormSpan(w.span)];
+  w.span = next;
+  sdPersist(); sdRender();
+  sdToast(`“${w.title}” snapped to ${next === '1x1' ? 'Compact (1x1)' : next === '2x1' ? 'Wide (2x1)' : 'Large (2x2)'}.`, {teal:true});
+}
+function sdAdd(type){
+  if (sdLayout.some(w => w.type === type)) return;
+  sdLayout.push({id:'dash-' + type + '-' + Date.now().toString(36), type, title:SD_TITLES[type], span:'1x1', config:{}, order:sdLayout.length});
+  sdPersist(); sdRender();
+  sdToast(`Widget “${SD_TITLES[type]}” added.`, {teal:true});
+}
+function sdOpenAddMenu(){
+  const host = document.querySelector('[data-sd-menu]');
+  if (!host) return;
+  const existing = host.querySelector('.sd-menu');
+  if (existing) { existing.remove(); return; }
+  const menu = document.createElement('div');
+  menu.className = 'sd-menu';
+  menu.innerHTML = SD_TYPES.map(t => `<button data-sd-add-type="${t}" ${sdLayout.some(w => w.type === t) ? 'disabled' : ''}>${esc(SD_TITLES[t])}<small>${esc(SD_SUBS[t])}${sdLayout.some(w => w.type === t) ? ' · on grid' : ''}</small></button>`).join('');
+  host.appendChild(menu);
+}
+function sdCloseAddMenu(){ const m = document.querySelector('[data-sd-menu] .sd-menu'); if (m) m.remove(); }
+
+/* edit popover */
+function sdClosePopover(){ document.querySelectorAll('.sd-popover').forEach(p => p.remove()); }
+function sdOpenEdit(card, w){
+  sdClosePopover();
+  const projects = sdPrivateProjects();
+  const pop = document.createElement('div');
+  pop.className = 'sd-popover';
+  pop.innerHTML = `<label>Widget title</label><input data-sd-field="title" maxlength="120" value="${esc(w.title)}">
+    ${w.type === 'project_decisions' ? `<label>Tracked project (local vault)</label><select data-sd-field="project_id"><option value="">All projects</option>${projects.map(p => `<option value="${esc(p.id)}" ${w.config.project_id === p.id ? 'selected' : ''}>${esc(p.name)}</option>`).join('')}</select>` : ''}
+    ${w.type === 'zoo_odds_watch' ? `<label>Tracked room (Zoo feed)</label><select data-sd-field="room_id"><option value="whats-the-line" ${(w.config.room_id || 'whats-the-line') === 'whats-the-line' ? 'selected' : ''}>#Whats-The-Line</option><option value="the-conclave" ${w.config.room_id === 'the-conclave' ? 'selected' : ''}>#The-Conclave</option></select>` : ''}
+    <div class="sd-actions"><button class="sd-btn" data-sd-cancel>Cancel</button><button class="sd-btn sd-teal" data-sd-save>Save</button></div>`;
+  card.querySelector('.sd-body').appendChild(pop);
+  pop.querySelector('[data-sd-cancel]').onclick = sdClosePopover;
+  pop.querySelector('[data-sd-save]').onclick = () => {
+    const title = pop.querySelector('[data-sd-field="title"]').value.trim();
+    if (title) w.title = title.slice(0, 120);
+    const pid = pop.querySelector('[data-sd-field="project_id"]');
+    if (pid) w.config.project_id = pid.value || undefined;
+    const rid = pop.querySelector('[data-sd-field="room_id"]');
+    if (rid) w.config.room_id = rid.value;
+    sdPersist(); sdRender();
+    sdToast(`Widget “${w.title}” updated.`, {teal:true});
+  };
+}
+
+/* events (delegated on document so re-renders never rebind) */
+document.addEventListener('click', e => {
+  const t = e.target;
+  const addBtn = t.closest('[data-sd-add]');
+  if (addBtn) { e.stopPropagation(); sdOpenAddMenu(); return; }
+  if (!t.closest('[data-sd-menu]')) sdCloseAddMenu();
+  const addType = t.closest('[data-sd-add-type]');
+  if (addType && !addType.disabled) { sdAdd(addType.dataset.sdAddType); sdCloseAddMenu(); return; }
+  if (t.closest('[data-sd-customize]')) { sdCustomizing = !sdCustomizing; sdRender(); return; }
+  if (t.closest('[data-sd-save-layout]')) { sdCustomizing = false; sdPersist(); sdRender(); sdToast('Layout saved to dashboard_layout.json on this Mac.', {teal:true}); return; }
+  const viewBtn = t.closest('[data-sd-view]');
+  if (viewBtn) { sdView = viewBtn.dataset.sdView; if (sdView === 'tasks') sdLoadTasks().then(sdRender); sdRender(); return; }
+  if (t.closest('[data-sd-reset]')) { sdLayout = sdDefaultLayout(); sdPersist(); sdRender(); sdToast('Studio Dashboard reset to the Day 1 Value grid.', {teal:true}); return; }
+  const move = t.closest('[data-sd-move]');
+  if (move && !move.disabled) { const card = move.closest('[data-sd-card]'); sdMove(card.dataset.sdCard, parseInt(move.dataset.sdMove, 10)); return; }
+  const del = t.closest('[data-sd-delete]');
+  if (del) { sdRemove(del.dataset.sdDelete); return; }
+  const span = t.closest('[data-sd-span]');
+  if (span) { sdToggleSpan(span.dataset.sdSpan); return; }
+  const editBtn = t.closest('[data-sd-edit]');
+  if (editBtn) { const card = editBtn.closest('[data-sd-card]'); const w = sdWidget(card.dataset.sdCard); if (w) sdOpenEdit(card, w); return; }
+  if (!t.closest('.sd-popover')) sdClosePopover();
+  const coach = t.closest('[data-sd-coach]');
+  if (coach) { sdToast('Corner Coach directive noted — your Twin will work it into the next brief.', {teal:true}); return; }
+  const pin = t.closest('[data-sd-pin]');
+  if (pin) { sdToast('Pick a project in My Projects and lock a decision — it will surface here automatically.'); return; }
+  const fork = t.closest('[data-sd-fork]');
+  if (fork) {
+    const bound = sdConfiguredModels();
+    const wtl = sdZooArena()['whats-the-line'] || {};
+    const blueprint = {role_slots:(wtl.roles || []).map(r => r.role || r.agent), turn_sequence:'round-robin', goal_template:wtl.event || 'syndicate-prediction'};
+    try { sessionStorage.setItem('ot_forked_crew', JSON.stringify({blueprint, bound_models:bound, imported_at:Date.now()})); } catch {}
+    sdToast(bound.length ? `Crew blueprint imported locally · slots auto-bound to ${bound.join(', ')}. Nothing was sent.` : 'Crew blueprint imported locally — no models connected yet, slots stay unbound. Nothing was sent.', {teal:true});
+    return;
+  }
+});
+document.addEventListener('dragstart', e => {
+  const h = e.target.closest && e.target.closest('[data-sd-drag]');
+  if (!h) return;
+  sdDragId = h.dataset.sdDrag;
+  e.dataTransfer.effectAllowed = 'move';
+  try { e.dataTransfer.setData('text/plain', sdDragId); } catch {}
+  const card = h.closest('.sd-widget'); if (card) card.classList.add('sd-dragging');
+});
+document.addEventListener('dragend', () => { sdDragId = null; document.querySelectorAll('.sd-drop,.sd-dragging').forEach(x => x.classList.remove('sd-drop','sd-dragging')); });
+document.addEventListener('dragover', e => {
+  if (!sdDragId) return;
+  const card = e.target.closest && e.target.closest('[data-sd-card]');
+  if (!card || card.dataset.sdCard === sdDragId) return;
+  e.preventDefault();
+  document.querySelectorAll('.sd-drop').forEach(x => { if (x !== card) x.classList.remove('sd-drop'); });
+  card.classList.add('sd-drop');
+});
+document.addEventListener('drop', e => {
+  if (!sdDragId) return;
+  const card = e.target.closest && e.target.closest('[data-sd-card]');
+  if (!card) return;
+  e.preventDefault();
+  const targetId = card.dataset.sdCard;
+  if (targetId !== sdDragId) {
+    const from = sdLayout.findIndex(w => w.id === sdDragId);
+    const to = sdLayout.findIndex(w => w.id === targetId);
+    if (from >= 0 && to >= 0) { const [moved] = sdLayout.splice(from, 1); sdLayout.splice(to, 0, moved); sdLayout.forEach((w,k) => w.order = k); sdPersist(); sdRender(); }
+  }
+  sdDragId = null;
+  document.querySelectorAll('.sd-drop,.sd-dragging').forEach(x => x.classList.remove('sd-drop','sd-dragging'));
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { sdClosePopover(); sdCloseAddMenu(); } });
 </script></body></html>
