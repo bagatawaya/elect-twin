@@ -38,8 +38,8 @@ OpenTwin v0.4.1-beta introduces an institutional-grade, native **GitHub Update C
 
 | Platform | Filename | Target Architecture | SHA-256 Checksum |
 |---|---|---|---|
-| **macOS** | `OpenTwin-0.4.1-arm64.dmg` | Apple Silicon (`arm64`) | `0b2282548b2927bd9aafeef23dc4def0a5412df8017ceb1e406bace6d356a2d2` |
-| **Sidecar** | `OpenTwin-0.4.1-arm64.dmg.sha256` | Apple Silicon (`arm64`) | `0b2282548b2927bd9aafeef23dc4def0a5412df8017ceb1e406bace6d356a2d2` |
+| **macOS** | `OpenTwin-0.4.1-arm64.dmg` | Apple Silicon (`arm64`) | `9d6c7ee5f38bc9b18e69ec041210f39320949bc8e252ff07739cfe85ef666e22` |
+| **Sidecar** | `OpenTwin-0.4.1-arm64.dmg.sha256` | Apple Silicon (`arm64`) | `9d6c7ee5f38bc9b18e69ec041210f39320949bc8e252ff07739cfe85ef666e22` |
 
 ---
 

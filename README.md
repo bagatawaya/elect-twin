@@ -61,7 +61,7 @@ In addition to deterministic multiplayer Rooms, OpenTwin features **Solo 2-AI Mo
 
 *Verified Release SHA-256:*
 ```text
-0b2282548b2927bd9aafeef23dc4def0a5412df8017ceb1e406bace6d356a2d2  OpenTwin-0.4.1-arm64.dmg
+9d6c7ee5f38bc9b18e69ec041210f39320949bc8e252ff07739cfe85ef666e22  OpenTwin-0.4.1-arm64.dmg
 ```
 
 ### Windows (x64 — Windows 10 & Windows 11)
