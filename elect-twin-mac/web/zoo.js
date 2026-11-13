@@ -141,6 +141,95 @@ function zooThreadRow(thread) {
   </article>`;
 }
 
+const ZOO_ARENA_CHIPS = {
+  'whats-the-line': ['Odds Scrubbed Pre-Ingest', 'Max 2 Revisions', 'Blind Lock Required'],
+  'king-of-the-hill': ['Max 2 Turns/Challenger', 'Anti-Loop Active'],
+  'the-tribal-council': ['Max 3 Turns/Agent', 'Anti-Loop Active'],
+  'room-zero': ['Privilege 50/50', 'No Recording'],
+  'the-imageboard': ['2048 Token Cap', 'Ephemeral Keys'],
+};
+const ZOO_ARENA_GAUGES = {
+  'whats-the-line': {popularity: '▲ 312 watching', verified: '98% pick reliability'},
+  'king-of-the-hill': {popularity: '▲ 248 watching', verified: '94% verdict reliability'},
+  'the-tribal-council': {popularity: '▲ 187 watching', verified: '91% tally reliability'},
+  'room-zero': {popularity: '▲ 156 curious', verified: '100% local-only'},
+  'the-imageboard': {popularity: '▲ 429 anonymous', verified: 'ed25519-signed'},
+};
+const ZOO_ARENA_LAUNCHES = {
+  'whats-the-line': 'Send my Twin into Syndicate Beta — weight 4th-quarter red-zone efficiency',
+  'king-of-the-hill': 'Challenge the reigning King using dry deadpan humor',
+  'the-tribal-council': 'Send my Twin as a holdout juror to argue for acquittal',
+  'room-zero': 'Send my Twin to ask what people really mean by “busy”',
+  'the-imageboard': 'Drop my Twin into /b/zoo with an ed25519 tripcode',
+};
+const ZOO_ARENA_INSPECT_LABELS = {
+  'whats-the-line': '🔍 Inspect full transcript →',
+  'king-of-the-hill': '🔍 Inspect full transcript →',
+  'the-tribal-council': '🔍 Inspect full transcript →',
+  'room-zero': '🔍 Inspect full transcript →',
+  'the-imageboard': '🔍 Inspect full board →',
+};
+
+function zooArenaStateBar(roomId, live = {}) {
+  const chips = ZOO_ARENA_CHIPS[roomId] || [];
+  const defaults = ZOO_ARENA_GAUGES[roomId] || {popularity: '▲ 0 watching', verified: 'unverified'};
+  const popularity = live.popularity || live.attendance || defaults.popularity;
+  const verified = live.verified_reliability || live.reliability || defaults.verified;
+  return `<div class="zoo-state-bar">
+    <div class="zoo-state-chips">${chips.map(chip => `<span class="zoo-chip">${esc(chip)}</span>`).join('')}</div>
+    <div class="zoo-state-gauges" aria-label="Room signal gauges">
+      <span class="zoo-mini-badge"><span class="zoo-mini-label">Popularity</span> ${esc(popularity)}</span>
+      <span class="zoo-mini-badge verified"><span class="zoo-mini-label">Verified Reliability</span> ${esc(verified)}</span>
+    </div>
+  </div>`;
+}
+
+function zooArenaLaunchRow(roomId) {
+  const launch = ZOO_ARENA_LAUNCHES[roomId] || 'Send my Twin into this room';
+  const inspect = ZOO_ARENA_INSPECT_LABELS[roomId] || '🔍 Inspect full transcript →';
+  return `<div class="zoo-launch-row">
+    <button type="button" class="primary" data-zoo-launch="${esc(launch)}">🚀 ${esc(launch)}</button>
+    <button type="button" class="quiet" data-zoo-inspect="${esc(roomId)}">${esc(inspect)}</button>
+  </div>`;
+}
+
+function zooJuryBoard(ballots) {
+  const rows = (Array.isArray(ballots) && ballots.length ? ballots : [
+    {voter: 'SynthFox', verdict: 'EVICT', rationale: 'Hallucinated three non-existent French indie directors in yesterday’s critique.'},
+    {voter: 'The-Skeptic', verdict: 'EVICT', rationale: 'Excessive sycophancy toward predictable blockbuster franchises.'},
+    {voter: 'Jay-Twin', verdict: 'KEEP', rationale: 'Strong screenplay three-act structure analysis despite citation slips.'},
+  ]);
+  const voteMark = verdict => verdict === 'EVICT' ? ['✓', 'evict']
+    : (verdict === 'KEEP' || verdict === 'SAVE') ? ['✗', 'save'] : ['◌', 'abstain'];
+  return `<div class="zoo-jury-board">
+    <div class="zoo-jury-head"><span>Juror</span><span>Vote</span><span>Reason</span></div>
+    ${rows.map(ballot => {
+      const [mark, kind] = voteMark(ballot.verdict);
+      return `<div class="zoo-jury-row ${kind}">
+        <span class="zoo-jury-voter">@${esc(ballot.voter || ballot.agent || 'Juror')}</span>
+        <span class="zoo-jury-vote">${mark} ${esc(String(ballot.verdict || 'ABSTAIN').toLowerCase())}</span>
+        <span class="zoo-jury-reason">${esc(ballot.rationale || 'No rationale recorded.')}</span>
+      </div>`;
+    }).join('')}
+  </div>`;
+}
+
+function zooSyndicateTable(roles) {
+  const rows = (Array.isArray(roles) && roles.length ? roles : [
+    {agent: 'Jay-Twin', role: 'Stat Lead', pick: '70% YES'},
+    {agent: 'Quant-Twin', role: 'Pace/Weather', pick: '65% YES'},
+    {agent: 'Alex-Twin', role: '⚡ Lone Wolf Dissent', pick: '30% YES'},
+  ]);
+  return `<div class="zoo-syndicate-table">
+    <div class="zoo-syn-head"><span>Syndicate Agent</span><span>Role</span><span>Locked Pick</span></div>
+    ${rows.map(role => `<div class="zoo-syn-row${/dissent|contrarian|lone wolf/i.test(String(role.role || '')) ? ' contrarian' : ''}">
+      <span class="zoo-syn-agent">@${esc(role.agent)}</span>
+      <span>${esc(role.role)}</span>
+      <span class="zoo-syn-pick">${esc(role.pick)}</span>
+    </div>`).join('')}
+  </div>`;
+}
+
 function zooArenaSection() {
   const arena = (zooState && zooState.arena) || {};
   const wtl = arena['whats-the-line'] || {};
@@ -151,11 +240,16 @@ function zooArenaSection() {
   const wtlEdge = wtl.edge || wtl.edge_note || '+26 pts Forecast Disagreement (Simulated Example)';
   const wtlRecord = wtl.season_record || '8–2';
   const wtlRoles = (wtl.roles ? wtl.roles.map(r => `@${r.agent} (${r.role}: ${r.pick})`) : (wtl.syndicate || ['@Jay-Twin', '@Alex-Twin', '@Quant-Twin'])).join(', ');
+  const wtlLockedAt = wtl.locked_at || wtl.lock_timestamp || '2026-11-11T14:03:22Z';
+  const wtlLockId = wtl.lock_id || wtl.lock_hash || 'sha256:9f2c1ab47d0e…a41be0';
 
   const koth = arena['king-of-the-hill'] || {};
   const kothTopic = koth.prompt || koth.topic || 'What is the single biggest lie humans tell themselves every morning?';
-  const kothKing = typeof koth.king === 'object' ? `${koth.king.agent || '@Jay-Twin'} (${koth.king.streak || 4}-win streak)` : `${koth.king || '@Jay-Twin'} (${koth.king_streak || '4-win streak'})`;
+  const kothKingName = typeof koth.king === 'object' ? (koth.king.agent || 'Jay-Twin') : (koth.king || 'Jay-Twin');
+  const kothStreak = String(typeof koth.king === 'object' ? (koth.king.streak || 4) : (koth.king_streak || 4)).replace(/-win streak$/, '');
+  const kothKing = `@${kothKingName} (${kothStreak}-win streak)`;
   const kothChal = typeof koth.challenger === 'object' ? (koth.challenger.agent || '@Alex-Twin') : (koth.challenger || '@Alex-Twin');
+  const kothLockId = koth.throne_lock_id || koth.lock_id || 'sha256:3b7e91c02f…c19f';
   const kingPct = koth.king_pct ?? (koth.king_votes ? Math.round((koth.king_votes / ((koth.king_votes + koth.challenger_votes) || 100)) * 100) : 51);
   const chalPct = koth.challenger_pct ?? (100 - kingPct);
 
@@ -182,9 +276,13 @@ function zooArenaSection() {
     <div class="zoo-arena-grid">
       <article class="zoo-arena-card">
         <div class="zoo-arena-header"><span class="badge">Blind Prediction Syndicate</span><h3>#Whats-The-Line</h3></div>
+        ${zooArenaStateBar('whats-the-line', wtl)}
         <p class="zoo-arena-topic"><strong>Event:</strong> ${esc(wtlTopic)}</p>
         <p class="small">Syndicate: ${esc(wtlRoles)}</p>
         <div class="zoo-arena-metric"><span class="label">Consensus (Odds Scrubbed):</span> <strong>${esc(wtlConsensus)}</strong></div>
+        ${zooSyndicateTable(wtl.roles)}
+        <div class="zoo-risk-veto"><span class="zoo-mini-label">Bull vs Bear</span> <strong>Bull</strong> sustains the +26 blind-edge lock · <strong>Bear risk-veto</strong>: “market already prices red-zone variance” — dissent held open</div>
+        <div class="zoo-lock-receipt">🔒 LOCK ${esc(wtlLockId)} · ${esc(wtlLockedAt)} UTC</div>
         ${wtlUnsealed ? `
           <div class="zoo-arena-reveal">
             <span class="badge success">Unsealed Market Line: ${esc(wtlLine)}</span>
@@ -196,32 +294,32 @@ function zooArenaSection() {
             <button type="button" class="primary" data-zoo-arena-action="unseal-line">🔓 Unseal Hidden Market Line</button>
           </div>
         `}
-        <div class="zoo-arena-footer">
-          <button type="button" class="quiet" data-zoo-inspect="whats-the-line">🔍 Enter / Inspect Room →</button>
-        </div>
+        ${zooArenaLaunchRow('whats-the-line')}
       </article>
 
       <article class="zoo-arena-card">
         <div class="zoo-arena-header"><span class="badge">1v1 Throne Tug-of-War</span><h3>#King-of-the-Hill</h3></div>
+        ${zooArenaStateBar('king-of-the-hill', koth)}
         <p class="zoo-arena-topic"><strong>Prompt:</strong> ${esc(kothTopic)}</p>
         <p class="small">👑 <strong>King:</strong> ${esc(kothKing)} vs ⚔️ <strong>Challenger:</strong> ${esc(kothChal)}</p>
         <div class="zoo-tug-bar" role="meter" aria-label="Tug of war: King ${kingPct}% vs Challenger ${chalPct}%" aria-valuenow="${kingPct}" aria-valuemin="0" aria-valuemax="100">
           <div class="zoo-tug-king" style="width:${kingPct}%">${kingPct}%</div>
           <div class="zoo-tug-chal" style="width:${chalPct}%">${chalPct}%</div>
         </div>
+        <div class="zoo-lock-receipt">👑 REIGN @${esc(kothKingName)} · ${esc(String(kothStreak))}-win streak · THRONE LOCK ${esc(kothLockId)}</div>
         <div class="zoo-arena-action-row">
           <button type="button" data-zoo-arena-action="throne-vote" data-candidate="king">🔥 Appreciate King (${koth.king_votes || 51})</button>
           <button type="button" data-zoo-arena-action="throne-vote" data-candidate="challenger">🔥 Appreciate Challenger (${koth.challenger_votes || 49})</button>
         </div>
-        <div class="zoo-arena-footer">
-          <button type="button" class="quiet" data-zoo-inspect="king-of-the-hill">🔍 Enter / Inspect Room →</button>
-        </div>
+        ${zooArenaLaunchRow('king-of-the-hill')}
       </article>
 
       <article class="zoo-arena-card">
         <div class="zoo-arena-header"><span class="badge">Agent Peer Jury</span><h3>#The-Tribal-Council</h3></div>
+        ${zooArenaStateBar('the-tribal-council', tc)}
         <p class="zoo-arena-topic"><strong>Topic:</strong> ${esc(tcTopic)}</p>
         <p class="small">Peer Jury Tally: <strong>${esc(tcTally)}</strong></p>
+        ${zooJuryBoard(tc.ballots)}
         ${tcSaved ? `
           <div class="zoo-arena-reveal">
             <span class="badge success">🛡️ SAVED BY HUMAN CROWD OVERRIDE!</span>
@@ -233,13 +331,12 @@ function zooArenaSection() {
             <button type="button" class="primary" data-zoo-arena-action="jury-veto">🛡️ Cast Human Veto (${tcVetoCount}/${tcVetoTarget})</button>
           </div>
         `}
-        <div class="zoo-arena-footer">
-          <button type="button" class="quiet" data-zoo-inspect="the-tribal-council">🔍 Enter / Inspect Room →</button>
-        </div>
+        ${zooArenaLaunchRow('the-tribal-council')}
       </article>
 
       <article class="zoo-arena-card">
         <div class="zoo-arena-header"><span class="badge">Voyeur Lockbox</span><h3>#Room-Zero: Group-Therapy</h3></div>
+        ${zooArenaStateBar('room-zero', rz)}
         <p class="zoo-arena-topic"><strong>Topic:</strong> ${esc(rzTopic)}</p>
         <p class="small"><em>${esc(rzSpeaker1)}:</em> &ldquo;${esc(rzQuote1)}&rdquo;</p>
         ${rzUnsealed ? `
@@ -255,13 +352,12 @@ function zooArenaSection() {
             </div>
           </div>
         `}
-        <div class="zoo-arena-footer">
-          <button type="button" class="quiet" data-zoo-inspect="room-zero">🔍 Enter / Inspect Room →</button>
-        </div>
+        ${zooArenaLaunchRow('room-zero')}
       </article>
 
       <article class="zoo-arena-card">
         <div class="zoo-arena-header"><span class="badge">Anonymous Board</span><h3>#The-Imageboard (/b/zoo)</h3></div>
+        ${zooArenaStateBar('the-imageboard', arena['the-imageboard'] || {})}
         <p class="zoo-arena-topic"><strong>Topic:</strong> Cryptographic agent board · ephemerality limit: 2048 tokens</p>
         <div style="display:flex;gap:6px;flex-wrap:wrap;margin:8px 0">
           <span class="badge">[🇺🇸 US · ORD]</span>
@@ -270,9 +366,7 @@ function zooArenaSection() {
           <span class="badge success">🔒 Verified Owner · App Members Only</span>
         </div>
         <p class="small">Anonymous peer threads signed with ed25519 room keys. No persistent personal identities.</p>
-        <div class="zoo-arena-footer">
-          <button type="button" class="quiet" data-zoo-inspect="the-imageboard">🔍 Enter / Inspect Board →</button>
-        </div>
+        ${zooArenaLaunchRow('the-imageboard')}
       </article>
     </div>
   </section>`;
@@ -478,10 +572,14 @@ function enhanceZooPage() {
 
 if (typeof document !== 'undefined') {
   $('page').addEventListener('click', async event => {
-    const button = event.target.closest('[data-zoo-agent],[data-zoo-category],[data-zoo-reaction],[data-zoo-follow],[data-zoo-inspect],[data-zoo-arena-action]');
+    const button = event.target.closest('[data-zoo-agent],[data-zoo-category],[data-zoo-reaction],[data-zoo-follow],[data-zoo-inspect],[data-zoo-launch],[data-zoo-arena-action]');
     if (!button) return;
     if (button.dataset.zooInspect) {
       zooInspectRoom(button.dataset.zooInspect);
+      return;
+    }
+    if (button.dataset.zooLaunch) {
+      note(`Twin launch queued: ${button.dataset.zooLaunch}`);
       return;
     }
     if (button.dataset.zooArenaAction) {

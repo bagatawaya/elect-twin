@@ -162,7 +162,7 @@ async function disconnectSetupProvider(id) {
 }
 
 function invitationJoinSteps() {
-  return `<section class="invitation-join"><h3>Join steps</h3><ol><li>Install and open Elect Twin on the invitee’s own Mac using the authorized internal build.</li><li>Review the recipient, project, proposed role, and consent choices in this local preview.</li><li>Arrange any real project handoff separately with the owner; accepting this preview does not join a project.</li></ol><p>Internal build limitation: this internal build is ad-hoc signed, not Developer ID signed or notarized. Do not bypass Gatekeeper; public distribution requires proper signing and notarization.</p><p>No public acceptance link is generated.</p></section>`;
+  return `<section class="invitation-join"><h3>Join steps</h3><ol><li>Install and open OpenTwin on the invitee’s own Mac using the authorized internal build.</li><li>Review the recipient, project, proposed role, and consent choices in this local preview.</li><li>Arrange any real project handoff separately with the owner; accepting this preview does not join a project.</li></ol><p>Internal build limitation: this internal build is ad-hoc signed, not Developer ID signed or notarized. Do not bypass Gatekeeper; public distribution requires proper signing and notarization.</p><p>No public acceptance link is generated.</p></section>`;
 }
 
 function invitationDetails(item) {
@@ -184,7 +184,7 @@ ${INVITATION_CONSENT}
 ${INVITATION_PREVIEW_ONLY}
 
 Join steps
-1. Install and open Elect Twin on the invitee’s own Mac using the authorized internal build.
+1. Install and open OpenTwin on the invitee’s own Mac using the authorized internal build.
 2. Review the recipient, project, proposed role, and consent choices in this local preview.
 3. Arrange any real project handoff separately with the owner; accepting this preview does not join a project.
 Internal build limitation: this internal build is ad-hoc signed, not Developer ID signed or notarized. Do not bypass Gatekeeper; public distribution requires proper signing and notarization.

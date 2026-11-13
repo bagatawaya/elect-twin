@@ -1,5 +1,5 @@
 """Electri Personal Twin: local project memory with explicit model handoffs."""
-import argparse, base64, hashlib, json, os, re, secrets, sqlite3, threading, time, uuid
+import argparse, base64, hashlib, json, math, os, re, secrets, sqlite3, threading, time, uuid
 from pathlib import Path
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.request import Request, build_opener, HTTPRedirectHandler
@@ -52,18 +52,8 @@ TASK_CAP = 20
 
 def seed_tasks():
     return [
-     {'id':'task-morning-digest','name':'Morning Zoo Digest','kind':'digest','is_enabled':True,'triggers':['daily','on_app_open'],'cap':'<= 300 output tokens · free/local tiers only','status':'needs_approval','last_result':None,'note':'Summarizes settled OpenZoo arena activity since your last visit. Drafts wait for your approval; nothing is sent.'},
-     {'id':'task-arena-watch','name':'Arena Odds Watch Sync','kind':'watch','is_enabled':False,'triggers':['6h'],'cap':'0 paid provider calls','status':'idle','last_result':None,'note':'Tracks #Whats-The-Line syndicate vs. market spreads and pins notable disagreement to your dashboard.'}]
-
-# Deterministic local media-lean heuristic. No network fetch; the submitted text is the only input.
-MEDIA_LEAN_LEXICON = {
- 'left':['workers','union','equity','regulation','antitrust','climate','public funding','inequality','safety net'],
- 'right':['free market','deregulation','tax cuts','border','patriot','liberty','mandate','bureaucracy','woke'],
- 'center':['analysis','report','data','study','survey','consensus','forecast','review','bipartisan']}
-MEDIA_LEAN_TABLE = [
- {'outlet':'The Daily Cardinal','lean':'left'},{'outlet':'Worker\u2019s Herald','lean':'left'},
- {'outlet':'The Ledger','lean':'center'},{'outlet':'Wire Report','lean':'center'},
- {'outlet':'Liberty Tribune','lean':'right'},{'outlet':'The Free Press Gazette','lean':'right'}]
+     {'id':'task-morning-digest','name':'Morning Zoo Digest','kind':'digest','is_enabled':True,'triggers':['daily','on_app_open'],'cap':'<= 300 output tokens · free/local tiers only','status':'needs_approval','last_result':None,'swarm_policy':'notify_accept','budget_cap_usd':0.0,'note':'Summarizes settled OpenZoo arena activity since your last visit. Drafts wait for your approval; nothing is sent.'},
+     {'id':'task-arena-watch','name':'Arena Odds Watch Sync','kind':'watch','is_enabled':False,'triggers':['6h'],'cap':'0 paid provider calls','status':'idle','last_result':None,'swarm_policy':'notify_accept','budget_cap_usd':0.0,'note':'Tracks #Whats-The-Line syndicate vs. market spreads and pins notable disagreement to your dashboard.'}]
 
 def _pct(text): return int(str(text).split('%')[0].replace('+',''))
 
@@ -112,6 +102,11 @@ from model_onboarding import Onboarding, compatibility_guide, detect_and_registe
 from providers_extra import build_extra_providers
 from zoo import ZooStore
 from collaboration import InvitationStore, SoloRoomStore, SOLO_PRESETS
+from dashboard_v2 import DashboardStore, migrate_layout
+from openskills import OpenSkillsStore
+from open_news import analyze_news, MEDIA_LEAN_LEXICON, MEDIA_LEAN_TABLE
+from swarm_governance import evaluate_swarm
+from model_router import route_model, OpenRouterIndex
 PROVIDERS.update(build_extra_providers(BASE))
 
 def provider_call(provider, model, context):
@@ -188,26 +183,35 @@ class Twin:
         self.invitations=InvitationStore(self.db)
         self.solo_rooms=SoloRoomStore(self.db)
         self.lock=threading.RLock(); self.previews={}; self.transport=transport; self.image_transport=image_transport
+        self._openskills=None; self._market_index=None
         # A process crash leaves requests uncertain, never silently retry them.
         for p in self.projects():
             changed=False
             for r in p['runs']:
                 if r['status']=='running': r['status']='interrupted_unknown';changed=True
             if changed:self.save(p)
+    def openskills(self):
+        if self._openskills is None:
+            self._openskills=OpenSkillsStore(self.path.with_name('openskills.sqlite3'),self.db,Path(__file__).with_name('openskills_v2.json'))
+        return self._openskills
+    def market_index(self,consent=False):
+        if self._market_index is None:self._market_index=OpenRouterIndex(self.path.with_name('openrouter_index.json'))
+        return self._market_index.get(consent=consent)
+    def close(self):
+        if self._openskills is not None:
+            self._openskills.close(); self._openskills=None
+        self.zoo.close(); self.db.close()
     def dashboard_layout_path(self): return self.path.with_name('dashboard_layout.json')
+    def dashboard_layout_v2(self): return DashboardStore(self.dashboard_layout_path()).load()
     def dashboard_layout(self):
         path=self.dashboard_layout_path()
-        if path.exists():
-            try: saved=json.loads(path.read_text(encoding='utf-8'))
-            except (ValueError,OSError): saved=None
-            if isinstance(saved,list) and saved and all(isinstance(w,dict) and w.get('type') in DASHBOARD_WIDGET_TYPES for w in saved): return saved
-        return default_dashboard_layout()
+        if not path.exists(): return default_dashboard_layout()
+        try: document=migrate_layout(json.loads(path.read_text(encoding='utf-8')))
+        except (ValueError,OSError,TypeError,json.JSONDecodeError): return default_dashboard_layout()
+        return document['tabs'][0]['widgets']
     def save_dashboard_layout(self,widgets):
-        cleaned=self.validate_dashboard_layout(widgets)
-        path=self.dashboard_layout_path(); tmp=path.with_suffix('.tmp')
-        tmp.write_text(json.dumps(cleaned,ensure_ascii=False,indent=2),encoding='utf-8')
-        os.replace(tmp,path); os.chmod(path,0o600)
-        return cleaned
+        saved=DashboardStore(self.dashboard_layout_path()).save(widgets)
+        return saved if isinstance(widgets,dict) and widgets.get('schema_version')==2 else saved['tabs'][0]['widgets']
     @staticmethod
     def validate_dashboard_layout(widgets):
         if not isinstance(widgets,list): raise ValueError('Layout must be a widget array')
@@ -240,7 +244,8 @@ class Twin:
         if path.exists():
             try: saved=json.loads(path.read_text(encoding='utf-8'))
             except (ValueError,OSError): saved=None
-            if isinstance(saved,list) and saved and all(isinstance(t,dict) and t.get('id') for t in saved): return saved
+            if isinstance(saved,list) and saved and all(isinstance(t,dict) and t.get('id') for t in saved):
+                return [{**t,'swarm_policy':t.get('swarm_policy','notify_accept'),'budget_cap_usd':t.get('budget_cap_usd',0.0)} for t in saved]
         return seed_tasks()
     def save_tasks(self,items):
         if not isinstance(items,list): raise ValueError('Tasks must be an array')
@@ -249,7 +254,7 @@ class Twin:
         seen=set(); cleaned=[]
         for t in items:
             if not isinstance(t,dict): raise ValueError('Each task must be an object')
-            if set(t)-{'id','name','kind','is_enabled','triggers','cap','status','last_result','note'}: raise ValueError('Unsupported task field')
+            if set(t)-{'id','name','kind','is_enabled','triggers','cap','status','last_result','note','swarm_policy','budget_cap_usd'}: raise ValueError('Unsupported task field')
             tid=t.get('id')
             if not isinstance(tid,str) or not tid.strip() or len(tid)>80: raise ValueError('Task id must be nonempty text within 80 characters')
             if tid in seen: raise ValueError('Duplicate task id')
@@ -266,50 +271,17 @@ class Twin:
             if not isinstance(note,str) or len(note)>500: raise ValueError('Task note must be text within 500 characters')
             cap=t.get('cap','')
             if not isinstance(cap,str) or len(cap)>200: raise ValueError('Task cap must be text within 200 characters')
-            cleaned.append({'id':tid,'name':name.strip(),'kind':str(t.get('kind','task'))[:40],'is_enabled':enabled,'triggers':triggers,'cap':cap,'status':status,'last_result':t.get('last_result'),'note':note.strip()})
+            swarm_policy=t.get('swarm_policy','notify_accept')
+            if swarm_policy not in ('notify_accept','auto_optimize'): raise ValueError('Unsupported swarm_policy')
+            budget=t.get('budget_cap_usd',0.0)
+            if isinstance(budget,bool) or not isinstance(budget,(int,float)) or not math.isfinite(budget) or budget<0 or budget>10000: raise ValueError('budget_cap_usd must be between 0 and 10000')
+            cleaned.append({'id':tid,'name':name.strip(),'kind':str(t.get('kind','task'))[:40],'is_enabled':enabled,'triggers':triggers,'cap':cap,'status':status,'last_result':t.get('last_result'),'swarm_policy':swarm_policy,'budget_cap_usd':float(budget),'note':note.strip()})
         path=self.tasks_path(); tmp=path.with_suffix('.tmp')
         tmp.write_text(json.dumps(cleaned,ensure_ascii=False,indent=2),encoding='utf-8')
         os.replace(tmp,path); os.chmod(path,0o600)
         return cleaned
     def analyze_story(self,d):
-        raw=d.get('url_or_headline')
-        if not isinstance(raw,str) or not raw.strip() or len(raw)>500: raise ValueError('url_or_headline must be nonempty text within 500 characters')
-        raw=raw.strip()
-        lower=raw.lower()
-        source=raw
-        for row in MEDIA_LEAN_TABLE:
-            if row['outlet'].lower() in lower: source=row['outlet']; break
-        else:
-            if '://' in raw:
-                host=re.sub(r'^https?://','',raw).split('/')[0]
-                source=host or raw
-            else:
-                source='Headline submission (no outlet match in the 6-outlet lean table)'
-        scores={k:sum(1 for kw in v if kw in lower) for k,v in MEDIA_LEAN_LEXICON.items()}
-        best=max(scores,key=lambda k:scores[k])
-        lean=best if scores[best]>0 else 'center'
-        total=sum(scores.values()) or 1
-        spread={k:max(10,round(100*scores[k]/total)) for k in scores}
-        norm=100/sum(spread.values())
-        coverage={k:round(spread[k]*norm) for k in ('left','center','right')}
-        coverage['blindspot_alert']= None
-        if coverage[lean]<30: coverage['blindspot_alert']='Under-covered on the '+lean+': this story may read one-sided in your current feed.'
-        headline=re.sub(r'^https?://\S+\s*','',raw).strip() or raw
-        def variant(prefix,framing):
-            return prefix+' '+framing+': '+headline
-        comparative=[
-         variant('[Left-leaning frame]','who gains and who pays'),
-         variant('[Center wire frame]','what is confirmed, what is claimed'),
-         variant('[Right-leaning frame]','what it means for markets and mandates')]
-        loaded=[kw for kws in MEDIA_LEAN_LEXICON.values() for kw in kws if kw in lower]
-        receipt=('DE-SPINNED RECEIPT (local heuristic, no network fetch)\n'
-                 'SUBMITTED: '+raw+'\n'
-                 'DETECTED SOURCE: '+source+'\n'
-                 'CLASSIFIED LEAN: '+lean+' (keyword score '+str(scores[lean])+'/'+str(total)+')\n'
-                 'LOADED TERMS FOUND: '+(', '.join(loaded) if loaded else 'none detected')+'\n'
-                 'CLAIM: '+headline+'\n'
-                 'VERIFIED FACTS ATTACHED: 0 — attach sources before sharing.')
-        return {'submitted_source':source,'coverage_split':coverage,'comparative_headlines':comparative,'de_spinned_receipt':receipt,'method':'local 3-bucket lexicon heuristic · informational only'}
+        return analyze_news(d)
     def sports_odds(self): return default_sports_odds()
     def model_tracker_summary(self):
         return {'categories':[{'id':c['id'],'name':c['name'],'models':[{k:m[k] for k in ('id','name','speed','cost_1m')} for m in c['models']]} for c in default_model_tracker()]}
@@ -456,17 +428,28 @@ class Twin:
                 if not cursor.rowcount:raise ValueError('Followed item not found')
                 return {'deleted':d.get('id')}
             if route=='/api/library/search':return self.library_search(d)
-            if route=='/api/dashboard/layout':return {'widgets':self.save_dashboard_layout(d.get('widgets'))}
-            if route=='/api/dashboard/analyze-story':return self.analyze_story(d)
+            if route=='/api/swarm/evaluate':return evaluate_swarm(d)
+            if route=='/api/models/route-version':return route_model(d)
+            if route=='/api/models/market-index':return self.market_index(d.get('consent') is True)
+            if route=='/api/dashboard/layout':
+                self.save_dashboard_layout(d.get('widgets',d))
+                return {**self.dashboard_layout_v2(),'widgets':self.dashboard_layout()}
+            if route in ('/api/dashboard/analyze-story','/api/dashboard/open-news'):return self.analyze_story(d)
             if route=='/api/tasks':return {'tasks':self.save_tasks(d.get('tasks'))}
             if route=='/api/projects':
                 p={'id':uid(),'name':self.text(d,'name',200),'goal':self.text(d,'goal',5000),'documents':[],'decisions':[],'messages':[],'runs':[]};self.save(p);return p
             if route=='/api/skills/search':
-                q=self.text(d,'query',5000).lower(); result=[]
-                for s in self.skills:
-                    matches=[t for t in s['tags'] if t in q]
-                    if matches:result.append({**s,'score':len(matches),'reason':'Matched task words: '+', '.join(matches)})
-                return {'skills':sorted(result,key=lambda s:-s['score'])[:10]}
+                q=self.text(d,'query',5000); guild=d.get('guild',''); limit=d.get('limit',10)
+                result=self.openskills().search(q,guild=guild,limit=limit)
+                if not guild:
+                    legacy=[]; lowered=q.lower()
+                    for s in self.skills:
+                        matches=[t for t in s['tags'] if t in lowered]
+                        if matches:legacy.append({k:v for k,v in {**s,'score':len(matches),'reason':'Matched task words: '+', '.join(matches)}.items() if k!='instructions'})
+                    result += sorted(legacy,key=lambda s:-s['score'])
+                return {'skills':result[:limit]}
+            if route=='/api/skills/optimize-prompt':return self.openskills().optimize(self.text(d,'query',5000),d.get('skill_ids'))
+            if route=='/api/skills/learn-preference':return self.openskills().learn(d.get('rule'))
             p=self.project(d.get('project_id',d.get('id')))
             if route=='/api/project':
                 for k in ['name','goal']:
@@ -506,7 +489,19 @@ class Twin:
             if not isinstance(ids,list) or any(not isinstance(i,str) for i in ids):raise ValueError('Invalid selections')
             if set(ids)-{i['id'] for i in items}:raise ValueError('Unknown selection')
             return [i for i in items if i['id'] in ids]
-        packet={'project':{'name':p['name'],'goal':p['goal']},'documents':selected(p['documents'],'document_ids'),'decisions':selected(p['decisions'],'decision_ids'),'skills':selected(self.skills,'skill_ids'),'history':p['messages'] if d.get('include_history') is True else [],'task':prompt}
+        def selected_skills():
+            ids=d.get('skill_ids',[])
+            if not isinstance(ids,list) or any(not isinstance(i,str) for i in ids):raise ValueError('Invalid selections')
+            legacy={item['id']:item for item in self.skills}; chosen=[]
+            for skill_id in dict.fromkeys(ids):
+                if skill_id in legacy:chosen.append(legacy[skill_id]);continue
+                if skill_id.startswith('openskill:'):
+                    manifest=self.openskills().manifest(skill_id); header=manifest['header']
+                    chosen.append({'id':skill_id,'name':header['branded_title'],'description':header['summary_140'],'tags':header['trigger_keywords'],'instructions':'SOURCE PLAYBOOK\n'+manifest['builder_instructions'],'content_basis':manifest['content_basis'],'provenance':manifest.get('provenance',{})})
+                    continue
+                raise ValueError('Unknown selection')
+            return chosen
+        packet={'project':{'name':p['name'],'goal':p['goal']},'documents':selected(p['documents'],'document_ids'),'decisions':selected(p['decisions'],'decision_ids'),'skills':selected_skills(),'history':p['messages'] if d.get('include_history') is True else [],'task':prompt}
         context=json.dumps(packet,indent=2,ensure_ascii=False)
         display_context=BASE+'\n\n'+context
         if kind=='image':
@@ -565,8 +560,9 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header('Content-Security-Policy',"default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data: blob:; frame-ancestors 'none'; base-uri 'none'; form-action 'self'")
         self.send_header('Content-Length',str(len(b)));self.end_headers();self.wfile.write(b)
     def allowed(self):
-        host=self.headers.get('Host','')
-        return host in self.server.hosts and self.headers.get('Origin',self.server.origin)==self.server.origin
+        host=self.headers.get('Host',''); origin=self.headers.get('Origin')
+        origins=getattr(self.server,'origins',{self.server.origin})
+        return host in self.server.hosts and (origin is None or origin in origins)
     def auth(self):return self.allowed() and secrets.compare_digest(self.headers.get('X-Twin-Token',''),self.server.token)
     def zoo_document(self,path):
         if path=='/zoo':return True
@@ -596,9 +592,18 @@ class Handler(BaseHTTPRequestHandler):
         if path in ['/','/home','/projects','/twin','/twin/projects']:return self.reply(200,index_html(getattr(self.server,'development_token',None),page),True)
         if self.zoo_document(path):return self.reply(200,index_html(getattr(self.server,'development_token',None),'shell'),True)
         if path in ['/api/asset','/api/zoo/state','/api/state'] and not self.auth():return self.reply(403,{'error':'Use the private launch URL printed by the server'})
+        if path=='/api/skills/search':
+            if not self.auth():return self.reply(403,{'error':'Use the private launch URL printed by the server'})
+            try:
+                query=parse_qs(parsed.query,keep_blank_values=True,max_num_fields=4)
+                if set(query)-{'query','guild','limit'} or any(len(values)!=1 for values in query.values()):raise ValueError('Invalid skill-search query')
+                limit=int(query.get('limit',['10'])[0]); text=query.get('query',[''])[0]; guild=query.get('guild',[''])[0]
+                if len(text)>5000 or len(guild)>100:raise ValueError('Skill-search query is too long')
+                with self.server.twin.lock:return self.reply(200,{'skills':self.server.twin.openskills().search(text,guild=guild,limit=limit)})
+            except (ValueError,RuntimeError) as e:return self.reply(400,{'error':str(e)})
         if path=='/api/dashboard/layout':
             if not self.auth():return self.reply(403,{'error':'Use the private launch URL printed by the server'})
-            with self.server.twin.lock:return self.reply(200,{'widgets':self.server.twin.dashboard_layout()})
+            with self.server.twin.lock:return self.reply(200,{**self.server.twin.dashboard_layout_v2(),'widgets':self.server.twin.dashboard_layout()})
         if path.startswith('/api/dashboard/model-tracker'):
             if not self.auth():return self.reply(403,{'error':'Use the private launch URL printed by the server'})
             model_id=path.rsplit('/',1)[-1] if path!='/api/dashboard/model-tracker' else ''
@@ -634,7 +639,7 @@ class Handler(BaseHTTPRequestHandler):
 def main():
     ap=argparse.ArgumentParser();ap.add_argument('--catalog',help='Optional existing Skills Pilot skills.json (read only)');ap.add_argument('--port',type=int,default=4321);ap.add_argument('--data',default=str(Path.home()/'.electri-twin/projects.sqlite3'));ap.add_argument('--zoo-data',default=None,help='Separate local Agent Zoo SQLite path');ap.add_argument('--development-preview',action='store_true',help='Development only: embed the local session token in the root HTML');ap.add_argument('--native',action='store_true',help='Native launcher: global home and machine-readable ready message');a=ap.parse_args()
     os.umask(0o077);s=ThreadingHTTPServer(('127.0.0.1',a.port),Handler);s.twin=Twin(a.data,catalog=a.catalog,zoo_path=a.zoo_data);s.token=secrets.token_urlsafe(32);s.development_token=s.token if a.development_preview else None;s.native_mode=a.native
-    port=s.server_address[1];s.origin='http://127.0.0.1:'+str(port);s.hosts={'127.0.0.1:'+str(port)}
+    port=s.server_address[1];s.origin='http://127.0.0.1:'+str(port);s.hosts={'127.0.0.1:'+str(port),'localhost:'+str(port)};s.origins={s.origin,'http://localhost:'+str(port)}
     url=s.origin+('/home' if a.native else '/')+('' if a.development_preview else '#token='+s.token)
     if a.native:print(json.dumps({'ready':True,'url':url,'origin':s.origin}),flush=True)
     else:print('Open this private local URL (do not share): '+url,flush=True)

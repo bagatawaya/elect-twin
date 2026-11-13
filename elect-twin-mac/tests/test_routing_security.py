@@ -165,6 +165,17 @@ class RouteSecurityTests(unittest.TestCase):
         )
         self.assertEqual(status, 403)
 
+    def test_localhost_alias_serves_page_and_same_origin_api(self):
+        port = self.server.server_address[1]
+        origin = "http://localhost:" + str(port)
+        self.server.hosts.add("localhost:" + str(port))
+        self.server.origins = {self.server.origin, origin}
+        headers = {"Host": "localhost:" + str(port), "Origin": origin}
+        status, content_type, body = self.get("/", headers=headers)
+        self.assertEqual((status, content_type), (200, "text/html"), body)
+        status, content_type, body = self.get("/api/zoo/state", token=self.server.token, headers=headers)
+        self.assertEqual((status, content_type), (200, "application/json"), body)
+
     def test_product_is_selected_by_path_not_public_hostnames(self):
         self.assertEqual(self.get("/twin")[0], 200)
         self.assertEqual(self.get("/zoo")[0], 200)

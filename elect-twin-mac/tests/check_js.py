@@ -14,6 +14,8 @@ DOCUMENTS = [
     ROOT / "web" / "index.html",
     ROOT / "web" / "shell.html",
     ROOT / "web" / "zoo.js",
+    ROOT / "web" / "app.js",
+    ROOT / "web" / "hub.js",
     ROOT / "web" / "onboarding.js",
     candidate_rooms,
 ]

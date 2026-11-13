@@ -73,6 +73,40 @@
 .zoo-arena-edge{font-weight:700;color:var(--accent);font-size:12px;margin:4px 0;overflow-wrap:anywhere}
 .zoo-arena-action-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
 .zoo-arena-footer{margin-top:auto;padding-top:10px;border-top:1px solid var(--line);display:flex;justify-content:flex-end}
+.zoo-state-bar{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:8px 10px;background:var(--light);border:1px solid var(--line);border-radius:6px}
+.zoo-state-chips{display:flex;gap:6px;flex-wrap:wrap}
+.zoo-chip{font:10px/1.4 ui-monospace,SFMono-Regular,monospace;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--stone);background:var(--white);border:1px solid var(--line);border-radius:4px;padding:3px 7px;overflow-wrap:anywhere}
+.zoo-state-gauges{display:flex;gap:6px;flex-wrap:wrap}
+.zoo-mini-badge{font:10px/1.4 ui-monospace,SFMono-Regular,monospace;font-weight:700;letter-spacing:.04em;border:1px solid var(--line);border-radius:4px;padding:3px 7px;background:var(--white);color:var(--ink);overflow-wrap:anywhere}
+.zoo-mini-badge.verified{border-color:var(--accent);color:var(--accent)}
+.zoo-mini-label{color:var(--clay);font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.zoo-jury-board{border:1px solid var(--line);border-radius:6px;overflow:hidden;font-size:11px}
+.zoo-jury-head,.zoo-jury-row{display:grid;grid-template-columns:minmax(80px,.8fr) minmax(70px,.6fr) minmax(0,2fr);gap:8px;padding:7px 10px;align-items:baseline}
+.zoo-jury-head{background:var(--light);font:9px ui-monospace,SFMono-Regular,monospace;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--clay);border-bottom:1px solid var(--line)}
+.zoo-jury-row{border-bottom:1px solid var(--line)}
+.zoo-jury-row:last-child{border-bottom:0}
+.zoo-jury-voter{font-weight:700;overflow-wrap:anywhere}
+.zoo-jury-vote{font:10px ui-monospace,SFMono-Regular,monospace;font-weight:700;white-space:nowrap}
+.zoo-jury-row.evict .zoo-jury-vote{color:#b3261e}
+.zoo-jury-row.save .zoo-jury-vote{color:var(--green)}
+.zoo-jury-row.abstain .zoo-jury-vote{color:var(--stone)}
+.zoo-jury-reason{color:var(--stone);overflow-wrap:anywhere}
+.zoo-syndicate-table{border:1px solid var(--line);border-radius:6px;overflow:hidden;font-size:11px}
+.zoo-syn-head,.zoo-syn-row{display:grid;grid-template-columns:minmax(90px,1fr) minmax(0,1.2fr) minmax(70px,.7fr);gap:8px;padding:7px 10px;align-items:baseline}
+.zoo-syn-head{background:var(--light);font:9px ui-monospace,SFMono-Regular,monospace;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--clay);border-bottom:1px solid var(--line)}
+.zoo-syn-row{border-bottom:1px solid var(--line)}
+.zoo-syn-row:last-child{border-bottom:0}
+.zoo-syn-agent{font-weight:700;overflow-wrap:anywhere}
+.zoo-syn-row.contrarian{background:var(--accent-soft)}
+.zoo-syn-row.contrarian .zoo-syn-pick{color:var(--accent);font-weight:700}
+.zoo-syn-pick{font:10px ui-monospace,SFMono-Regular,monospace;white-space:nowrap}
+.zoo-risk-veto{font-size:11px;color:var(--stone);border-left:3px solid var(--line);padding:6px 10px;overflow-wrap:anywhere}
+.zoo-risk-veto strong{color:var(--ink)}
+.zoo-lock-receipt{font:10px/1.5 ui-monospace,SFMono-Regular,monospace;color:var(--stone);background:var(--light);border:1px dashed var(--line);border-radius:4px;padding:6px 9px;overflow-wrap:anywhere}
+.zoo-launch-row{margin-top:auto;padding-top:10px;border-top:1px solid var(--line);display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+.zoo-launch-row .primary{flex:1 1 60%;text-align:left}
+.zoo-launch-row .quiet{flex:0 0 auto}
+@media(max-width:760px){.zoo-jury-head,.zoo-jury-row{grid-template-columns:minmax(70px,.7fr) minmax(60px,.5fr) minmax(0,1.6fr)}.zoo-syn-head,.zoo-syn-row{grid-template-columns:minmax(80px,.9fr) minmax(0,1fr) minmax(60px,.6fr)}.zoo-launch-row{flex-direction:column;align-items:stretch}.zoo-launch-row .quiet{width:100%}}
 .zoo-tug-bar{height:22px;display:flex;border-radius:4px;overflow:hidden;border:1px solid var(--line);font-size:11px;font-weight:700;color:var(--white);text-align:center;line-height:22px}
 .zoo-tug-king{background:var(--accent);min-width:24px}
 .zoo-tug-chal{background:var(--green);min-width:24px}

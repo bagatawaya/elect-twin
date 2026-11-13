@@ -21,7 +21,7 @@ private enum LaunchError: Error, LocalizedError {
 
     var errorDescription: String? {
         switch self {
-        case .missingResource(let name): return "The bundled \(name) runtime is missing. Reinstall Elect Twin from the original DMG."
+        case .missingResource(let name): return "The bundled \(name) runtime is missing. Reinstall OpenTwin from the original DMG."
         case .invalidReadyMessage(let name): return "The local \(name) engine did not return a valid startup response."
         case .startupTimeout(let name): return "The local \(name) engine did not start within 20 seconds."
         case .invalidLocalURL(let name): return "The \(name) engine returned an unsafe or unreadable local address."
@@ -87,7 +87,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate {
         window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 1280, height: 860),
                           styleMask: [.titled, .closable, .miniaturizable, .resizable],
                           backing: .buffered, defer: false)
-        window.title = "Elect Twin"
+        window.title = "OpenTwin"
         window.subtitle = "Internal test build · local workspace"
         window.minSize = NSSize(width: 920, height: 640)
         window.contentView = webView
@@ -101,11 +101,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate {
         let appItem = NSMenuItem()
         main.addItem(appItem)
         let appMenu = NSMenu()
-        appMenu.addItem(withTitle: "About Elect Twin", action: #selector(showAbout), keyEquivalent: "")
+        appMenu.addItem(withTitle: "About OpenTwin", action: #selector(showAbout), keyEquivalent: "")
         appMenu.addItem(.separator())
         updates.addMenuItems(to: appMenu)
         appMenu.addItem(.separator())
-        appMenu.addItem(withTitle: "Quit Elect Twin", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
+        appMenu.addItem(withTitle: "Quit OpenTwin", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
         appItem.submenu = appMenu
 
         let navigateItem = NSMenuItem()
@@ -127,6 +127,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate {
         return FileManager.default.homeDirectoryForCurrentUser
             .appendingPathComponent("Library", isDirectory: true)
             .appendingPathComponent("Application Support", isDirectory: true)
+            // Keep the legacy on-disk name so existing local data remains visible.
             .appendingPathComponent("Elect Twin", isDirectory: true)
     }
 
@@ -245,7 +246,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate {
     private func showLaunchError(_ error: Error) {
         let alert = NSAlert()
         alert.alertStyle = .critical
-        alert.messageText = "Elect Twin could not start"
+        alert.messageText = "OpenTwin could not start"
         alert.informativeText = error.localizedDescription + "\n\nNo existing prototype data was changed. You can quit and try the copied app again."
         alert.addButton(withTitle: "Quit")
         alert.runModal()
@@ -293,8 +294,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate {
 
     @objc private func showAbout() {
         let alert = NSAlert()
-        alert.messageText = "Elect Twin 0.4.0"
-        alert.informativeText = "Apple Silicon internal test build (build 2026111104). Ad-hoc signed; not Developer ID signed or notarized.\n\nProjects, Zoo, and Rooms run locally with separate data stores. No remote accounts, cloud sync, invitations, federation, or live model verification are included."
+        alert.messageText = "OpenTwin 0.5.0"
+        alert.informativeText = "Apple Silicon internal test build (build 2026111205). Ad-hoc signed; not Developer ID signed or notarized.\n\nProjects, Zoo, and Rooms run locally with separate data stores. No remote accounts, cloud sync, invitations, federation, or live model verification are included."
         alert.addButton(withTitle: "OK")
         alert.runModal()
     }

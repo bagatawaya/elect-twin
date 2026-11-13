@@ -8,7 +8,7 @@ if [[ ! -x "$PYINSTALLER" ]]; then
   exit 1
 fi
 mkdir -p packaging/build packaging/dist packaging/dmg
-"$PYINSTALLER" --noconfirm --onefile --name twin-server --add-data "$ROOT/web:web" --distpath packaging/dist --workpath packaging/build/pyinstaller --specpath packaging/build twin.py
+"$PYINSTALLER" --noconfirm --onefile --name twin-server --add-data "$ROOT/web:web" --add-data "$ROOT/openskills_v2.json:." --distpath packaging/dist --workpath packaging/build/pyinstaller --specpath packaging/build twin.py
 /usr/bin/swiftc -parse-as-library -O -target arm64-apple-macos14.0 -framework AppKit -framework WebKit -framework Foundation native/AppDelegate.swift native/NativeSelfTest.swift native/UpdateChecker.swift native/UpdateController.swift -o packaging/build/ElectTwin
 python3 brand/make_icons.py
 APP="$ROOT/packaging/dmg/OpenTwin.app"
@@ -22,7 +22,7 @@ cp LICENSE README.md docs/SUPPORT-MATRIX.md docs/INSTALL.md docs/UPDATES.md "$AP
 /usr/bin/codesign --deep --force --sign - --timestamp=none "$APP"
 /usr/bin/codesign --verify --deep --strict --verbose=2 "$APP"
 ln -sfn /Applications packaging/dmg/Applications
-DMG="$ROOT/packaging/dist/OpenTwin-0.4.1-arm64.dmg"
+DMG="$ROOT/packaging/dist/OpenTwin-0.5.0-arm64.dmg"
 if [[ -e "$DMG" ]]; then
   echo "Refusing to overwrite existing DMG: $DMG" >&2
   exit 1

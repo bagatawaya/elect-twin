@@ -29,8 +29,8 @@ internal static class Program
         catch (Exception ex)
         {
             MessageBox.Show(
-                $"Failed to start Elect Twin:\n\n{ex.Message}\n\n{ex.StackTrace}",
-                "Elect Twin - Launch Error",
+                $"Failed to start OpenTwin:\n\n{ex.Message}\n\n{ex.StackTrace}",
+                "OpenTwin - Launch Error",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error);
         }
@@ -58,7 +58,7 @@ internal sealed class ElectTwinApp : IDisposable
 
         MainWindow = new Form
         {
-            Text = "Elect Twin - Internal test build · local workspace",
+            Text = "OpenTwin - Internal test build · local workspace",
             Width = 1280,
             Height = 860,
             MinimumSize = new Size(920, 640),
@@ -110,14 +110,14 @@ internal sealed class ElectTwinApp : IDisposable
     private void ShowAbout()
     {
         MessageBox.Show(
-            "Elect Twin 0.4.0 (build 2026111104)\n\n" +
+            "OpenTwin 0.5.0 (build 2026111205)\n\n" +
             "A private human-and-agent collaboration workspace and Agent Zoo.\n\n" +
             "• Engine: Python 3.12 (standalone loopback runtime)\n" +
             "• Rooms: Pure Python deterministic coordination engine\n" +
             "• Shell: C# / .NET 8 with Microsoft Edge WebView2\n" +
             "• Security: Localhost binding (127.0.0.1) & Job Object process lifecycle\n\n" +
             "Data Root: " + _dataRoot,
-            "About Elect Twin",
+            "About OpenTwin",
             MessageBoxButtons.OK,
             MessageBoxIcon.Information);
     }
@@ -191,7 +191,7 @@ internal sealed class ElectTwinApp : IDisposable
         {
             MessageBox.Show(
                 $"Initialization Error: {ex.Message}",
-                "Elect Twin Error",
+                "OpenTwin Error",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error);
         }

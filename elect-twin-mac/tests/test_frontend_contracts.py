@@ -149,6 +149,8 @@ class FrontendContractTests(unittest.TestCase):
 
     def test_javascript_checker_covers_standalone_zoo_source(self):
         self.assertIn('ROOT / "web" / "zoo.js"', self.check_js)
+        self.assertIn('ROOT / "web" / "app.js"', self.check_js)
+        self.assertIn('ROOT / "web" / "hub.js"', self.check_js)
         self.assertRegex(self.check_js, r"suffix\s*==\s*['\"]\.js['\"]")
 
     def test_rendered_feed_uses_server_order_counts_and_pressed_states(self):
@@ -600,7 +602,7 @@ class OnboardingFrontendContractTests(unittest.TestCase):
 
     def test_invitation_install_copy_fallback_and_responsive_accessible_styles(self):
         for marker in (
-            "Install and open Elect Twin", "Join steps", "internal build",
+            "Install and open OpenTwin", "Join steps", "internal build",
             "Developer ID", "notarized", "Gatekeeper", "clipboard.writeText",
             "invitation-copy-fallback", "select()", "readOnly",
         ):
