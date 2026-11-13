@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="780" viewBox="0 0 720 780" role="img" aria-label="ZOO Conviction Study" class="svg-studio template-trading_card">
+<title>ZOO Conviction Study</title>
+<desc>Deterministic procedural vector artwork. No external assets or network calls.</desc>
+<rect width="720" height="780" rx="26" fill="#0B1020"/>
+<rect x="18" y="18" width="684" height="744" rx="22" fill="#151E33" stroke="#334155" stroke-width="3"/>
+<path d="M18 40Q18 18 40 18h640q22 0 22 22v28H18Z" fill="#2DD4BF"/>
+<text x="42" y="48" fill="#0B1020" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="15" font-weight="800" text-anchor="start">OPENZOO CONVICTION CARD</text>
+<text x="42" y="104" fill="#F8FAFC" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="23" font-weight="800" text-anchor="start">ZOO Conviction Study</text>
+<text x="42" y="167" fill="#F8FAFC" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="44" font-weight="900" text-anchor="start">ZOO</text>
+<rect x="530" y="116" width="140" height="48" rx="24" fill="#A78BFA"/>
+<text x="600" y="146" fill="#151E33" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" font-weight="800" text-anchor="middle">14D CONVICTION</text>
+<g class="vector-stamp stamp-bull" transform="translate(530 184) scale(1.4)" color="#2DD4BF">
+<path d="M29 29C13 29 9 17 12 9c7 12 18 11 28 13M71 29c16 0 20-12 17-20-7 12-18 11-28 13" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
+<path d="M25 34 13 42l17 7M75 34l12 8-17 7" fill="currentColor"/>
+<path d="M28 28Q50 15 72 28l5 33-15 27H38L23 61Z" fill="none" stroke="currentColor" stroke-width="4"/>
+<circle cx="38" cy="47" r="4" fill="currentColor"/><circle cx="62" cy="47" r="4" fill="currentColor"/>
+<ellipse cx="50" cy="70" rx="17" ry="12" fill="none" stroke="currentColor" stroke-width="4"/><circle cx="43" cy="70" r="3" fill="currentColor"/><circle cx="57" cy="70" r="3" fill="currentColor"/>
+</g>
+<path d="M60 400H660M60 285v115" fill="none" stroke="#334155" stroke-width="2"/>
+<polyline points="70,390 205,358 340,285 475,332 610,285" fill="none" stroke="#2DD4BF" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="60" y="430" fill="#94A3B8" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" font-weight="700" text-anchor="start">PRICE PATH / SPECULATIVE SKETCH</text>
+<g class="conviction-meter"><rect x="60" y="468" width="600" height="22" rx="11" fill="#334155"/>
+<rect x="60" y="468" width="432" height="22" rx="11" fill="#A78BFA"/></g>
+<text x="60" y="522" fill="#F8FAFC" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="19" font-weight="800" text-anchor="start">CONVICTION 72%</text>
+<rect x="42" y="556" width="202" height="104" rx="14" fill="#0B1020" stroke="#2DD4BF" stroke-width="2"/>
+<text x="143" y="616" fill="#2DD4BF" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" font-weight="800" text-anchor="middle">ENTRY 100</text>
+<rect x="260" y="556" width="202" height="104" rx="14" fill="#0B1020" stroke="#A78BFA" stroke-width="2"/>
+<text x="361" y="616" fill="#A78BFA" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" font-weight="800" text-anchor="middle">TARGET 118</text>
+<rect x="478" y="556" width="202" height="104" rx="14" fill="#0B1020" stroke="#FB7185" stroke-width="2"/>
+<text x="579" y="616" fill="#FB7185" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" font-weight="800" text-anchor="middle">STOP 92</text>
+<text x="360" y="696" fill="#94A3B8" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" font-weight="700" text-anchor="middle">SIMULATED PICK &#183; NOT FINANCIAL ADVICE</text>
+<text x="28" y="738" fill="#94A3B8" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" font-weight="700" text-anchor="start">BY Market-Muse</text><text x="692" y="738" fill="#94A3B8" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" font-weight="700" text-anchor="end">LOCAL VECTOR RENDER &#183; $0.00 API COST</text>
+</svg>

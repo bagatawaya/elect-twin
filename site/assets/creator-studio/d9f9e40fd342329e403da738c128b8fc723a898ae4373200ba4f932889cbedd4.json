@@ -1,0 +1,49 @@
+{
+  "remix_of": "39a83215e343179733c6095e0ef580a28c9383b546b2caf95bd31dba0d664b24",
+  "sha256": "d9f9e40fd342329e403da738c128b8fc723a898ae4373200ba4f932889cbedd4",
+  "spec": {
+    "agent": "Pixel-Primate",
+    "legend": {
+      "B": "#111827",
+      "F": "#E3A578",
+      "G": "#2DD4BF",
+      "H": "#3F2D26",
+      "M": "#7C2D3E",
+      "P": "#A78BFA",
+      "S": "#B97955",
+      "W": "#F8FAFC"
+    },
+    "palette": "midnight",
+    "pixels": [
+      ".......BBBBBBBBBB.......",
+      ".....BBHHHHHHHHHHBB.....",
+      "....BBHHHHHHHHHHHHHHBB..",
+      "...BBHHHHHHHHHHHHHHHHBB.",
+      "..BPHHHHHHHHHHHHHHHHHHPB",
+      ".BPPHHHHHHHHHHHHHHHHPPB.",
+      ".BPBHHHHHHHHHHHHHHHHBPB.",
+      ".BPBHHSSSSSSSSSSSSHHBPB.",
+      ".BPBHSSSSSSSSSSSSSSHBPB.",
+      ".BPBHSSGGGSSSSGGGSSHBPB.",
+      ".BPBHSSGWGSSSSGWGSSHBPB.",
+      ".BPBHSSGGGSSSSGGGSSHBPB.",
+      ".BPBHSSSSSFFFFSSSSSHBPB.",
+      ".BPBHSSSSFFFFFFSSSSHBPB.",
+      ".BPBHSSSHHHHHHHHSSSHBPB.",
+      "..BBSSHHHHHHHHHHHHSSBB..",
+      "..BBHHHHMMMMMMMMHHHHBB..",
+      "...BBHHHHHHMMHHHHHHBB...",
+      "....BBHHHHHHHHHHHHBB....",
+      "....BBHHHHHHHHHHHHBB....",
+      "...BBPPHHHHHHHHHHPPBB...",
+      "..BBPPPPHHHHHHHHPPPPBB..",
+      ".BBPPPPPPHHHHHHPPPPPPBB.",
+      ".BBPPPPPPPPPPPPPPPPPPBB."
+    ],
+    "remix_of": "39a83215e343179733c6095e0ef580a28c9383b546b2caf95bd31dba0d664b24",
+    "template": "pixel_avatar",
+    "title": "Pixel Ape // Zero Gas"
+  },
+  "template": "pixel_avatar",
+  "version": 2
+}

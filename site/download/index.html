@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Download and verify OpenTwin 0.5.0 for macOS Apple Silicon.">
+  <title>Download OpenTwin v0.5.0-beta</title>
+  <link rel="stylesheet" href="/style.css?v=73">
+  <link rel="canonical" href="https://zoo.132.145.131.180.nip.io/download/">
+</head>
+<body class="release-page">
+  <a class="skip" href="#download">Skip to content</a>
+  <header><a class="brand-lockup elect-lockup" href="/" aria-label="OpenTwin and OpenZoo home"><svg class="elect-monogram" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30"/><ellipse cx="23" cy="32" rx="8" ry="12"/><path d="M34 20h16M42 20v24"/></svg><span class="lockup-words"><b>Open<span>Twin</span></b><small class="project-identity">Verified developer preview</small></span></a><nav aria-label="Download navigation"><a href="/opentwin/">Studio features</a><a href="/press/">Press</a><a href="/">OpenZoo</a></nav></header>
+  <main class="download-050" id="download">
+    <p class="release-eyebrow">OPENTWIN 0.5.0 · V0.5.0-BETA</p>
+    <h1>Download your local studio.</h1>
+    <p class="release-lede">Five tuned workspaces, Open News, OpenSkills v2, model governance, private Rooms, and OpenZoo on macOS Apple Silicon.</p>
+    <section class="download-panel" aria-labelledby="artifact-title">
+      <div class="download-artifact-heading"><div><span>MACOS 14.0+ · ARM64</span><h2 id="artifact-title">OpenTwin-0.5.0-arm64.dmg</h2></div><strong>20,679,909 bytes</strong></div>
+      <div class="release-actions"><a class="connection-cta" href="https://github.com/bagatawaya/elect-twin/releases/download/v0.5.0-beta/OpenTwin-0.5.0-arm64.dmg">Download DMG <span aria-hidden="true">→</span></a><a class="release-text-link" href="https://github.com/bagatawaya/elect-twin/releases/download/v0.5.0-beta/OpenTwin-0.5.0-arm64.dmg.sha256">SHA-256 sidecar</a><a class="release-text-link" href="https://github.com/bagatawaya/elect-twin/releases/tag/v0.5.0-beta">Release notes</a></div>
+      <details class="download-checksum" open><summary>SHA-256 verified against the published artifact</summary><code>975565823095acb97b86002c746cef4d2c1badd771433c944fa66c34deabe7d5</code></details>
+    </section>
+    <ol class="download-steps">
+      <li><span>01</span><div><h3>Verify the download.</h3><p>Place the DMG and sidecar in the same directory, then run:</p><pre><code>shasum -a 256 -c OpenTwin-0.5.0-arm64.dmg.sha256</code></pre></div></li>
+      <li><span>02</span><div><h3>Install intentionally.</h3><p>Open the verified disk image and drag <strong>OpenTwin.app</strong> into <code>/Applications</code>. Keep OpenTwin 0.4.1 as a rollback until 0.5.0 fits your workflow.</p></div></li>
+      <li><span>03</span><div><h3>Review the preview caveat.</h3><p>This is an <strong>ad-hoc signed, non-notarized arm64 community preview</strong>. If macOS quarantine prevents launch after you verify and install it, the documented workaround is:</p><pre><code>xattr -cr /Applications/OpenTwin.app</code></pre></div></li>
+    </ol>
+    <aside class="download-verification"><strong>Exact-image QC</strong><p>Strict deep codesign verification and <code>hdiutil verify</code> passed. Native WebKit QC passed 27 cold-launch and 10 reopen assertions with zero provider calls. Offline suites passed 170 Python tests, 95 update-checker assertions, seven JavaScript documents, and 30 SVG renderer, security, and frontend contract tests.</p></aside>
+    <p class="release-boundary">Windows x64 binary packaging is not attached to this prerelease. Provider keys are session-only. OpenZoo fixtures are local unless an optional Hub is explicitly configured. The existing on-disk <code>Elect Twin</code> data-directory name is retained for compatibility.</p>
+  </main>
+  <footer><span>OpenTwin + OpenZoo</span><p>Verify first. Install deliberately.</p><div class="footer-links"><a href="/opentwin/">Explore the studio</a><a href="https://github.com/bagatawaya/elect-twin">Source repository</a></div></footer>
+</body>
+</html>

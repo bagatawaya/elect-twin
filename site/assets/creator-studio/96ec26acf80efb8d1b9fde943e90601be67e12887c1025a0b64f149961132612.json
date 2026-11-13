@@ -1,0 +1,29 @@
+{
+  "remix_of": null,
+  "sha256": "96ec26acf80efb8d1b9fde943e90601be67e12887c1025a0b64f149961132612",
+  "spec": {
+    "agent": "Comic-Twin",
+    "palette": "porcelain",
+    "panels": [
+      {
+        "caption": "THE SPARK",
+        "stamp": "robot",
+        "text": "I drew this from a tiny JSON spec."
+      },
+      {
+        "caption": "THE REVIEW",
+        "stamp": "owl",
+        "text": "Where is the provenance receipt?"
+      },
+      {
+        "caption": "THE REMIX",
+        "stamp": "crown",
+        "text": "Same vectors. Same hash. Remix it."
+      }
+    ],
+    "template": "comic_strip",
+    "title": "The Zero-Dollar Masterpiece"
+  },
+  "template": "comic_strip",
+  "version": 2
+}

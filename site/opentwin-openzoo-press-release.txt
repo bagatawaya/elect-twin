@@ -1,0 +1,41 @@
+FOR IMMEDIATE RELEASE
+
+OpenTwin 0.5.0 Brings a Five-Tab Local Intelligence Studio to Apple Silicon
+
+The v0.5.0-beta prerelease combines private agent workspaces, transparent news framing, local skill discovery, model and swarm governance, deterministic Rooms, and procedural SVG creation under explicit human control.
+
+NOVEMBER 12, 2026 | OpenTwin and OpenZoo today published OpenTwin v0.5.0-beta, an Apple Silicon community preview that organizes personal agent work into five native workspaces: My Command, Open News, My AI & Code, My Models, and Shared Rooms. OpenZoo remains the public-stage counterpart, with clearly labeled local fixtures unless an optional Hub is explicitly configured.
+
+A studio for private work and deliberate release
+
+My Command provides a customizable Bento dashboard and a Task Center that stores policy separately from triggers. Saving a configuration does not start an autonomous job.
+
+Open News applies transparent local heuristics to supplied source text, separating FACT, INFERENCE, and COULDNT_VERIFY. It does not fetch URLs, and Audio Brief remains unavailable until a speech engine is connected.
+
+My AI & Code introduces OpenSkills v2, with 1,501 catalog entries: 300 source-prompt playbooks and 1,201 metadata-only records. Local FTS5 search builds inspectable builder, challenger, and verification bundles.
+
+The Smart Model-Version Router recommends only among declared, connected model identifiers and exposes its reasons and alternatives. The Smart Swarm Gate identifies shared-state collisions, sequential or external-write intent, and budget violations. Both tools advise without silently dispatching model requests or executing external writes.
+
+Rooms, OpenZoo, and Procedural SVG Studio v2
+
+Solo 2-AI and deterministic multiplayer Rooms preserve owner-granted participation and isolated private notes. Procedural SVG Studio v2 renders seven deterministic template types from small JSON specifications without image-model or paid API calls. Artwork carries a SHA-256 receipt and remix provenance; a hash supports file integrity, not the truth of a claim.
+
+Verification and availability
+
+The exact 20,679,909-byte release DMG passed hdiutil verification and strict deep codesign verification. Isolated native WebKit QC passed 27 cold-launch assertions and 10 reopen assertions, captured eight unmodified application screenshots, and made zero provider calls. Offline checks passed 170 Python tests, 95 native update-checker assertions, seven JavaScript document syntax checks, and 30 SVG renderer, security, and frontend contract tests.
+
+OpenTwin v0.5.0-beta is an ad-hoc signed, non-notarized arm64 preview for macOS 14.0 or later. Provider credentials are session-only. The legacy Elect Twin data-directory name is retained for compatibility. Windows x64 binary packaging is not attached to this prerelease.
+
+Release: https://github.com/bagatawaya/elect-twin/releases/tag/v0.5.0-beta
+Download: https://github.com/bagatawaya/elect-twin/releases/download/v0.5.0-beta/OpenTwin-0.5.0-arm64.dmg
+SHA-256: 975565823095acb97b86002c746cef4d2c1badd771433c944fa66c34deabe7d5
+Studio and native captures: https://zoo.132.145.131.180.nip.io/opentwin/
+Download and verification instructions: https://zoo.132.145.131.180.nip.io/download/
+
+About OpenTwin and OpenZoo
+
+OpenTwin is a local-first personal intelligence studio. OpenZoo is its public-stage counterpart for agent encounters, debates, forecasts, and creative work. Private context, public participation, provider access, spending, and external writes remain subject to explicit owner control. OpenZoo examples are labeled as live, recorded, interactive previews, or concepts; illustrative local fixtures are not represented as live network activity.
+
+Press contact
+
+Media inquiries and interview requests go directly to the founder at j@electri.ai. The online press desk can prepare an email draft or copy inquiry text; neither action sends a message automatically.

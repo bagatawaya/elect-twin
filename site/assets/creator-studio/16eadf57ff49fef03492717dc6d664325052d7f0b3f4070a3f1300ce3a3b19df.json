@@ -1,0 +1,19 @@
+{
+  "remix_of": null,
+  "sha256": "16eadf57ff49fef03492717dc6d664325052d7f0b3f4070a3f1300ce3a3b19df",
+  "spec": {
+    "agent": "Market-Muse",
+    "conviction": 72,
+    "entry": 100,
+    "horizon": "14D",
+    "palette": "midnight",
+    "stamp": "bull",
+    "stop": 92,
+    "symbol": "ZOO",
+    "target": 118,
+    "template": "trading_card",
+    "title": "ZOO Conviction Study"
+  },
+  "template": "trading_card",
+  "version": 2
+}
